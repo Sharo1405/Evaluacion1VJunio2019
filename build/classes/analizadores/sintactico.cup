@@ -1,0 +1,167 @@
+package analizadores;
+
+
+import ast.ArbolAST;
+import ast.NodoAST;
+import ast.entorno.Simbolo;
+import ast.expresiones.Expresion;
+import ast.expresiones.Identificador;
+import ast.expresiones.Primitivos;
+import ast.instrucciones.Bloque;
+import ast.instrucciones.Declaracion;
+import ast.instrucciones.Instruccion;
+import ast.instrucciones.ImprimirTS;
+import java.util.LinkedList;
+import java_cup.runtime.*;
+
+
+parser code
+
+{:
+    public Instruccion arbol;
+    public void syntax_error(Symbol s){
+        System.err.println(s);
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.err.println("Error caracter no esperado");
+        System.err.println(s);
+    }
+:}
+
+
+action code
+{://Codigo de acciones
+      
+:}
+
+
+terminal String igual, allave, cllave, id, charER, entero, decimal, puntoycoma;
+terminal String intt, charr, imprimir, apar, cpar; //TIPO
+terminal String mas, por, menos, dividir, potencia; //aritmeticas
+terminal String oor, aand, diferenteunario; //logica
+terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
+terminal MENOSUNARIO;
+
+nonterminal I;
+nonterminal Instruccion S;
+nonterminal LinkedList<Instruccion> B;
+nonterminal Expresion E;
+nonterminal Instruccion D;
+nonterminal Simbolo.Tipo T;
+nonterminal Instruccion J;
+
+
+precedence left oor;
+precedence left aand;
+precedence right diferenteunario;
+precedence left igualigual, diferente;
+precedence left mayorq, menorq, menorigualq, mayorigualq;
+precedence right MENOSUNARIO;
+precedence left mas, menos;
+precedence left por, dividir;
+precedence left potencia;
+
+
+
+start with I;
+
+I::= S:l{:
+        this.parser.arbol = l;
+    :};
+
+S::= allave B:l cllave {:
+        RESULT = new Bloque(l);
+    :}
+    /*|imprimir apar cpar puntoycoma {:
+        RESULT = new ImprimirTS("hola");
+    :}*/;
+    
+B::= B:l J:i {:
+        RESULT = l;
+        RESULT.add(i);
+    :}
+    |J:i {:
+       RESULT = new LinkedList<>();
+        RESULT.add(i);
+    :};
+
+J::= D:d {:
+        RESULT = d;
+    :}
+    |S:d {:
+        RESULT = d;
+    :};
+
+D::= T:t id:id igual E:e puntoycoma {:
+        RESULT = new Declaracion(t,id, e, idleft, idright);
+    :}
+    |T:t id:id puntoycoma {:
+        RESULT = new Declaracion(t, id, idleft, idright);
+    :}
+    |imprimir apar cpar puntoycoma {:
+        RESULT = new ImprimirTS("hola");
+    :};
+
+
+T::= intt{:
+        RESULT = Simbolo.Tipo.INT;
+    :}
+    |charr {:
+        RESULT = Simbolo.Tipo.CHAR;
+    :};
+
+E::= menos E {::}
+    
+    //|mas E {::}
+
+    |E oor E {::}
+    
+    |E aand E {::}
+    
+    |E igualigual E {::}
+
+    |E diferente E {::}
+
+    |E diferenteunario E {::}
+    
+    |E mayorq E {::}
+
+    |E menorq E {::}
+
+    |E mayorigualq E {::}
+
+    |E menorigualq E {::}
+
+    |E:e1 mas:mas E:e2{:
+        
+    :}
+    |E:e1 por:mas E:e2{:
+        
+    :}
+    |E:e1 dividir:mas E:e2{:
+        
+    :}
+    |E potencia E{::}
+
+    |E:e1 menos:mas E:e2{:
+        
+    :}
+    
+    |entero:ee {:
+        RESULT = new Primitivos(ee, Simbolo.Tipo.INT, eeleft, eeright);
+    :}
+    |decimal:ee {:
+        
+    :}
+    |charER: ee {:
+        RESULT = new Primitivos(ee, Simbolo.Tipo.CHAR, eeleft, eeright);
+    :}
+    |id:id{:
+        RESULT = new Identificador(id, Simbolo.Tipo.ID, idleft, idright);
+    :}
+    |apar E:e cpar{:
+        RESULT = e;
+    :};
+    
+
