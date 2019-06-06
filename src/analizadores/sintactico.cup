@@ -13,6 +13,7 @@ import ast.expresiones.operacion.Relacional;
 import ast.expresiones.operacion.Operacion;
 import ast.instrucciones.Bloque;
 import ast.instrucciones.Declaracion;
+import ast.instrucciones.Asignacion;
 import ast.instrucciones.Instruccion;
 import ast.instrucciones.ImprimirTS;
 import java.util.LinkedList;
@@ -105,6 +106,9 @@ D::= T:t id:id igual E:e puntoycoma {:
     :}
     |T:t id:id puntoycoma {:
         RESULT = new Declaracion(t, id, idleft, idright);
+    :}
+    |id:id igual E:e puntoycoma{:
+        RESULT = new Asignacion(id, e, idleft, idright);
     :}
     |imprimir apar cpar puntoycoma {:
         RESULT = new ImprimirTS("hola");
