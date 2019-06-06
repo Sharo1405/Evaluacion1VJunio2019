@@ -44,12 +44,12 @@ public class Primitivos implements Expresion{
     @Override
     public Object getValue(Entorno lista) {
         
-        Simbolo buscando = lista.get(id, lista);
+        /*Simbolo buscando = lista.get(id, lista);
         if(buscando != null){
             return buscando.getValor();
-        }else{
+        }else{*/
             return this.valor;
-        }
+        //}
         //return null;
     }
 
@@ -60,6 +60,12 @@ public class Primitivos implements Expresion{
                 return Simbolo.Tipo.INT;
             case CHAR:
                 return Simbolo.Tipo.CHAR;
+            case STRING:
+                return Simbolo.Tipo.STRING;
+            case BOOLEAN:
+                return Simbolo.Tipo.BOOLEAN;
+            case DOUBLE:
+                return Simbolo.Tipo.DOUBLE;
         }
         return null;
     }

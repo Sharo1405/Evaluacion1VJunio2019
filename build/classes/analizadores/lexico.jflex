@@ -50,6 +50,12 @@ cllave      = "}"
 igual       = "="
 intt         = "int"
 charr       = "char"
+stringg     = "string"
+doublee     = "double"
+booleann    = "boolean"
+truee       = "true"
+falsee      = "false"
+
 imprimir    = "imprimir"
 
 
@@ -57,6 +63,7 @@ id          = [a-zA-ZñÑ]+[0-9]*
 decimal     = ([0-9]+"."[0-9]+|"-"[0-9]+"."[0-9]+)
 entero      = ([0-9]+|"-"[0-9]+)
 charER      = ("'" ~"'")
+cadena      = ("\"" ~"\"")
 
 
 
@@ -144,6 +151,22 @@ enter   = [\ \n]
 <YYINITIAL> {charr}       {  System.out.println("Reconocido: <<"+yytext()+">>, charr");
                                 return new Symbol(sym.charr, yyline, yycolumn, yytext()); } 
 
+<YYINITIAL> {stringg}       {  System.out.println("Reconocido: <<"+yytext()+">>, stringg");
+                                return new Symbol(sym.stringg, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {booleann}       {  System.out.println("Reconocido: <<"+yytext()+">>, booleann");
+                                return new Symbol(sym.booleann, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {doublee}       {  System.out.println("Reconocido: <<"+yytext()+">>, doublee");
+                                return new Symbol(sym.doublee, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {truee}       {  System.out.println("Reconocido: <<"+yytext()+">>, truee");
+                                return new Symbol(sym.truee, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {falsee}       {  System.out.println("Reconocido: <<"+yytext()+">>, falsee");
+                                return new Symbol(sym.falsee, yyline, yycolumn, yytext()); } 
+
+
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
                                 return new Symbol(sym.imprimir, yyline, yycolumn, yytext()); } 
 
@@ -160,6 +183,9 @@ enter   = [\ \n]
 
 <YYINITIAL> {charER}        { System.out.println("Reconocido: <<"+yytext()+">>, char");
                                 return new Symbol(sym.charER, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {cadena}        { System.out.println("Reconocido: <<"+yytext()+">>, cadena");
+                                return new Symbol(sym.cadena, yyline, yycolumn, yytext()); } 
 
 
 <YYINITIAL> {espacio}      {  } 

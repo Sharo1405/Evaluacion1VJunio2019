@@ -35,14 +35,29 @@ public class Aritmetica extends Operacion implements Expresion {
                 case MAS:
                     switch (tipo) {
                         case STRING:
-                            return String.valueOf(exp1.getValue(lista)) + " " + String.valueOf(exp1.getValue(lista));
+                            return String.valueOf(exp1.getValue(lista)) + " " + String.valueOf(exp2.getValue(lista));
 
                         case INT:
-                            return Integer.parseInt(String.valueOf(exp1.getValue(lista))) + Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                return (int) var[0] + Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) + (int) var[0];
+                            } else {
+                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) + Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            }
 
                         case DOUBLE:
-                            return Double.parseDouble(String.valueOf(exp1.getValue(lista))) + Double.parseDouble(String.valueOf(exp2.getValue(lista)));
-
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                return (int) var[0] + Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                return Double.parseDouble(String.valueOf(exp1.getValue(lista))) + (int) var[0];
+                            } else {
+                                return Double.parseDouble(String.valueOf(exp1.getValue(lista))) + Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            }
                         default:
                             System.out.println("Error de tipos para SUMA");
                     }
@@ -52,11 +67,26 @@ public class Aritmetica extends Operacion implements Expresion {
                     switch (tipo) {
 
                         case INT:
-                            return Integer.parseInt(String.valueOf(exp1.getValue(lista))) - Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                return (int) var[0] - Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) - (int) var[0];
+                            } else {
+                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) - Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            }
 
                         case DOUBLE:
-                            return Double.parseDouble(String.valueOf(exp1.getValue(lista))) - Double.parseDouble(String.valueOf(exp2.getValue(lista)));
-
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                return (int) var[0] - Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                return Double.parseDouble(String.valueOf(exp1.getValue(lista))) - (int) var[0];
+                            } else {
+                                return Double.parseDouble(String.valueOf(exp1.getValue(lista))) - Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            }
                         default:
                             System.out.println("Error de tipos para MENOS");
                     }
@@ -65,10 +95,26 @@ public class Aritmetica extends Operacion implements Expresion {
                 case POR:
                     switch (tipo) {
                         case INT:
-                            return Integer.parseInt(String.valueOf(exp1.getValue(lista))) * Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                return (int) var[0] * Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) * (int) var[0];
+                            } else {
+                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) * Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                            }
 
                         case DOUBLE:
-                            return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                return (int) var[0] * Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * (int) var[0];
+                            } else {
+                                return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                            }
 
                         default:
                             System.out.println("Error de tipos para MULTIPLICACION");
@@ -78,7 +124,22 @@ public class Aritmetica extends Operacion implements Expresion {
                 case DIVIDIR:
                     switch (tipo) {
                         case DOUBLE:
-                            if (Double.parseDouble(String.valueOf(exp2.getValue(lista))) > 0) {
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                if ((int) var[0] > 0) {
+                                    return (int) var[0] / Double.parseDouble(String.valueOf(exp2.getValue(lista)));
+                                } else {
+                                    System.out.println("Error division entre cero");
+                                }
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                if ((int) var[0] > 0) {
+                                    return Double.parseDouble(String.valueOf(exp1.getValue(lista))) / (int) var[0];
+                                } else {
+                                    System.out.println("Error division entre cero");
+                                }
+
+                            } else if (Double.parseDouble(String.valueOf(exp2.getValue(lista))) > 0) {
                                 return Double.parseDouble(String.valueOf(exp1.getValue(lista))) / Double.parseDouble(String.valueOf(exp2.getValue(lista)));
                             } else {
                                 System.out.println("Error division entre cero");
@@ -86,7 +147,15 @@ public class Aritmetica extends Operacion implements Expresion {
 
                         case INT:
                             if (Double.parseDouble(String.valueOf(exp2.getValue(lista))) > 0) {
-                                return Integer.parseInt(String.valueOf(exp1.getValue(lista))) / Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                                if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                    char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                    return (int) var[0] / Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                                } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                    char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                    return Integer.parseInt(String.valueOf(exp1.getValue(lista))) / (int) var[0];
+                                } else {
+                                    return Integer.parseInt(String.valueOf(exp1.getValue(lista))) / Integer.parseInt(String.valueOf(exp2.getValue(lista)));
+                                }
                             } else {
                                 System.out.println("Error division entre cero");
                             }
@@ -96,8 +165,17 @@ public class Aritmetica extends Operacion implements Expresion {
                 case POTENCIA:
                     switch (tipo) {
                         case INT:
-                            return Math.pow(Double.parseDouble(String.valueOf(exp1.getValue(lista))), Double.parseDouble(String.valueOf(exp2.getValue(lista))));
-
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                int v = (int) var[0];
+                                return Math.pow(v, Double.parseDouble(String.valueOf(exp2.getValue(lista))));
+                            } else if (exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                int v = (int) var[0];
+                                return Math.pow(Double.parseDouble(String.valueOf(exp1.getValue(lista))), v);
+                            } else {
+                                return Math.pow(Double.parseDouble(String.valueOf(exp1.getValue(lista))), Double.parseDouble(String.valueOf(exp2.getValue(lista))));
+                            }
                         case DOUBLE:
                             return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * Double.parseDouble(String.valueOf(exp2.getValue(lista)));
 
@@ -106,7 +184,7 @@ public class Aritmetica extends Operacion implements Expresion {
                     }
                     break;
             }
-            
+
             return null;
         }
 
@@ -115,7 +193,12 @@ public class Aritmetica extends Operacion implements Expresion {
 
     @Override
     public Object getType(Entorno lista) {
-        return tipoResultante(exp1, exp2, lista);
+
+        if (op == Operador.DIVIDIR) {
+            return Simbolo.Tipo.DOUBLE;
+        } else {
+            return tipoResultante(exp1, exp2, lista);
+        }
     }
 
     @Override

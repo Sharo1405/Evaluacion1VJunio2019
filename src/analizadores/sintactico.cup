@@ -7,6 +7,8 @@ import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.Identificador;
 import ast.expresiones.Primitivos;
+import ast.expresiones.operacion.Aritmetica;
+import ast.expresiones.operacion.Operacion;
 import ast.instrucciones.Bloque;
 import ast.instrucciones.Declaracion;
 import ast.instrucciones.Instruccion;
@@ -36,8 +38,10 @@ action code
 :}
 
 
-terminal String igual, allave, cllave, id, charER, entero, decimal, puntoycoma;
-terminal String intt, charr, imprimir, apar, cpar; //TIPO
+terminal String igual, allave, cllave, id, puntoycoma;
+terminal String intt, charr, stringg, doublee, booleann; //TIpo dato
+terminal String cadena, truee, falsee, charER, entero, decimal; //tipos primitivos
+terminal String imprimir, apar, cpar; 
 terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
@@ -109,6 +113,15 @@ T::= intt{:
     :}
     |charr {:
         RESULT = Simbolo.Tipo.CHAR;
+    :}
+    |stringg{:
+        RESULT = Simbolo.Tipo.STRING;
+    :}
+    |booleann{:
+        RESULT = Simbolo.Tipo.BOOLEAN;
+    :}
+    |doublee{:
+        RESULT = Simbolo.Tipo.DOUBLE;
     :};
 
 E::= menos E {::}
@@ -134,28 +147,38 @@ E::= menos E {::}
     |E menorigualq E {::}
 
     |E:e1 mas:mas E:e2{:
-        
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.MAS, masleft, masright, Simbolo.Tipo.STRING);
     :}
     |E:e1 por:mas E:e2{:
-        
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.POR, masleft, masright, Simbolo.Tipo.STRING);
     :}
     |E:e1 dividir:mas E:e2{:
-        
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.DIVIDIR, masleft, masright, Simbolo.Tipo.STRING);
     :}
-    |E potencia E{::}
-
+    |E:e1 potencia:mas E:e2{:
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.POTENCIA, masleft, masright, Simbolo.Tipo.STRING);
+    :}        
     |E:e1 menos:mas E:e2{:
-        
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.MENOS, masleft, masright, Simbolo.Tipo.STRING);
     :}
     
+    |cadena:ee{:
+        RESULT = new Primitivos(ee.substring(1,ee.length()-1), Simbolo.Tipo.STRING, eeleft, eeright);
+    :}
     |entero:ee {:
         RESULT = new Primitivos(ee, Simbolo.Tipo.INT, eeleft, eeright);
     :}
     |decimal:ee {:
-        
+        RESULT = new Primitivos(ee, Simbolo.Tipo.DOUBLE, eeleft, eeright);
     :}
     |charER: ee {:
-        RESULT = new Primitivos(ee, Simbolo.Tipo.CHAR, eeleft, eeright);
+        RESULT = new Primitivos(ee.substring(1,ee.length()-1), Simbolo.Tipo.CHAR, eeleft, eeright);
+    :}
+    |truee:ee{:
+        RESULT = new Primitivos(ee, Simbolo.Tipo.BOOLEAN, eeleft, eeright);
+    :}
+    |falsee:ee{:
+        RESULT = new Primitivos(ee, Simbolo.Tipo.BOOLEAN, eeleft, eeright);
     :}
     |id:id{:
         RESULT = new Identificador(id, Simbolo.Tipo.ID, idleft, idright);
