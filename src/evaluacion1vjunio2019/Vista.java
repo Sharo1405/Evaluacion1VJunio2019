@@ -143,6 +143,9 @@ public class Vista extends javax.swing.JFrame {
             
             Entorno en = new Entorno();
             parser.arbol.ejecutar(en);
+            
+            String hola = "jod";
+            Object al = hola;
             /*for(Simbolo in:en.tablaSimbolo){
                 String id = in.getId();
                 Tipo valor =(Tipo)in.getValor();

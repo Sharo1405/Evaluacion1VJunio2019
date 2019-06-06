@@ -14,6 +14,7 @@ import ast.expresiones.Expresion;
  * @author sharolin
  */
 public class Operacion {
+
     public Expresion exp1;
     public Expresion exp2;
     public Operador op;
@@ -29,8 +30,8 @@ public class Operacion {
         this.col = col;
         this.tipo = tipo;
     }
-    
-    public Operacion(Expresion exp1, Operador op, int line,  int col, Simbolo.Tipo tipo) {
+
+    public Operacion(Expresion exp1, Operador op, int line, int col, Simbolo.Tipo tipo) {
         this.exp1 = exp1;
         this.exp2 = null;
         this.op = op;
@@ -38,18 +39,16 @@ public class Operacion {
         this.col = col;
         this.tipo = tipo;
     }
-    
-    public static enum Operador{
+
+    public static enum Operador {
         MAS,
         MENOS,
         POR,
         DIVIDIR,
         POTENCIA,
-        
         OR,
         AND,
         NOT,
-        
         DIFERENTE,
         MAYORQ,
         MENORQ,
@@ -57,21 +56,36 @@ public class Operacion {
         MENORIGUALQ,
         IGUAL
     }
-    
-    public Simbolo.Tipo tipoResultante(Expresion izquierda, Expresion derecha, Entorno lista){
-        
-        if(izquierda.getType(lista) == Simbolo.Tipo.STRING || derecha.getType(lista) == Simbolo.Tipo.STRING){
+
+    public Simbolo.Tipo tipoResultante(Expresion izquierda, Expresion derecha, Entorno lista) {
+
+        if (izquierda.getType(lista) == Simbolo.Tipo.STRING || derecha.getType(lista) == Simbolo.Tipo.STRING) {
             return Simbolo.Tipo.STRING;
-        }else if(izquierda.getType(lista) == Simbolo.Tipo.DOUBLE || derecha.getType(lista) == Simbolo.Tipo.DOUBLE){
+        } else if (izquierda.getType(lista) == Simbolo.Tipo.DOUBLE || derecha.getType(lista) == Simbolo.Tipo.DOUBLE) {
             return Simbolo.Tipo.DOUBLE;
-        }else if(izquierda.getType(lista) == Simbolo.Tipo.INT || derecha.getType(lista) == Simbolo.Tipo.INT){
+        } else if (izquierda.getType(lista) == Simbolo.Tipo.INT || derecha.getType(lista) == Simbolo.Tipo.INT) {
             return Simbolo.Tipo.INT;
-        }else if(izquierda.getType(lista) == Simbolo.Tipo.CHAR || derecha.getType(lista) == Simbolo.Tipo.CHAR){
+        } else if (izquierda.getType(lista) == Simbolo.Tipo.CHAR || derecha.getType(lista) == Simbolo.Tipo.CHAR) {
             return Simbolo.Tipo.CHAR;
-        }else if(izquierda.getType(lista) == Simbolo.Tipo.BOOLEAN || derecha.getType(lista) == Simbolo.Tipo.BOOLEAN){
+        } else if (izquierda.getType(lista) == Simbolo.Tipo.BOOLEAN || derecha.getType(lista) == Simbolo.Tipo.BOOLEAN) {
             return Simbolo.Tipo.BOOLEAN;
         }
-        
+
+        return null;
+    }
+
+    public Double casteoRelacional(Expresion exp, Entorno lista) {
+
+        if (exp.getType(lista) == Simbolo.Tipo.CHAR) {
+            char var[] = String.valueOf(exp.getValue(lista)).toCharArray();
+            int v = (int) var[0];
+            return (int) var[0] * 1.0;
+        } else if (exp.getType(lista) == Simbolo.Tipo.DOUBLE) {
+            return Double.parseDouble(String.valueOf(exp.getValue(lista)));
+        } else if (exp.getType(lista) == Simbolo.Tipo.INT) {
+            return Double.parseDouble(String.valueOf(exp.getValue(lista)));
+        }
+
         return null;
     }
 }
