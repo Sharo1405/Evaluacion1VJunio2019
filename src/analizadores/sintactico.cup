@@ -8,6 +8,7 @@ import ast.expresiones.Expresion;
 import ast.expresiones.Identificador;
 import ast.expresiones.Primitivos;
 import ast.expresiones.operacion.Aritmetica;
+import ast.expresiones.operacion.Logica;
 import ast.expresiones.operacion.Operacion;
 import ast.instrucciones.Bloque;
 import ast.instrucciones.Declaracion;
@@ -128,16 +129,19 @@ E::= menos E {::}
     
     //|mas E {::}
 
-    |E oor E {::}
-    
-    |E aand E {::}
-    
+    |E:e1 oor:mas E:e2 {:
+        RESULT = new Logica(e1, e2, Operacion.Operador.OR, masleft, masright, Simbolo.Tipo.STRING);
+    :}    
+    |E:e1 aand:mas E:e2 {:
+        RESULT = new Logica(e1, e2, Operacion.Operador.AND, masleft, masright, Simbolo.Tipo.STRING);
+    :}    
     |E igualigual E {::}
 
     |E diferente E {::}
 
-    |E diferenteunario E {::}
-    
+    |diferenteunario:mas E:e1 {:
+        RESULT = new Logica(e1, Operacion.Operador.NOT, masleft, masright, Simbolo.Tipo.STRING);
+    :}    
     |E mayorq E {::}
 
     |E menorq E {::}

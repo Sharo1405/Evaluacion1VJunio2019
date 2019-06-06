@@ -32,6 +32,7 @@ public class Operacion {
     
     public Operacion(Expresion exp1, Operador op, int line,  int col, Simbolo.Tipo tipo) {
         this.exp1 = exp1;
+        this.exp2 = null;
         this.op = op;
         this.line = line;
         this.col = col;
