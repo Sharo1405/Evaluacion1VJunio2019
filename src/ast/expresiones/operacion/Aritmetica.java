@@ -58,6 +58,16 @@ public class Aritmetica extends Operacion implements Expresion {
                             } else {
                                 return Double.parseDouble(String.valueOf(exp1.getValue(lista))) + Double.parseDouble(String.valueOf(exp2.getValue(lista)));
                             }
+
+                        case CHAR:
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR && exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+
+                                char var1[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+
+                                return (int) var[0] + (int) var1[0];
+                            }
+                            break;
                         default:
                             System.out.println("Error de tipos para SUMA");
                     }
@@ -87,6 +97,16 @@ public class Aritmetica extends Operacion implements Expresion {
                             } else {
                                 return Double.parseDouble(String.valueOf(exp1.getValue(lista))) - Double.parseDouble(String.valueOf(exp2.getValue(lista)));
                             }
+
+                        case CHAR:
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR && exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+
+                                char var1[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+
+                                return (int) var[0] - (int) var1[0];
+                            }
+                            break;
                         default:
                             System.out.println("Error de tipos para MENOS");
                     }
@@ -116,6 +136,15 @@ public class Aritmetica extends Operacion implements Expresion {
                                 return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * Double.parseDouble(String.valueOf(exp2.getValue(lista)));
                             }
 
+                        case CHAR:
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR && exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+
+                                char var1[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+
+                                return (int) var[0] * (int) var1[0];
+                            }
+                            break;
                         default:
                             System.out.println("Error de tipos para MULTIPLICACION");
                     }
@@ -159,6 +188,16 @@ public class Aritmetica extends Operacion implements Expresion {
                             } else {
                                 System.out.println("Error division entre cero");
                             }
+
+                        case CHAR:
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR && exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+
+                                char var1[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+
+                                return (int) var[0] / (int) var1[0];
+                            }
+                            break;
                     }
                     break;
 
@@ -179,6 +218,17 @@ public class Aritmetica extends Operacion implements Expresion {
                         case DOUBLE:
                             return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * Double.parseDouble(String.valueOf(exp2.getValue(lista)));
 
+                        case CHAR:
+                            if (exp1.getType(lista) == Simbolo.Tipo.CHAR && exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                                int v = (int) var[0];
+
+                                char var1[] = String.valueOf(exp2.getValue(lista)).toCharArray();
+                                int v1 = (int) var[0];
+
+                                return Math.pow(v, v1);
+                            }
+                            break;
                         default:
                             System.out.println("Error de tipos para POTENCIA");
                     }
@@ -196,6 +246,8 @@ public class Aritmetica extends Operacion implements Expresion {
 
         if (op == Operador.DIVIDIR) {
             return Simbolo.Tipo.DOUBLE;
+        } else if (exp1.getType(lista) == Simbolo.Tipo.CHAR && exp2.getType(lista) == Simbolo.Tipo.CHAR) {
+            return Simbolo.Tipo.INT;            
         } else {
             return tipoResultante(exp1, exp2, lista);
         }
