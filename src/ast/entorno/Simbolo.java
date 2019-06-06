@@ -32,6 +32,9 @@ public class Simbolo {
     public enum Tipo{
         INT,
         CHAR,
+        STRING,
+        DOUBLE,
+        BOOLEAN,
         ID
     }
    
