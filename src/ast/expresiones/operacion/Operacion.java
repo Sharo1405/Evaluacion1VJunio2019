@@ -20,9 +20,9 @@ public class Operacion {
     public Operador op;
     public int line;
     public int col;
-    public Simbolo.Tipo tipo;
+    public TipoContenedor tipo;
 
-    public Operacion(Expresion exp1, Expresion exp2, Operador op, int line, int col, Simbolo.Tipo tipo) {
+    public Operacion(Expresion exp1, Expresion exp2, Operador op, int line, int col, TipoContenedor tipo) {
         this.exp1 = exp1;
         this.exp2 = exp2;
         this.op = op;
@@ -31,7 +31,7 @@ public class Operacion {
         this.tipo = tipo;
     }
 
-    public Operacion(Expresion exp1, Operador op, int line, int col, Simbolo.Tipo tipo) {
+    public Operacion(Expresion exp1, Operador op, int line, int col, TipoContenedor tipo) {
         this.exp1 = exp1;
         this.exp2 = null;
         this.op = op;
@@ -57,35 +57,78 @@ public class Operacion {
         IGUAL
     }
 
-    public Simbolo.Tipo tipoResultante(Expresion izquierda, Expresion derecha, Entorno lista) {
+    public TipoContenedor tipoResultante(Expresion izquierda, Expresion derecha, Entorno lista) {
 
-        if (izquierda.getType(lista) == Simbolo.Tipo.STRING || derecha.getType(lista) == Simbolo.Tipo.STRING) {
-            return Simbolo.Tipo.STRING;
-        } else if (izquierda.getType(lista) == Simbolo.Tipo.DOUBLE || derecha.getType(lista) == Simbolo.Tipo.DOUBLE) {
-            return Simbolo.Tipo.DOUBLE;
-        } else if (izquierda.getType(lista) == Simbolo.Tipo.INT || derecha.getType(lista) == Simbolo.Tipo.INT) {
-            return Simbolo.Tipo.INT;
-        } else if (izquierda.getType(lista) == Simbolo.Tipo.CHAR || derecha.getType(lista) == Simbolo.Tipo.CHAR) {
-            return Simbolo.Tipo.CHAR;
-        } else if (izquierda.getType(lista) == Simbolo.Tipo.BOOLEAN || derecha.getType(lista) == Simbolo.Tipo.BOOLEAN) {
-            return Simbolo.Tipo.BOOLEAN;
+        try {
+
+            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista);
+            TipoContenedor der = (TipoContenedor) derecha.getType(lista);
+            TipoContenedor aux = new TipoContenedor();
+
+            if (aux.isString(izq) || aux.isString(der)) {
+                return new TipoContenedor(Simbolo.Tipo.STRING);
+
+            } else if (aux.isBool(izq) || aux.isBool(der)) {
+                System.out.println("Error de tipo para aritmeticas");
+                return null;
+
+            } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
+                return new TipoContenedor(Simbolo.Tipo.DOUBLE);
+
+            } else if (aux.isEntero(izq) || aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)) {
+                return new TipoContenedor(Simbolo.Tipo.INT);
+
+            }
+
+        } catch (Exception e) {
         }
 
         return null;
     }
 
+    public TipoContenedor tipoResultanteRELACIONAL(Expresion izquierda, Expresion derecha, Entorno lista) {
+
+        try {
+
+            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista);
+            TipoContenedor der = (TipoContenedor) derecha.getType(lista);
+            TipoContenedor aux = new TipoContenedor();
+
+            if (aux.isString(izq) && aux.isString(der)) {
+                return new TipoContenedor(Simbolo.Tipo.STRING);
+
+            } else if (aux.isBool(izq) && aux.isBool(der)) {
+                return new TipoContenedor(Simbolo.Tipo.BOOLEAN);
+
+            } else if (aux.isEntero(izq) && aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)
+                    || aux.isDecimal(izq) && aux.isDecimal(der)) {
+                return new TipoContenedor(Simbolo.Tipo.DOUBLE);
+
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     public Double casteoRelacional(Expresion exp, Entorno lista) {
 
-        if (exp.getType(lista) == Simbolo.Tipo.CHAR) {
-            char var[] = String.valueOf(exp.getValue(lista)).toCharArray();
-            int v = (int) var[0];
-            return (int) var[0] * 1.0;
-        } else if (exp.getType(lista) == Simbolo.Tipo.DOUBLE) {
-            return Double.parseDouble(String.valueOf(exp.getValue(lista)));
-        } else if (exp.getType(lista) == Simbolo.Tipo.INT) {
-            return Double.parseDouble(String.valueOf(exp.getValue(lista)));
-        }
+        try {
 
+            TipoContenedor aux = (TipoContenedor)exp.getType(lista);
+
+            if (aux.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+                char var[] = String.valueOf(exp.getValue(lista)).toCharArray();
+                int v = (int) var[0];
+                return (int) var[0] * 1.0;
+            } else if (aux.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE) {
+                return Double.parseDouble(String.valueOf(exp.getValue(lista)));
+            } else if (aux.getTipoPrimitivo() == Simbolo.Tipo.INT) {
+                return Double.parseDouble(String.valueOf(exp.getValue(lista)));
+            }
+
+        } catch (Exception e) {
+        }
         return null;
     }
 }

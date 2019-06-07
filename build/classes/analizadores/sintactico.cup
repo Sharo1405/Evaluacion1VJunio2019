@@ -9,8 +9,14 @@ import ast.expresiones.Identificador;
 import ast.expresiones.Primitivos;
 import ast.expresiones.operacion.Aritmetica;
 import ast.expresiones.operacion.Logica;
+import ast.expresiones.operacion.TipoContenedor;
 import ast.expresiones.operacion.Relacional;
 import ast.expresiones.operacion.Operacion;
+import ast.expresiones.primitivos.Booleano;
+import ast.expresiones.primitivos.Cadena;
+import ast.expresiones.primitivos.Caracter;
+import ast.expresiones.primitivos.Decimal;
+import ast.expresiones.primitivos.Entero;
 import ast.instrucciones.Bloque;
 import ast.instrucciones.Declaracion;
 import ast.instrucciones.Asignacion;
@@ -56,7 +62,7 @@ nonterminal Instruccion S;
 nonterminal LinkedList<Instruccion> B;
 nonterminal Expresion E;
 nonterminal Instruccion D;
-nonterminal Simbolo.Tipo T;
+nonterminal TipoContenedor T;
 nonterminal Instruccion J;
 
 
@@ -116,19 +122,24 @@ D::= T:t id:id igual E:e puntoycoma {:
 
 
 T::= intt{:
-        RESULT = Simbolo.Tipo.INT;
+        //RESULT = Simbolo.Tipo.INT;
+        RESULT = new TipoContenedor(Simbolo.Tipo.INT);
     :}
     |charr {:
-        RESULT = Simbolo.Tipo.CHAR;
+        //RESULT = Simbolo.Tipo.CHAR;
+        RESULT = new TipoContenedor(Simbolo.Tipo.CHAR);
     :}
     |stringg{:
-        RESULT = Simbolo.Tipo.STRING;
+        //RESULT = Simbolo.Tipo.STRING;
+        RESULT = new TipoContenedor(Simbolo.Tipo.STRING);
     :}
     |booleann{:
-        RESULT = Simbolo.Tipo.BOOLEAN;
+        //RESULT = Simbolo.Tipo.BOOLEAN;
+        RESULT = new TipoContenedor(Simbolo.Tipo.BOOLEAN);
     :}
     |doublee{:
-        RESULT = Simbolo.Tipo.DOUBLE;
+        //RESULT = Simbolo.Tipo.DOUBLE;
+        RESULT = new TipoContenedor(Simbolo.Tipo.DOUBLE);
     :};
 
 E::= menos E {::}
@@ -136,67 +147,67 @@ E::= menos E {::}
     //|mas E {::}
 
     |E:e1 oor:mas E:e2 {:
-        RESULT = new Logica(e1, e2, Operacion.Operador.OR, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Logica(e1, e2, Operacion.Operador.OR, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}    
     |E:e1 aand:mas E:e2 {:
-        RESULT = new Logica(e1, e2, Operacion.Operador.AND, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Logica(e1, e2, Operacion.Operador.AND, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}    
     |E:e1 igualigual:mas E:e2 {:
-        RESULT = new Relacional(e1, e2, Operacion.Operador.IGUAL, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Relacional(e1, e2, Operacion.Operador.IGUAL, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 diferente:mas E:e2 {:
-        RESULT = new Relacional(e1, e2, Operacion.Operador.DIFERENTE, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Relacional(e1, e2, Operacion.Operador.DIFERENTE, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |diferenteunario:mas E:e1 {:
-        RESULT = new Logica(e1, Operacion.Operador.NOT, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Logica(e1, Operacion.Operador.NOT, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}    
     |E:e1 mayorq:mas E:e2 {:
-        RESULT = new Relacional(e1, e2, Operacion.Operador.MAYORQ, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Relacional(e1, e2, Operacion.Operador.MAYORQ, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 menorq:mas E:e2 {:
-        RESULT = new Relacional(e1, e2, Operacion.Operador.MENORQ, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Relacional(e1, e2, Operacion.Operador.MENORQ, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 mayorigualq:mas E:e2 {:
-        RESULT = new Relacional(e1, e2, Operacion.Operador.MAYORIGUALQ, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Relacional(e1, e2, Operacion.Operador.MAYORIGUALQ, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 menorigualq:mas E:e2 {:
-        RESULT = new Relacional(e1, e2, Operacion.Operador.MENORIGUALQ, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Relacional(e1, e2, Operacion.Operador.MENORIGUALQ, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 mas:mas E:e2{:
-        RESULT = new Aritmetica(e1, e2, Operacion.Operador.MAS, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.MAS, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 por:mas E:e2{:
-        RESULT = new Aritmetica(e1, e2, Operacion.Operador.POR, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.POR, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 dividir:mas E:e2{:
-        RESULT = new Aritmetica(e1, e2, Operacion.Operador.DIVIDIR, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.DIVIDIR, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     |E:e1 potencia:mas E:e2{:
-        RESULT = new Aritmetica(e1, e2, Operacion.Operador.POTENCIA, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.POTENCIA, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}        
     |E:e1 menos:mas E:e2{:
-        RESULT = new Aritmetica(e1, e2, Operacion.Operador.MENOS, masleft, masright, Simbolo.Tipo.STRING);
+        RESULT = new Aritmetica(e1, e2, Operacion.Operador.MENOS, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}
     
     |cadena:ee{:
-        RESULT = new Primitivos(ee.substring(1,ee.length()-1), Simbolo.Tipo.STRING, eeleft, eeright);
+        RESULT = new Cadena(ee.substring(1,ee.length()-1), new TipoContenedor(Simbolo.Tipo.STRING), eeleft, eeright);
     :}
     |entero:ee {:
-        RESULT = new Primitivos(ee, Simbolo.Tipo.INT, eeleft, eeright);
+        RESULT = new Entero(ee, new TipoContenedor(Simbolo.Tipo.INT), eeleft, eeright);
     :}
     |decimal:ee {:
-        RESULT = new Primitivos(ee, Simbolo.Tipo.DOUBLE, eeleft, eeright);
+        RESULT = new Decimal(ee, new TipoContenedor(Simbolo.Tipo.DOUBLE), eeleft, eeright);
     :}
     |charER: ee {:
         
         Object ww = ee.substring(1,ee.length()-1);
-        RESULT = new Primitivos(ww, Simbolo.Tipo.CHAR, eeleft, eeright);
+        RESULT = new Caracter(ww, new TipoContenedor(Simbolo.Tipo.CHAR), eeleft, eeright);
     :}
     |truee:ee{:
-        RESULT = new Primitivos(ee, Simbolo.Tipo.BOOLEAN, eeleft, eeright);
+        RESULT = new Booleano(ee,new TipoContenedor(Simbolo.Tipo.BOOLEAN), eeleft, eeright);
     :}
     |falsee:ee{:
-        RESULT = new Primitivos(ee, Simbolo.Tipo.BOOLEAN, eeleft, eeright);
+        RESULT = new Booleano(ee,new TipoContenedor(Simbolo.Tipo.BOOLEAN), eeleft, eeright);
     :}
     |id:id{:
         RESULT = new Identificador(id, Simbolo.Tipo.ID, idleft, idright);

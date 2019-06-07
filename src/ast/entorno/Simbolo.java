@@ -7,6 +7,9 @@ package ast.entorno;
 
 //import ast.expresiones.Tipo;
 
+import ast.expresiones.operacion.TipoContenedor;
+
+
 /**
  *
  * @author sharolin
@@ -38,12 +41,12 @@ public class Simbolo {
         ID
     }
    
-    private Tipo tipo;
+    private TipoContenedor tipo;
 
     public Simbolo(String id, Object valor, Object tipo, int linea, int col) {
         this.id = id;
         this.valor = valor;
-        this.tipo = (Tipo) tipo;
+        this.tipo = (TipoContenedor) tipo;
         this.fila = linea;
         this.columna = col;
     }

@@ -9,6 +9,7 @@ import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.Primitivos;
+import ast.expresiones.operacion.TipoContenedor;
 
 /**
  *
@@ -16,13 +17,13 @@ import ast.expresiones.Primitivos;
  */
 public class Declaracion implements Instruccion {
 
-    private Simbolo.Tipo tipo;
+    private TipoContenedor tipo;
     private String id;
     private Expresion valor;
     private int linea;
     private int columna;
 
-    public Declaracion(Simbolo.Tipo type, String id, Expresion valor, int linea, int columna) {
+    public Declaracion(TipoContenedor type, String id, Expresion valor, int linea, int columna) {
         this.tipo = type;
         this.id = id;
         this.valor = valor;
@@ -30,7 +31,7 @@ public class Declaracion implements Instruccion {
         this.columna = columna;
     }
 
-    public Declaracion(Simbolo.Tipo type, String id, int linea, int columna) {
+    public Declaracion(TipoContenedor type, String id, int linea, int columna) {
         this.tipo = type;
         this.id = id;
         this.linea = linea;
@@ -46,12 +47,18 @@ public class Declaracion implements Instruccion {
 
             if (valor != null) {
 
-                if (tipo.equals(valor.getType(lista))) {
-
-                    lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista), valor.getType(lista), linea, columna));
-
+                Object uu = valor.getType(lista);
+                TipoContenedor tip = (TipoContenedor) valor.getType(lista);
+                if (!"".equals(tipo.getTipoObjeto())) {
+                   //OBJETOS
                 } else {
-                    System.out.println("Error de tipo");
+                    if (tipo.getTipoPrimitivo().equals(tip.getTipoPrimitivo()))  {
+
+                        lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista), valor.getType(lista), linea, columna));
+
+                    } else {
+                        System.out.println("Error de tipo");
+                    }
                 }
 
             } else {
@@ -73,14 +80,14 @@ public class Declaracion implements Instruccion {
     /**
      * @return the tipo
      */
-    public Simbolo.Tipo getTipo() {
+    public TipoContenedor getTipo() {
         return tipo;
     }
 
     /**
      * @param tipo the tipo to set
      */
-    public void setTipo(Simbolo.Tipo tipo) {
+    public void setTipo(TipoContenedor tipo) {
         this.tipo = tipo;
     }
 

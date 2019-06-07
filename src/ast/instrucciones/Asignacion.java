@@ -8,6 +8,7 @@ package ast.instrucciones;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import ast.expresiones.operacion.TipoContenedor;
 
 /**
  *
@@ -32,8 +33,15 @@ public class Asignacion implements Instruccion {
 
         Simbolo variable = lista.get(id, lista);
         if (variable != null) {
-            if (variable.getTipo() == valor.getType(lista)) {
+            TipoContenedor tipo = (TipoContenedor) valor.getType(lista);
+            TipoContenedor tipoVar = (TipoContenedor) variable.getTipo();
+            if ( tipoVar.getTipoPrimitivo() == tipo.getTipoPrimitivo()) {
                 variable.setValor(valor.getValue(lista));
+                
+            }else if( tipoVar.getTipoObjeto().equals(tipo.getTipoObjeto())){
+                //AQUI VAN OBJETOS
+            } else {
+                System.out.println("Error de tipos");
             }
         }
 

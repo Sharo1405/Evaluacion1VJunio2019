@@ -15,11 +15,11 @@ import ast.expresiones.Expresion;
  */
 public class Logica extends Operacion implements Expresion {
 
-    public Logica(Expresion exp1, Expresion exp2, Operador op, int line, int col, Simbolo.Tipo tipo) {
+    public Logica(Expresion exp1, Expresion exp2, Operador op, int line, int col, TipoContenedor tipo) {
         super(exp1, exp2, op, line, col, tipo);
     }
 
-    public Logica(Expresion exp1, Operador op, int line, int col, Simbolo.Tipo tipo) {
+    public Logica(Expresion exp1, Operador op, int line, int col, TipoContenedor tipo) {
         super(exp1, op, line, col, tipo);
     }
 
@@ -29,7 +29,10 @@ public class Logica extends Operacion implements Expresion {
         if (exp1 != null && exp2 != null) {
             Object op1 = exp1.getValue(lista);
             Object op2 = exp2.getValue(lista);
-            if (tipoResultante(exp1, exp2, lista) == Simbolo.Tipo.BOOLEAN) {
+
+            TipoContenedor tresulta = tipoResultante(exp1, exp1, lista);
+
+            if (tresulta.getTipoPrimitivo() == Simbolo.Tipo.BOOLEAN) {
                 switch (op) {
                     case OR:
                         return Boolean.parseBoolean(String.valueOf(exp1.getValue(lista))) || Boolean.parseBoolean(String.valueOf(exp2.getValue(lista)));
@@ -37,15 +40,21 @@ public class Logica extends Operacion implements Expresion {
                     case AND:
                         return Boolean.parseBoolean(String.valueOf(exp1.getValue(lista))) && Boolean.parseBoolean(String.valueOf(exp2.getValue(lista)));
                 }
+            } else {
+                System.out.println("Error de tipo");
             }
+            
         } else {
             Object op1 = exp1.getValue(lista);
-            if (exp1.getType(lista) == Simbolo.Tipo.BOOLEAN) {
+            TipoContenedor tresu = (TipoContenedor) exp1.getType(lista);
+            if (tresu.getTipoPrimitivo() == Simbolo.Tipo.BOOLEAN) {
                 switch (op) {
                     case NOT:
                         return !Boolean.parseBoolean(String.valueOf(exp1.getValue(lista)));
 
                 }
+            } else {
+                System.out.println("Error de tipo");
             }
         }
         return null;

@@ -3,14 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/entorno/Entorno.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/Asignacion.java</file>
             <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/sintactico.cup</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/Declaracion.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/Primitivos.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/entorno/Simbolo.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/lexico.jflex</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/Bloque.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/ImprimirTS.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/Sintactico.java</file>
         </group>
     </open-files>
 </project-private>
