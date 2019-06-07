@@ -7,6 +7,12 @@ package ast.expresiones;
 
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
+import ast.expresiones.operacion.TipoContenedor;
+import ast.expresiones.primitivos.Booleano;
+import ast.expresiones.primitivos.Cadena;
+import ast.expresiones.primitivos.Caracter;
+import ast.expresiones.primitivos.Decimal;
+import ast.expresiones.primitivos.Entero;
 import java.util.Map;
 
 /**
@@ -17,11 +23,11 @@ public class Identificador extends Entorno implements Expresion{
 
     
     private String id;
-    private Simbolo.Tipo tipo;
+    private TipoContenedor tipo;
     private int linea;
     private int columna;
 
-    public Identificador(String id, Simbolo.Tipo tipo, int linea, int columna) {
+    public Identificador(String id, TipoContenedor tipo, int linea, int columna) {
         this.id = id;
         this.tipo = tipo;
         this.linea = linea;
@@ -33,12 +39,28 @@ public class Identificador extends Entorno implements Expresion{
     public Object getValue(Entorno lista) {
         Simbolo encontrado = get(id, lista);
         if(encontrado != null){
-            if(encontrado.getValor() instanceof Primitivos){
-                Primitivos valRetorno = (Primitivos) encontrado.getValor();
-                return valRetorno.valor;
+            
+            TipoContenedor ti = (TipoContenedor) encontrado.getTipo();
+            TipoContenedor aux = new TipoContenedor();
+            
+            if(aux.isString(ti)){                
+                return String.valueOf(encontrado.getValor());
+                
+            }if(aux.isEntero(ti)){
+                return Integer.parseInt(String.valueOf(encontrado.getValor()));
+                
+            }if(aux.isDecimal(ti)){
+                return Double.parseDouble(String.valueOf(encontrado.getValor()));
+                
+            }if(aux.isChar(ti)){
+                return (Character) encontrado.getValor();
+                
+            }if(aux.isBool(ti)){
+                return (Boolean) encontrado.getValor();
+                
             }else{
                 return encontrado.getValor();
-            }
+            }            
         }
         return null;
     }
@@ -48,13 +70,8 @@ public class Identificador extends Entorno implements Expresion{
     @Override
     public Object getType(Entorno lista) {
         Simbolo encontrado = get(id, lista);
-        if(encontrado != null){
-            if(encontrado.getValor() instanceof Primitivos){
-                Primitivos tipoRetorno = (Primitivos) encontrado.getValor();
-                return tipoRetorno.tipo;
-            }else{
-                return encontrado.getTipo();
-            }
+        if(encontrado != null){            
+            return encontrado.getTipo();
         }
         return null;
     }
@@ -111,14 +128,14 @@ public class Identificador extends Entorno implements Expresion{
     /**
      * @return the tipo
      */
-    public Simbolo.Tipo getTipo() {
+    public TipoContenedor getTipo() {
         return tipo;
     }
 
     /**
      * @param tipo the tipo to set
      */
-    public void setTipo(Simbolo.Tipo tipo) {
+    public void setTipo(TipoContenedor tipo) {
         this.tipo = tipo;
     }
 }

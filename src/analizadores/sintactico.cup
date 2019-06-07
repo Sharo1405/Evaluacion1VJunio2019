@@ -212,7 +212,7 @@ E::= menos:mas E:e1 {:
         RESULT = new Booleano(ee,new TipoContenedor(Simbolo.Tipo.BOOLEAN), eeleft, eeright);
     :}
     |id:id{:
-        RESULT = new Identificador(id, Simbolo.Tipo.ID, idleft, idright);
+        RESULT = new Identificador(id, new TipoContenedor(Simbolo.Tipo.ID), idleft, idright);
     :}
     |apar E:e cpar{:
         RESULT = e;
