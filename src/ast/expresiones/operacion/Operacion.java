@@ -43,6 +43,8 @@ public class Operacion {
     public static enum Operador {
         MAS,
         MENOS,
+        NEGATIVO,
+        POSITIVO,
         POR,
         DIVIDIR,
         POTENCIA,
@@ -62,22 +64,25 @@ public class Operacion {
         try {
 
             TipoContenedor izq = (TipoContenedor) izquierda.getType(lista);
-            TipoContenedor der = (TipoContenedor) derecha.getType(lista);
-            TipoContenedor aux = new TipoContenedor();
+            if (derecha != null) {
+                TipoContenedor der = (TipoContenedor) derecha.getType(lista);
+                TipoContenedor aux = new TipoContenedor();
 
-            if (aux.isString(izq) || aux.isString(der)) {
-                return new TipoContenedor(Simbolo.Tipo.STRING);
+                if (aux.isString(izq) || aux.isString(der)) {
+                    return new TipoContenedor(Simbolo.Tipo.STRING);
 
-            } else if (aux.isBool(izq) || aux.isBool(der)) {
-                System.out.println("Error de tipo para aritmeticas");
-                return null;
+                } else if (aux.isBool(izq) || aux.isBool(der)) {
+                    System.out.println("Error de tipo para aritmeticas");
+                    return null;
 
-            } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
-                return new TipoContenedor(Simbolo.Tipo.DOUBLE);
+                } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
+                    return new TipoContenedor(Simbolo.Tipo.DOUBLE);
 
-            } else if (aux.isEntero(izq) || aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)) {
-                return new TipoContenedor(Simbolo.Tipo.INT);
-
+                } else if (aux.isEntero(izq) || aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)) {
+                    return new TipoContenedor(Simbolo.Tipo.INT);
+                }
+            }else{
+                return izq;
             }
 
         } catch (Exception e) {
@@ -115,7 +120,7 @@ public class Operacion {
 
         try {
 
-            TipoContenedor aux = (TipoContenedor)exp.getType(lista);
+            TipoContenedor aux = (TipoContenedor) exp.getType(lista);
 
             if (aux.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
                 char var[] = String.valueOf(exp.getValue(lista)).toCharArray();

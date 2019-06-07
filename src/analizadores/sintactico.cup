@@ -55,7 +55,7 @@ terminal String imprimir, apar, cpar;
 terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
-terminal MENOSUNARIO;
+terminal String MENOSUNARIO, MASUNARIO;
 
 nonterminal I;
 nonterminal Instruccion S;
@@ -71,7 +71,7 @@ precedence left aand;
 precedence right diferenteunario;
 precedence left igualigual, diferente;
 precedence left mayorq, menorq, menorigualq, mayorigualq;
-precedence right MENOSUNARIO;
+precedence right MENOSUNARIO, MASUNARIO;
 precedence left mas, menos;
 precedence left por, dividir;
 precedence left potencia;
@@ -142,10 +142,12 @@ T::= intt{:
         RESULT = new TipoContenedor(Simbolo.Tipo.DOUBLE);
     :};
 
-E::= menos E {::}
-    
-    //|mas E {::}
-
+E::= menos:mas E:e1 {:
+        RESULT = new Aritmetica(e1, Operacion.Operador.NEGATIVO, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
+    :}%prec MENOSUNARIO    
+    |mas:mas E:e1 {:
+        RESULT = new Aritmetica(e1, Operacion.Operador.POSITIVO, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
+    :}%prec MASUNARIO
     |E:e1 oor:mas E:e2 {:
         RESULT = new Logica(e1, e2, Operacion.Operador.OR, masleft, masright, new TipoContenedor(Simbolo.Tipo.STRING));
     :}    

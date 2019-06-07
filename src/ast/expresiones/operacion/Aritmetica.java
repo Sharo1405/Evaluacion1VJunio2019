@@ -25,10 +25,10 @@ public class Aritmetica extends Operacion implements Expresion {
 
     @Override
     public Object getValue(Entorno lista) {
-        Object op1 = exp1.getValue(lista);
-        Object op2 = exp2.getValue(lista);
+        //Object op1 = exp1.getValue(lista);
+        //Object op2 = exp2.getValue(lista);
 
-        if (op1 != null && op2 != null) {
+        if (exp1 != null && exp2 != null) {
             tipo = tipoResultante(exp1, exp2, lista);
 
             TipoContenedor tipo1 = (TipoContenedor) exp1.getType(lista);
@@ -229,6 +229,43 @@ public class Aritmetica extends Operacion implements Expresion {
             }
 
             return null;
+        } else {
+
+            TipoContenedor tipo1 = (TipoContenedor) exp1.getType(lista);
+
+            switch (op) {
+                case POSITIVO:
+                    switch (tipo1.getTipoPrimitivo()) {
+                        case INT:
+                            return Integer.parseInt(String.valueOf(exp1.getValue(lista))) * +1;
+
+                        case DOUBLE:
+                            return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * +1;
+
+                        case CHAR:
+                            char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                            int v = (int) var[0];
+                            return v * +1;
+                    }
+                    break;
+
+                case NEGATIVO:
+                    switch (tipo1.getTipoPrimitivo()) {
+                        case INT:
+                            return Integer.parseInt(String.valueOf(exp1.getValue(lista))) * -1;
+
+                        case DOUBLE:
+                            return Double.parseDouble(String.valueOf(exp1.getValue(lista))) * -1;
+
+                        case CHAR:
+                            char var[] = String.valueOf(exp1.getValue(lista)).toCharArray();
+                            int v = (int) var[0];
+                            return v * -1;
+                    }
+                    break;
+
+            }
+
         }
 
         return null;
