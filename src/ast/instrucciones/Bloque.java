@@ -5,6 +5,7 @@
  */
 package ast.instrucciones;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import java.util.LinkedList;
 
@@ -12,23 +13,27 @@ import java.util.LinkedList;
  *
  * @author sharolin
  */
-public class Bloque implements Instruccion{
+public class Bloque implements Instruccion {
 
-    
     public LinkedList<Instruccion> listaIns;
-    
-    
-    public Bloque(LinkedList<Instruccion> lista){
-        
+
+    public Bloque(LinkedList<Instruccion> lista) {
+
         this.listaIns = lista;
-        
+
     }
-        
+
     @Override
-    public Object ejecutar(Entorno lista) {
-        Entorno tablaActual = new Entorno(lista);
-        for (Instruccion listaIn : listaIns) {
-            listaIn.ejecutar(tablaActual);            
+    public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
+        try {
+
+            Entorno tablaActual = new Entorno(lista);
+            for (Instruccion listaIn : listaIns) {
+                listaIn.ejecutar(tablaActual, impresion);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error en la clase Bloque, ejecutar");
         }
         return null;
     }
@@ -37,5 +42,5 @@ public class Bloque implements Instruccion{
     public int getLine() {
         return 0;
     }
-    
+
 }

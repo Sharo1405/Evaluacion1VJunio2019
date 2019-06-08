@@ -5,6 +5,7 @@
  */
 package ast.expresiones;
 
+import ast.ListaErrorPrinter;
 import ast.NodoAST;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
@@ -15,6 +16,6 @@ import ast.entorno.Simbolo;
  */
 public interface Expresion extends NodoAST{
  
-    Object getValue(Entorno lista); //lista de entorno
-    Object getType(Entorno lista);
+    Object getValue(Entorno lista, ListaErrorPrinter impresion); //lista de entorno
+    Object getType(Entorno lista, ListaErrorPrinter impresion);
 }

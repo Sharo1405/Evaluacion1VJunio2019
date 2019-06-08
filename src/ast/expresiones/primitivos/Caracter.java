@@ -5,6 +5,7 @@
  */
 package ast.expresiones.primitivos;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
@@ -32,14 +33,14 @@ public class Caracter implements Expresion{
     
     
     @Override
-    public Object getValue(Entorno lista) {
+    public Object getValue(Entorno lista, ListaErrorPrinter impre) {
         String va = String.valueOf(valor);
         char v[] = va.toCharArray();
         return v[0];
     }
 
     @Override
-    public Object getType(Entorno lista) {
+    public Object getType(Entorno lista, ListaErrorPrinter impre) {
         return new TipoContenedor(Simbolo.Tipo.CHAR);
     }
 

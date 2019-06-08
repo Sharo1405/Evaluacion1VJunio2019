@@ -5,6 +5,7 @@
  */
 package ast.expresiones.operacion;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
@@ -59,13 +60,13 @@ public class Operacion {
         IGUAL
     }
 
-    public TipoContenedor tipoResultante(Expresion izquierda, Expresion derecha, Entorno lista) {
+    public TipoContenedor tipoResultante(Expresion izquierda, Expresion derecha, Entorno lista, ListaErrorPrinter impresion) {
 
         try {
 
-            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista);
+            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista, impresion);
             if (derecha != null) {
-                TipoContenedor der = (TipoContenedor) derecha.getType(lista);
+                TipoContenedor der = (TipoContenedor) derecha.getType(lista, impresion);
                 TipoContenedor aux = new TipoContenedor();
 
                 if (aux.isString(izq) || aux.isString(der)) {
@@ -73,6 +74,7 @@ public class Operacion {
 
                 } else if (aux.isBool(izq) || aux.isBool(der)) {
                     System.out.println("Error de tipo para aritmeticas");
+                    impresion.errores.add(new ast.Error("Error de tipo para aritmeticas, BOOLEAN", line, col, "Semantico"));
                     return null;
 
                 } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
@@ -86,17 +88,18 @@ public class Operacion {
             }
 
         } catch (Exception e) {
+            System.out.println("Error en clase Operacion tipoResultante");
         }
 
         return null;
     }
 
-    public TipoContenedor tipoResultanteRELACIONAL(Expresion izquierda, Expresion derecha, Entorno lista) {
+    public TipoContenedor tipoResultanteRELACIONAL(Expresion izquierda, Expresion derecha, Entorno lista, ListaErrorPrinter impresion) {
 
         try {
 
-            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista);
-            TipoContenedor der = (TipoContenedor) derecha.getType(lista);
+            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista, impresion);
+            TipoContenedor der = (TipoContenedor) derecha.getType(lista, impresion);
             TipoContenedor aux = new TipoContenedor();
 
             if (aux.isString(izq) && aux.isString(der)) {
@@ -108,31 +111,32 @@ public class Operacion {
             } else if (aux.isEntero(izq) && aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)
                     || aux.isDecimal(izq) && aux.isDecimal(der)) {
                 return new TipoContenedor(Simbolo.Tipo.DOUBLE);
-
             }
 
         } catch (Exception e) {
+            System.out.println("Error en clase Operacion tipoResultanteRELACIONAL");
         }
         return null;
     }
 
-    public Double casteoRelacional(Expresion exp, Entorno lista) {
+    public Double casteoRelacional(Expresion exp, Entorno lista, ListaErrorPrinter impresion) {
 
         try {
 
-            TipoContenedor aux = (TipoContenedor) exp.getType(lista);
+            TipoContenedor aux = (TipoContenedor) exp.getType(lista, impresion);
 
             if (aux.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
-                char var[] = String.valueOf(exp.getValue(lista)).toCharArray();
+                char var[] = String.valueOf(exp.getValue(lista, impresion)).toCharArray();
                 int v = (int) var[0];
                 return (int) var[0] * 1.0;
             } else if (aux.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE) {
-                return Double.parseDouble(String.valueOf(exp.getValue(lista)));
+                return Double.parseDouble(String.valueOf(exp.getValue(lista, impresion)));
             } else if (aux.getTipoPrimitivo() == Simbolo.Tipo.INT) {
-                return Double.parseDouble(String.valueOf(exp.getValue(lista)));
+                return Double.parseDouble(String.valueOf(exp.getValue(lista, impresion)));
             }
 
         } catch (Exception e) {
+            System.out.println("Error en clase Operacion casteoRelacional");
         }
         return null;
     }

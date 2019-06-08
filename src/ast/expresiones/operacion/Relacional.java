@@ -5,10 +5,10 @@
  */
 package ast.expresiones.operacion;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ExplicitGroup;
 import java.util.Objects;
 
 /**
@@ -22,61 +22,75 @@ public class Relacional extends Operacion implements Expresion {
     }
 
     @Override
-    public Object getValue(Entorno lista) {
-        Object op1 = exp1.getValue(lista);
-        Object op2 = exp2.getValue(lista);
+    public Object getValue(Entorno lista, ListaErrorPrinter impre) {
 
-        if (op1 != null && op2 != null) {
+        try {
 
-            switch (op) {
-                case MAYORIGUALQ:
-                    return casteoRelacional(exp1, lista) >= casteoRelacional(exp2, lista);
-                case MENORIGUALQ:
-                    return casteoRelacional(exp1, lista) <= casteoRelacional(exp2, lista);
+            Object op1 = exp1.getValue(lista, impre);
+            Object op2 = exp2.getValue(lista, impre);
 
-                case MAYORQ:
-                    return casteoRelacional(exp1, lista) > casteoRelacional(exp2, lista);
+            if (op1 != null && op2 != null) {
 
-                case MENORQ:
-                    return casteoRelacional(exp1, lista) < casteoRelacional(exp2, lista);
+                switch (op) {
+                    case MAYORIGUALQ:
+                        return casteoRelacional(exp1, lista, impre) >= casteoRelacional(exp2, lista, impre);
+                    case MENORIGUALQ:
+                        return casteoRelacional(exp1, lista, impre) <= casteoRelacional(exp2, lista, impre);
 
-                case IGUAL:
+                    case MAYORQ:
+                        return casteoRelacional(exp1, lista, impre) > casteoRelacional(exp2, lista, impre);
 
-                    TipoContenedor tresulta = tipoResultante(exp1, exp1, lista);
+                    case MENORQ:
+                        return casteoRelacional(exp1, lista, impre) < casteoRelacional(exp2, lista, impre);
 
-                    switch (tresulta.getTipoPrimitivo()) {
-                        case STRING:
-                            return String.valueOf(exp1.getValue(lista)).equals(String.valueOf(exp2.getValue(lista)));
+                    case IGUAL:
 
-                        case BOOLEAN:
-                            return Boolean.parseBoolean(String.valueOf(exp1.getValue(lista))) == Boolean.parseBoolean(String.valueOf(exp2.getValue(lista)));
+                        TipoContenedor tresulta = tipoResultanteRELACIONAL(exp1, exp1, lista, impre);
 
-                        case DOUBLE:
-                            return casteoRelacional(exp1, lista) == casteoRelacional(exp2, lista);
-                    }
+                        switch (tresulta.getTipoPrimitivo()) {
+                            case STRING:
+                                return String.valueOf(exp1.getValue(lista, impre)).equals(String.valueOf(exp2.getValue(lista, impre)));
 
-                case DIFERENTE:
+                            case BOOLEAN:
+                                return Boolean.parseBoolean(String.valueOf(exp1.getValue(lista, impre))) == Boolean.parseBoolean(String.valueOf(exp2.getValue(lista, impre)));
 
-                    TipoContenedor tresulta2 = tipoResultante(exp1, exp1, lista);
+                            case DOUBLE:
+                                return Objects.equals(casteoRelacional(exp1, lista, impre), casteoRelacional(exp2, lista, impre));
 
-                    switch (tresulta2.getTipoPrimitivo()) {
-                        case STRING:
-                            return !String.valueOf(exp1.getValue(lista)).equals(String.valueOf(exp2.getValue(lista)));
+                            default:
+                                impre.errores.add(new ast.Error("Error no se puede operar los tipos en Operacion Relacional, para IGUAL", line, col, "Semantico"));
+                        }
 
-                        case BOOLEAN:
-                            return Boolean.parseBoolean(String.valueOf(exp1.getValue(lista))) != Boolean.parseBoolean(String.valueOf(exp2.getValue(lista)));
+                    case DIFERENTE:
 
-                        case DOUBLE:
-                            return casteoRelacional(exp2, lista) != casteoRelacional(exp1, lista);
-                    }
+                        TipoContenedor tresulta2 = tipoResultanteRELACIONAL(exp1, exp1, lista, impre);
+
+                        switch (tresulta2.getTipoPrimitivo()) {
+                            case STRING:
+                                return !String.valueOf(exp1.getValue(lista, impre)).equals(String.valueOf(exp2.getValue(lista, impre)));
+
+                            case BOOLEAN:
+                                return Boolean.parseBoolean(String.valueOf(exp1.getValue(lista, impre))) != Boolean.parseBoolean(String.valueOf(exp2.getValue(lista, impre)));
+
+                            case DOUBLE:
+                                return casteoRelacional(exp2, lista, impre) != casteoRelacional(exp1, lista, impre);
+
+                            default:
+                                impre.errores.add(new ast.Error("Error no se puede operar los tipos en Operacion Relacional para DIFERETE", line, col, "Semantico"));
+                        }
+                }
             }
+            System.out.println("Error de tipos para comparacion");
+            impre.errores.add(new ast.Error("Error no se puede operar un valor NULO, Operacion Relacional", line, col, "Semantico"));
+
+        } catch (Exception e) {
+            System.out.println("Error en la clase Relacional getValor");
         }
-        System.out.println("Error de tipos para comparacion");
         return null;
     }
 
     @Override
-    public Object getType(Entorno lista) {
+    public Object getType(Entorno lista, ListaErrorPrinter impre) {
         return new TipoContenedor(Simbolo.Tipo.BOOLEAN);
     }
 

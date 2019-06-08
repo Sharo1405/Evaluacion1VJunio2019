@@ -19,6 +19,8 @@ import java_cup.runtime.*;
 
 
 //aritmeticas
+masmas      = "++"
+menosmenos  = "--"
 mas         = "+"
 menos       = "-"
 por         = "*"
@@ -40,11 +42,14 @@ diferente       = "!="
 oor             = "||"
 aand            = "&&"
 
+interrogacion   = "?"
+
 
 //simbolos normales
 apar        = "("
 cpar        = ")"
 puntoycoma  = ";"
+dospuntos   = ":"
 allave      = "{"
 cllave      = "}"
 igual       = "="
@@ -55,11 +60,15 @@ doublee     = "double"
 booleann    = "boolean"
 truee       = "true"
 falsee      = "false"
+whilee      = "while"
+print       = "print"
+
+
 
 imprimir    = "imprimir"
 
 
-id          = [a-zA-ZñÑ]+[0-9]*
+id          = [a-zA-ZñÑ"_"]+([a-zA-ZñÑ"_"]*|[0-9]*)*
 decimal     = ([0-9]+"."[0-9]+|"-"[0-9]+"."[0-9]+)
 entero      = ([0-9]+|"-"[0-9]+)
 charER      = ("'" ~"'")
@@ -79,6 +88,14 @@ enter   = [\ \n]
 
 
 //ARITMETICAS
+<YYINITIAL> {masmas}      {  System.out.println("Reconocido: <<"+yytext()+">>, masmas");
+                                return new Symbol(sym.masmas, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {menosmenos}      {  System.out.println("Reconocido: <<"+yytext()+">>, menosmenos");
+                                return new Symbol(sym.menosmenos, yyline, yycolumn, yytext()); }
+
+
+
 <YYINITIAL> {mas}      {  System.out.println("Reconocido: <<"+yytext()+">>, mas");
                                 return new Symbol(sym.mas, yyline, yycolumn, yytext()); }
 
@@ -125,6 +142,9 @@ enter   = [\ \n]
 <YYINITIAL> {aand}      {  System.out.println("Reconocido: <<"+yytext()+">>, aand");
                                 return new Symbol(sym.aand, yyline, yycolumn, yytext()); }
 
+<YYINITIAL> {interrogacion}      {  System.out.println("Reconocido: <<"+yytext()+">>, interrogacion");
+                                return new Symbol(sym.interrogacion, yyline, yycolumn, yytext()); }
+
 
 
 <YYINITIAL> {apar}      {  System.out.println("Reconocido: <<"+yytext()+">>, apar");
@@ -135,6 +155,9 @@ enter   = [\ \n]
 
 <YYINITIAL> {puntoycoma}      {  System.out.println("Reconocido: <<"+yytext()+">>, puntoycoma");
                                 return new Symbol(sym.puntoycoma, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {dospuntos}      {  System.out.println("Reconocido: <<"+yytext()+">>, dospuntos");
+                                return new Symbol(sym.dospuntos, yyline, yycolumn, yytext()); } 
 
 <YYINITIAL> {allave}      {  System.out.println("Reconocido: <<"+yytext()+">>, allave");
                                 return new Symbol(sym.allave, yyline, yycolumn, yytext()); } 
@@ -165,6 +188,13 @@ enter   = [\ \n]
 
 <YYINITIAL> {falsee}       {  System.out.println("Reconocido: <<"+yytext()+">>, falsee");
                                 return new Symbol(sym.falsee, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {whilee}       {  System.out.println("Reconocido: <<"+yytext()+">>, whilee");
+                                return new Symbol(sym.whilee, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {print}       {  System.out.println("Reconocido: <<"+yytext()+">>, print");
+                                return new Symbol(sym.print, yyline, yycolumn, yytext()); } 
+
 
 
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");

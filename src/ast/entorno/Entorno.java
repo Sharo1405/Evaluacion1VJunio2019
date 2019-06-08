@@ -29,39 +29,53 @@ public class Entorno {
     }
 
     public Simbolo getEnActual(String id) {
-        Simbolo encontrado = tabla.get(id);
-        if (encontrado != null) {
-            return encontrado;
+        try {
+
+            Simbolo encontrado = tabla.get(id);
+            if (encontrado != null) {
+                return encontrado;
+            }
+        } catch (Exception e) {
+            System.out.println("Error en la clase Entorno GetEnActual");
         }
         return null;
     }
 
     public Simbolo get(String id, Entorno actual) {
+        try {
 
-        for (Entorno e = actual; e != null; e = e.getPadreANTERIOR()) {
+            for (Entorno e = actual; e != null; e = e.getPadreANTERIOR()) {
 
-            Simbolo encontrado = e.tabla.get(id);
-            if (encontrado != null) {
-                return encontrado;
+                Simbolo encontrado = e.tabla.get(id);
+                if (encontrado != null) {
+                    return encontrado;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Error en la clase Entorno get");
         }
         return null;
     }
 
     public void setSimbolo(String id, Simbolo nuevoSimbolo) {
 
-        if (!this.tabla.containsKey(id)) {
-            this.tabla.put(id, nuevoSimbolo);
+        try {
+            if (!this.tabla.containsKey(id)) {
+                this.tabla.put(id, nuevoSimbolo);
+            }
+        } catch (Exception e) {
         }
     }
 
     public void setValorSimbolo(String id, Object valorNuevo) {
-
-        for (Entorno e = this; e != null; e = e.getPadreANTERIOR()) {
-            Simbolo encontrado = e.tabla.get(id);
-            if (encontrado != null) {
-                encontrado.setValor(valorNuevo);
+        try {
+            for (Entorno e = this; e != null; e = e.getPadreANTERIOR()) {
+                Simbolo encontrado = e.tabla.get(id);
+                if (encontrado != null) {
+                    encontrado.setValor(valorNuevo);
+                }
             }
+        } catch (Exception e) {
         }
     }
 

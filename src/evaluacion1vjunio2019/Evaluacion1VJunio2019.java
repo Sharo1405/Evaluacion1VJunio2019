@@ -18,6 +18,18 @@ public class Evaluacion1VJunio2019 {
         generarCompilador();
         Vista vista = new Vista();
         vista.setVisible(true);
+        
+        int a = 1;
+        System.err.println(a++);
+        a = 1;
+        System.out.println(++a);
+        
+        int aa = 5==5 ? 10 : 0 ;
+        System.out.println(aa);
+        
+        char hh = 'a';
+        hh++;
+        System.out.println(hh);
     }
     
     

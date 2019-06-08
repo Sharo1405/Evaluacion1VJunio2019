@@ -5,6 +5,7 @@
  */
 package ast.expresiones;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.operacion.TipoContenedor;
@@ -19,9 +20,8 @@ import java.util.Map;
  *
  * @author sharolin
  */
-public class Identificador extends Entorno implements Expresion{
+public class Identificador extends Entorno implements Expresion {
 
-    
     private String id;
     private TipoContenedor tipo;
     private int linea;
@@ -33,55 +33,64 @@ public class Identificador extends Entorno implements Expresion{
         this.linea = linea;
         this.columna = columna;
     }
-    
-    
+
     @Override
-    public Object getValue(Entorno lista) {
-        Simbolo encontrado = get(id, lista);
-        if(encontrado != null){
-            
-            TipoContenedor ti = (TipoContenedor) encontrado.getTipo();
-            TipoContenedor aux = new TipoContenedor();
-            
-            if(aux.isString(ti)){                
-                return String.valueOf(encontrado.getValor());
-                
-            }if(aux.isEntero(ti)){
-                return Integer.parseInt(String.valueOf(encontrado.getValor()));
-                
-            }if(aux.isDecimal(ti)){
-                return Double.parseDouble(String.valueOf(encontrado.getValor()));
-                
-            }if(aux.isChar(ti)){
-                return (Character) encontrado.getValor();
-                
-            }if(aux.isBool(ti)){
-                return (Boolean) encontrado.getValor();
-                
-            }else{
-                return encontrado.getValor();
-            }            
+    public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
+        try {
+            Simbolo encontrado = get(id, lista);
+            if (encontrado != null) {
+
+                TipoContenedor ti = (TipoContenedor) encontrado.getTipo();
+                TipoContenedor aux = new TipoContenedor();
+
+                if (aux.isString(ti)) {
+                    return String.valueOf(encontrado.getValor());
+
+                } else if (aux.isEntero(ti)) {
+                    return Integer.parseInt(String.valueOf(encontrado.getValor()));
+
+                } else if (aux.isDecimal(ti)) {
+                    return Double.parseDouble(String.valueOf(encontrado.getValor()));
+
+                } else if (aux.isChar(ti)) {
+                    //si viene negativo el char osea un numero negativo truwna
+                    if (Integer.parseInt(String.valueOf(encontrado.getValor())) > 0) {
+                        return encontrado.getValor();
+                        
+                    } else {
+                        return (Character) encontrado.getValor();
+                    }
+
+                } else if (aux.isBool(ti)) {
+                    return (Boolean) encontrado.getValor();
+
+                } else {
+                    return encontrado.getValor();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error en la clase Identificador getValue");
         }
         return null;
     }
 
-    
-    
     @Override
-    public Object getType(Entorno lista) {
-        Simbolo encontrado = get(id, lista);
-        if(encontrado != null){            
-            return encontrado.getTipo();
+    public Object getType(Entorno lista, ListaErrorPrinter impresion) {
+        try {
+            Simbolo encontrado = get(id, lista);
+            if (encontrado != null) {
+                return encontrado.getTipo();
+            }
+        } catch (Exception e) {
+            System.out.println("Error en la clase Identificador getType");
         }
         return null;
     }
 
-    
-    
     @Override
     public int getLine() {
         return linea;
-    }   
+    }
 
     /**
      * @return the id

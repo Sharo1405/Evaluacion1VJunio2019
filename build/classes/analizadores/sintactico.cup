@@ -6,9 +6,11 @@ import ast.NodoAST;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.Identificador;
-import ast.expresiones.Primitivos;
+import ast.expresiones.OPPostFijo;
+import ast.expresiones.OPPreFijo;
 import ast.expresiones.operacion.Aritmetica;
 import ast.expresiones.operacion.Logica;
+import ast.expresiones.operacion.OpTernario;
 import ast.expresiones.operacion.TipoContenedor;
 import ast.expresiones.operacion.Relacional;
 import ast.expresiones.operacion.Operacion;
@@ -22,6 +24,7 @@ import ast.instrucciones.Declaracion;
 import ast.instrucciones.Asignacion;
 import ast.instrucciones.Instruccion;
 import ast.instrucciones.ImprimirTS;
+import ast.instrucciones.Printer;
 import java.util.LinkedList;
 import java_cup.runtime.*;
 
@@ -55,7 +58,10 @@ terminal String imprimir, apar, cpar;
 terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
+terminal String interrogacion, dospuntos, whilee, masmas, menosmenos; //ternario
 terminal String MENOSUNARIO, MASUNARIO;
+
+terminal String print;
 
 nonterminal I;
 nonterminal Instruccion S;
@@ -66,15 +72,17 @@ nonterminal TipoContenedor T;
 nonterminal Instruccion J;
 
 
+precedence left interrogacion;
 precedence left oor;
 precedence left aand;
 precedence right diferenteunario;
 precedence left igualigual, diferente;
 precedence left mayorq, menorq, menorigualq, mayorigualq;
-precedence right MENOSUNARIO, MASUNARIO;
 precedence left mas, menos;
 precedence left por, dividir;
 precedence left potencia;
+precedence right masmas, menosmenos;
+precedence right MENOSUNARIO, MASUNARIO;
 
 
 
@@ -86,10 +94,7 @@ I::= S:l{:
 
 S::= allave B:l cllave {:
         RESULT = new Bloque(l);
-    :}
-    /*|imprimir apar cpar puntoycoma {:
-        RESULT = new ImprimirTS("hola");
-    :}*/;
+    :};
     
 B::= B:l J:i {:
         RESULT = l;
@@ -116,8 +121,23 @@ D::= T:t id:id igual E:e puntoycoma {:
     |id:id igual E:e puntoycoma{:
         RESULT = new Asignacion(id, e, idleft, idright);
     :}
+    |print apar E:e1 cpar puntoycoma{:
+        RESULT = new Printer(e1, e1left, e1right);
+    :}
     |imprimir apar cpar puntoycoma {:
         RESULT = new ImprimirTS("hola");
+    :}
+    |id:id masmas puntoycoma{:
+        RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
+    :}
+    |id:id menosmenos puntoycoma{:
+        RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
+    :}
+    |masmas id:id puntoycoma{:
+        RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
+    :}
+    |menosmenos id:id puntoycoma{:
+        RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
     :};
 
 
@@ -214,6 +234,12 @@ E::= menos:mas E:e1 {:
     |id:id{:
         RESULT = new Identificador(id, new TipoContenedor(Simbolo.Tipo.ID), idleft, idright);
     :}
+    
+    |E:cond interrogacion E:vdd dospuntos E:fake {:
+        RESULT = new OpTernario(cond, vdd, fake,condleft, condright);
+    :}
+
+
     |apar E:e cpar{:
         RESULT = e;
     :};

@@ -8,6 +8,7 @@ package evaluacion1vjunio2019;
 import analizadores.Lexico;
 import analizadores.Sintactico;
 import ast.ArbolAST;
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.instrucciones.ImprimirTS;
@@ -142,7 +143,8 @@ public class Vista extends javax.swing.JFrame {
             parser.parse();   
             
             Entorno en = new Entorno();
-            parser.arbol.ejecutar(en);
+            ListaErrorPrinter listas = new ListaErrorPrinter();
+            parser.arbol.ejecutar(en, listas);
             
             String hola = "jod";
             Object al = hola;

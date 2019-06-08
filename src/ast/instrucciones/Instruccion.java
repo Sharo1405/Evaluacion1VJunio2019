@@ -5,8 +5,10 @@
  */
 package ast.instrucciones;
 
+import ast.ListaErrorPrinter;
 import ast.NodoAST;
 import ast.entorno.Entorno;
+import java.util.LinkedList;
 
 /**
  *
@@ -14,5 +16,5 @@ import ast.entorno.Entorno;
  */
 public interface Instruccion extends NodoAST{
     
-    Object ejecutar(Entorno lista);
+    Object ejecutar(Entorno lista, ListaErrorPrinter impresion);
 }

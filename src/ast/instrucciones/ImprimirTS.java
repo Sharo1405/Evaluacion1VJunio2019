@@ -5,9 +5,10 @@
  */
 package ast.instrucciones;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
-import ast.expresiones.Primitivos;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -15,31 +16,33 @@ import java.util.Map;
  * @author sharolin
  */
 public class ImprimirTS implements Instruccion {
-    
 
     public ImprimirTS(String h) {
         System.out.println("soy el imprimir tabla\n\n");
     }
-    
 
     @Override
-    public Object ejecutar(Entorno lista) {
+    public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
+        try {
+            int contador = 0;
+            for (Entorno e = lista; e != null; e = e.getPadreANTERIOR()) {
+                System.out.println("-Entorno----------------------------------\n");
 
-        int contador = 0;
-        for (Entorno e = lista; e != null; e = e.getPadreANTERIOR()) {
-            System.out.println("-Entorno----------------------------------\n");
+                for (Map.Entry<String, Simbolo> en : e.getTabla().entrySet()) {
+                    //Object key = en.getKey();
+                    Simbolo val = en.getValue();
+                    if (val.getValor() != null) {
+                        System.out.println("--ID: " + val.getId() + " --VALOR: " + String.valueOf(val.getValor()));
+                    } else {
+                        System.out.println("--ID: " + val.getId() + " --VALOR: null");
+                    }
 
-            for (Map.Entry<String, Simbolo> en : e.getTabla().entrySet()) {
-                //Object key = en.getKey();
-                Simbolo val = en.getValue();
-                if (val.getValor() != null) {
-                    System.out.println("--ID: " + val.getId() + " --VALOR: " + String.valueOf(val.getValor()));
-                } else {
-                    System.out.println("--ID: " + val.getId() + " --VALOR: null");
                 }
+                contador++;
+            }
 
-            }            
-            contador++;
+        } catch (Exception e) {
+            System.out.println("Error en clase ImprimirTS, ejecutar");
         }
 
         return null;

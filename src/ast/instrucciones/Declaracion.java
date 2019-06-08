@@ -5,11 +5,12 @@
  */
 package ast.instrucciones;
 
+import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
-import ast.expresiones.Primitivos;
 import ast.expresiones.operacion.TipoContenedor;
+import java.util.LinkedList;
 
 /**
  *
@@ -40,34 +41,86 @@ public class Declaracion implements Instruccion {
     }
 
     @Override
-    public Object ejecutar(Entorno lista) {
+    public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
+        try {
 
-        Simbolo buscado = lista.getEnActual(id);
-        if (buscado == null) {
+            Simbolo buscado = lista.getEnActual(id);
+            if (buscado == null) {
 
-            if (valor != null) {
+                if (valor != null) {
 
-                Object uu = valor.getType(lista);
-                TipoContenedor tip = (TipoContenedor) valor.getType(lista);
-                if (!"".equals(tipo.getTipoObjeto())) {
-                   //OBJETOS
-                } else {
-                    if (tipo.getTipoPrimitivo().equals(tip.getTipoPrimitivo()))  {
-
-                        lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista), valor.getType(lista), linea, columna));
-
+                    //Object uu = valor.getType(lista, impresion);
+                    TipoContenedor tip = (TipoContenedor) valor.getType(lista, impresion);
+                    if (!"".equals(tipo.getTipoObjeto())) {
+                        //OBJETOS
                     } else {
-                        System.out.println("Error de tipo");
+
+                        if (tipo.getTipoPrimitivo() == Simbolo.Tipo.INT && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+
+                            if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) > 0) {
+                                char nuevo = (Character) valor.getValue(lista, impresion);
+                                int x = (int) nuevo * 1;
+                                lista.setSimbolo(id, new Simbolo(id, x, tipo, linea, columna));
+                            } else {
+                                lista.setSimbolo(id, new Simbolo(id, Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))), tipo, linea, columna));
+                            }
+
+                            System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
+
+                        } else if (tipo.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE && tip.getTipoPrimitivo() == Simbolo.Tipo.INT) {
+                            Double nueva = Double.parseDouble(String.valueOf(valor.getValue(lista, impresion)));
+                            lista.setSimbolo(id, new Simbolo(id, nueva, tipo, linea, columna));
+                            System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
+
+                        } else if (tipo.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+                            char var[] = String.valueOf(valor.getValue(lista, impresion)).toCharArray();
+                            int v = (int) var[0];
+                            Double xx = (double) var[0] * 1.0;
+                            lista.setSimbolo(id, new Simbolo(id, xx, tipo, linea, columna));
+                            System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
+
+                        } else if (tipo.getTipoPrimitivo() == tip.getTipoPrimitivo()) {
+                            if (tipo.getTipoPrimitivo() == Simbolo.Tipo.CHAR && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+                                /*TipoContenedor aux = new TipoContenedor();
+                                if (aux.isEntero(tip)) {
+                                    
+
+                                } else if (aux.isDecimal(tip)) {
+                                    
+
+                                } else if (aux.isChar(tip)) {
+                                    
+                                }*/
+
+                                if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) < 0) {
+                                    impresion.errores.add(new ast.Error("Error no puede haber un char negativo", linea, columna, "Semantico"));
+                                } else {
+                                    lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista, impresion), valor.getType(lista, impresion), linea, columna));
+                                    System.out.println("Se declaro la variable " + id + String.valueOf(valor.getValue(lista, impresion)));
+                                }
+                            } else {
+                                lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista, impresion), valor.getType(lista, impresion), linea, columna));
+                                System.out.println("Se declaro la variable " + id + String.valueOf(valor.getValue(lista, impresion)));
+                            }
+
+                        } else if (tipo.getTipoObjeto().equals(tip.getTipoObjeto())) {
+                            //AQUI VAN OBJETOS
+                        } else {
+                            System.out.println("Error de tipos");
+                            impresion.errores.add(new ast.Error("Error de tipos para Declaracion", linea, columna, "Semantico"));
+                        }
                     }
+
+                } else {
+                    lista.setSimbolo(id, new Simbolo(id, valor, tipo, linea, columna));
                 }
 
             } else {
-                lista.setSimbolo(id, new Simbolo(id, valor, tipo, linea, columna));
+                System.out.println("Esa variable ya existe");
+                impresion.errores.add(new ast.Error("Esa variable ya existe: " + id, linea, columna, "Semantico"));
             }
-            System.out.println("Se declaro la variable " + id);
-
-        } else {
-            System.out.println("Esa variable ya existe");
+        } catch (Exception e) {
+            System.out.println("Error en la clase Declaracion ejecutar");
         }
         return null;
     }
