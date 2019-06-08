@@ -25,6 +25,8 @@ import ast.instrucciones.Asignacion;
 import ast.instrucciones.Instruccion;
 import ast.instrucciones.ImprimirTS;
 import ast.instrucciones.Printer;
+import ast.instrucciones.ciclos.WhileCiclo;
+import ast.instrucciones.ciclos.RetCont.*;
 import java.util.LinkedList;
 import java_cup.runtime.*;
 
@@ -58,14 +60,14 @@ terminal String imprimir, apar, cpar;
 terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
-terminal String interrogacion, dospuntos, whilee, masmas, menosmenos; //ternario
+terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos; //ternario
 terminal String MENOSUNARIO, MASUNARIO;
 
 terminal String print;
 
 nonterminal I;
 nonterminal Instruccion S;
-nonterminal LinkedList<Instruccion> B;
+nonterminal LinkedList<NodoAST> B;
 nonterminal Expresion E;
 nonterminal Instruccion D;
 nonterminal TipoContenedor T;
@@ -92,6 +94,7 @@ I::= S:l{:
         this.parser.arbol = l;
     :};
 
+//"S" es el bloque
 S::= allave B:l cllave {:
         RESULT = new Bloque(l);
     :};
@@ -138,6 +141,15 @@ D::= T:t id:id igual E:e puntoycoma {:
     :}
     |menosmenos id:id puntoycoma{:
         RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
+    :}
+    |whilee apar E:e1 cpar S:s1 {:
+        RESULT = new WhileCiclo(e1, s1, e1left, e1right);
+    :}
+    |breakk:e puntoycoma{:
+        RESULT = new Breakk(eleft, eright);
+    :}
+    |continuee:e puntoycoma {:
+        RESULT = new Continuee(eleft, eright);
     :};
 
 

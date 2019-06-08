@@ -6,6 +6,7 @@
 package ast.instrucciones;
 
 import ast.ListaErrorPrinter;
+import ast.NodoAST;
 import ast.entorno.Entorno;
 import java.util.LinkedList;
 
@@ -15,9 +16,9 @@ import java.util.LinkedList;
  */
 public class Bloque implements Instruccion {
 
-    public LinkedList<Instruccion> listaIns;
+    public LinkedList<NodoAST> listaIns;
 
-    public Bloque(LinkedList<Instruccion> lista) {
+    public Bloque(LinkedList<NodoAST> lista) {
 
         this.listaIns = lista;
 
@@ -28,8 +29,11 @@ public class Bloque implements Instruccion {
         try {
 
             Entorno tablaActual = new Entorno(lista);
-            for (Instruccion listaIn : listaIns) {
-                listaIn.ejecutar(tablaActual, impresion);
+            for (NodoAST listaIn : listaIns) {
+                if (listaIn instanceof Instruccion) {
+                    Instruccion lisIn2 = (Instruccion) listaIn;
+                    lisIn2.ejecutar(tablaActual, impresion);
+                }
             }
 
         } catch (Exception e) {
