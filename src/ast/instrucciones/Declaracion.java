@@ -51,66 +51,71 @@ public class Declaracion implements Instruccion {
 
                     //Object uu = valor.getType(lista, impresion);
                     TipoContenedor tip = (TipoContenedor) valor.getType(lista, impresion);
-                    if (!"".equals(tipo.getTipoObjeto())) {
-                        //OBJETOS
-                    } else {
+                    if (tip != null) {
+                        if (!"".equals(tipo.getTipoObjeto())) {
+                            //OBJETOS
+                        } else {
 
-                        if (tipo.getTipoPrimitivo() == Simbolo.Tipo.INT && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+                            if (tipo.getTipoPrimitivo() == Simbolo.Tipo.INT && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
 
-                            if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) > 0) {
-                                char nuevo = (Character) valor.getValue(lista, impresion);
-                                int x = (int) nuevo * 1;
-                                lista.setSimbolo(id, new Simbolo(id, x, tipo, linea, columna));
-                            } else {
-                                lista.setSimbolo(id, new Simbolo(id, Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))), tipo, linea, columna));
-                            }
+                                if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) > 0) {
+                                    char nuevo = (Character) valor.getValue(lista, impresion);
+                                    int x = (int) nuevo * 1;
+                                    lista.setSimbolo(id, new Simbolo(id, x, tipo, linea, columna));
+                                } else {
+                                    lista.setSimbolo(id, new Simbolo(id, Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))), tipo, linea, columna));
+                                }
 
-                            System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
+                                System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
 
-                        } else if (tipo.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE && tip.getTipoPrimitivo() == Simbolo.Tipo.INT) {
-                            Double nueva = Double.parseDouble(String.valueOf(valor.getValue(lista, impresion)));
-                            lista.setSimbolo(id, new Simbolo(id, nueva, tipo, linea, columna));
-                            System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
+                            } else if (tipo.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE && tip.getTipoPrimitivo() == Simbolo.Tipo.INT) {
+                                Double nueva = Double.parseDouble(String.valueOf(valor.getValue(lista, impresion)));
+                                lista.setSimbolo(id, new Simbolo(id, nueva, tipo, linea, columna));
+                                System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
 
-                        } else if (tipo.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
-                            char var[] = String.valueOf(valor.getValue(lista, impresion)).toCharArray();
-                            int v = (int) var[0];
-                            Double xx = (double) var[0] * 1.0;
-                            lista.setSimbolo(id, new Simbolo(id, xx, tipo, linea, columna));
-                            System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
+                            } else if (tipo.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+                                char var[] = String.valueOf(valor.getValue(lista, impresion)).toCharArray();
+                                int v = (int) var[0];
+                                Double xx = (double) var[0] * 1.0;
+                                lista.setSimbolo(id, new Simbolo(id, xx, tipo, linea, columna));
+                                System.out.println("Se declaro la variable " + id + " " + String.valueOf(valor.getValue(lista, impresion)));
 
-                        } else if (tipo.getTipoPrimitivo() == tip.getTipoPrimitivo()) {
-                            if (tipo.getTipoPrimitivo() == Simbolo.Tipo.CHAR && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
-                                /*TipoContenedor aux = new TipoContenedor();
-                                if (aux.isEntero(tip)) {
-                                    
+                            } else if (tipo.getTipoPrimitivo() == tip.getTipoPrimitivo()) {
+                                if (tipo.getTipoPrimitivo() == Simbolo.Tipo.CHAR && tip.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
 
-                                } else if (aux.isDecimal(tip)) {
-                                    
+                                    Object paraValor = valor.getValue(lista, impresion);
+                                    try {
+                                        int valorsito = (int) paraValor * 1;
+                                        if (valorsito < 0) {
+                                            impresion.errores.add(new ast.Error("Error de tipos, un char negativo no existe", linea, columna, "Semantico"));
+                                        } else {
+                                            TipoContenedor aux = new TipoContenedor();
+                                            if (aux.isChar(tip)) {
+                                                lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista, impresion), valor.getType(lista, impresion), linea, columna));
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        String va = String.valueOf(paraValor);
+                                        char v[] = va.toCharArray();
+                                        char vava = v[0];
 
-                                } else if (aux.isChar(tip)) {
-                                    
-                                }*/
-
-                                if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) < 0) {
-                                    impresion.errores.add(new ast.Error("Error no puede haber un char negativo", linea, columna, "Semantico"));
+                                        lista.setSimbolo(id, new Simbolo(id, vava, valor.getType(lista, impresion), linea, columna));
+                                    }
                                 } else {
                                     lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista, impresion), valor.getType(lista, impresion), linea, columna));
                                     System.out.println("Se declaro la variable " + id + String.valueOf(valor.getValue(lista, impresion)));
                                 }
+
+                            } else if (tipo.getTipoObjeto().equals(tip.getTipoObjeto())) {
+                                //AQUI VAN OBJETOS
                             } else {
-                                lista.setSimbolo(id, new Simbolo(id, valor.getValue(lista, impresion), valor.getType(lista, impresion), linea, columna));
-                                System.out.println("Se declaro la variable " + id + String.valueOf(valor.getValue(lista, impresion)));
+                                System.out.println("Error de tipos");
+                                impresion.errores.add(new ast.Error("Error de tipos para Declaracion", linea, columna, "Semantico"));
                             }
-
-                        } else if (tipo.getTipoObjeto().equals(tip.getTipoObjeto())) {
-                            //AQUI VAN OBJETOS
-                        } else {
-                            System.out.println("Error de tipos");
-                            impresion.errores.add(new ast.Error("Error de tipos para Declaracion", linea, columna, "Semantico"));
                         }
+                    }else{
+                        impresion.errores.add(new ast.Error("Error no existe ID para asignar su valor", linea, columna, "Semantico"));
                     }
-
                 } else {
                     lista.setSimbolo(id, new Simbolo(id, valor, tipo, linea, columna));
                 }

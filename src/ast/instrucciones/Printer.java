@@ -15,9 +15,8 @@ import java.util.LinkedList;
  *
  * @author sharolin
  */
-public class Printer implements Instruccion{
-    
-    
+public class Printer implements Instruccion {
+
     private Expresion expImpre;
     private int linea;
     private int col;
@@ -27,18 +26,21 @@ public class Printer implements Instruccion{
         this.linea = linea;
         this.col = col;
     }
-    
-    
+
     @Override
     public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
         try {
-            
-            if(expImpre != null){
+
+            if (expImpre != null) {
                 Object imprimir = expImpre.getValue(lista, impresion);
-                impresion.impresiones.add(String.valueOf(imprimir));
-                System.out.println(String.valueOf(imprimir));
+                if (imprimir != null) {
+                    impresion.impresiones.add(String.valueOf(imprimir));
+                    System.out.println(String.valueOf(imprimir));
+                }else{
+                    impresion.errores.add(new ast.Error("Expresion/valor no existe para imprimirlo", linea, col, "Semantico"));
+                }
             }
-            
+
         } catch (Exception e) {
             System.out.println("Error en la clase Printer");
         }
@@ -91,5 +93,5 @@ public class Printer implements Instruccion{
     public void setCol(int col) {
         this.col = col;
     }
-    
+
 }

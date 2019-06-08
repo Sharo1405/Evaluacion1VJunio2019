@@ -62,11 +62,21 @@ public class Asignacion implements Instruccion {
                 } else if (tipoVar.getTipoPrimitivo() == tipo.getTipoPrimitivo()) {
 
                     if (tipoVar.getTipoPrimitivo() == Simbolo.Tipo.CHAR && tipo.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
-                         if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) < 0) {
-                             impresion.errores.add(new ast.Error("Error no puede haber un char negativo", linea, columna, "Semantico"));
-                         }else{
-                             variable.setValor(valor.getValue(lista, impresion));
-                         }
+                        Object paraValor = valor.getValue(lista, impresion);
+
+                        try {
+                            int valorsito = (int) paraValor * 1;
+                            if (valorsito < 0) {
+                                impresion.errores.add(new ast.Error("Error de tipos, un char negativo no existe", linea, columna, "Semantico"));
+                            } else {
+                                TipoContenedor aux = new TipoContenedor();
+                                if (aux.isChar(tipo)) {
+                                    variable.setValor(paraValor);
+                                }
+                            }
+                        } catch (Exception e) {
+                        }
+
                     } else {
                         variable.setValor(valor.getValue(lista, impresion));
                     }
@@ -81,7 +91,8 @@ public class Asignacion implements Instruccion {
         } catch (Exception e) {
             System.out.println("Error en clase Asignacion ejecutar");
         }
-
+        
+        impresion.errores.add(new ast.Error("Variable no existe para asignar valor", linea, columna, "Semantico"));
         return null;
     }
 

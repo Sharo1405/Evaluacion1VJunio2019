@@ -54,10 +54,12 @@ public class Identificador extends Entorno implements Expresion {
 
                 } else if (aux.isChar(ti)) {
                     //si viene negativo el char osea un numero negativo truwna
-                    if (Integer.parseInt(String.valueOf(encontrado.getValor())) > 0) {
-                        return encontrado.getValor();
-                        
-                    } else {
+                    Object va = encontrado.getValor();
+                    try {
+                        if (Integer.parseInt(String.valueOf(encontrado.getValor())) > 0) {
+                            return encontrado.getValor();
+                        }
+                    } catch (Exception e) {
                         return (Character) encontrado.getValor();
                     }
 
