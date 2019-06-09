@@ -20,11 +20,19 @@ public class Printer implements Instruccion {
     private Expresion expImpre;
     private int linea;
     private int col;
+    private boolean saltoLinea = false;
 
     public Printer(Expresion expImpre, int linea, int col) {
         this.expImpre = expImpre;
         this.linea = linea;
         this.col = col;
+    }
+
+    public Printer(Expresion expImpre, int linea, int col, boolean saltoLinea) {
+        this.expImpre = expImpre;
+        this.linea = linea;
+        this.col = col;
+        this.saltoLinea = saltoLinea;
     }
 
     @Override
@@ -34,9 +42,14 @@ public class Printer implements Instruccion {
             if (expImpre != null) {
                 Object imprimir = expImpre.getValue(lista, impresion);
                 if (imprimir != null) {
-                    impresion.impresiones.add(String.valueOf(imprimir));
-                    System.out.println(String.valueOf(imprimir));
-                }else{
+                    if (saltoLinea == false) {
+                        impresion.impresiones.add(String.valueOf(imprimir));
+                        System.out.println(String.valueOf(imprimir));
+                    } else {
+                        impresion.impresiones.add(String.valueOf(imprimir));
+                        System.out.println(String.valueOf(imprimir)+ "\n");
+                    }
+                } else {
                     impresion.errores.add(new ast.Error("Expresion/valor no existe para imprimirlo", linea, col, "Semantico"));
                 }
             }
@@ -92,6 +105,20 @@ public class Printer implements Instruccion {
      */
     public void setCol(int col) {
         this.col = col;
+    }
+
+    /**
+     * @return the saltoLinea
+     */
+    public boolean isSaltoLinea() {
+        return saltoLinea;
+    }
+
+    /**
+     * @param saltoLinea the saltoLinea to set
+     */
+    public void setSaltoLinea(boolean saltoLinea) {
+        this.saltoLinea = saltoLinea;
     }
 
 }

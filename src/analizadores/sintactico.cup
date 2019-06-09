@@ -63,10 +63,10 @@ terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
 terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos, masmaspost, menosmenospost; //ternario
-terminal String iff, elsee, doo, forr;
+terminal String iff, elsee, doo, forr, switchh, casee, defaultt;
 terminal String MENOSUNARIO, MASUNARIO;
 
-terminal String print;
+terminal String print, printLinea;
 
 nonterminal I;
 nonterminal Instruccion S;
@@ -82,6 +82,8 @@ nonterminal LinkedList<IfLista> IF_LIST;
 nonterminal Instruccion FOR_INIT;
 nonterminal Instruccion IMPRESIONES;
 nonterminal Expresion PREPOSTFIJOS;
+nonterminal Instruccion SWITCH_STATEMENT;
+nonterminal SWITCH_BLOCK, SWITCH_BLOCK_STATEMENT_GROUPS, SWITCH_LABELS, SWITCH_LABEL, SWITCH_BLOCK_STATEMENT_GROUP;
 
 
 
@@ -142,7 +144,58 @@ J::= D:d {:
 
 COND::= IF_STATEMENT:d {:
         RESULT = d;
+      :}
+      |SWITCH_STATEMENT:d {:
+        RESULT = d;
       :};
+
+
+
+
+SWITCH_STATEMENT::=  switchh apar E cpar SWITCH_BLOCK {:
+                    
+                :};
+
+SWITCH_BLOCK::= allave SWITCH_BLOCK_STATEMENT_GROUPS SWITCH_LABELS cllave {:
+        
+                :}
+                |allave SWITCH_BLOCK_STATEMENT_GROUPS cllave {:
+        
+                :}
+                |allave SWITCH_LABELS cllave {:
+        
+                :}
+                |allave cllave {:
+                    //no se hace nada
+                :};
+
+
+SWITCH_BLOCK_STATEMENT_GROUPS::= SWITCH_BLOCK_STATEMENT_GROUP {:
+                
+                :}
+                |SWITCH_BLOCK_STATEMENT_GROUPS SWITCH_BLOCK_STATEMENT_GROUP{:
+
+                :};
+
+
+SWITCH_BLOCK_STATEMENT_GROUP::= SWITCH_LABELS S {: //cambiar la S por una B y toca instanciar una clase Bloque para mandar a guardar
+                
+                :};
+
+SWITCH_LABELS::= SWITCH_LABEL {:
+
+                :}
+                |SWITCH_LABELS SWITCH_LABEL{:
+                
+                :};
+
+SWITCH_LABEL::= casee E dospuntos {:
+        
+                :}
+                |defaultt dospuntos{:
+                
+                :};
+
 
 
 IF_STATEMENT::= IF_LIST:i elsee S:s1{:
@@ -211,6 +264,9 @@ PREPOSTFIJOS::= id:id masmas puntoycoma{:
 
 IMPRESIONES::= print apar E:e1 cpar puntoycoma{:
                 RESULT = new Printer(e1, e1left, e1right);
+            :}
+            |printLinea apar E:e1 cpar puntoycoma{:
+                RESULT = new Printer(e1, e1left, e1right, true);
             :}
             |imprimir apar cpar puntoycoma {:
                 RESULT = new ImprimirTS("hola");

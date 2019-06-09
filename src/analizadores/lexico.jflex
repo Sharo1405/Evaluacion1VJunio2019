@@ -62,12 +62,16 @@ truee       = "true"
 falsee      = "false"
 whilee      = "while"
 print       = "print"
+printLinea  = "println"
 breakk      = "break"
 continuee   = "continue"
 iff         = "if"
 elsee       = "else"
 doo         = "do"
 forr        = "for"
+switchh     = "switch"
+casee       = "case"
+defaultt    = "default"
 
 imprimir    = "imprimir"
 
@@ -199,6 +203,10 @@ enter   = [\ \n]
 <YYINITIAL> {print}       {  System.out.println("Reconocido: <<"+yytext()+">>, print");
                                 return new Symbol(sym.print, yyline, yycolumn, yytext()); } 
 
+<YYINITIAL> {printLinea}       {  System.out.println("Reconocido: <<"+yytext()+">>, printLinea");
+                                return new Symbol(sym.printLinea, yyline, yycolumn, yytext()); } 
+
+
 <YYINITIAL> {breakk}       {  System.out.println("Reconocido: <<"+yytext()+">>, breakk");
                                 return new Symbol(sym.breakk, yyline, yycolumn, yytext()); } 
 
@@ -216,6 +224,16 @@ enter   = [\ \n]
 
 <YYINITIAL> {forr}       {  System.out.println("Reconocido: <<"+yytext()+">>, forr");
                                 return new Symbol(sym.forr, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {switchh}       {  System.out.println("Reconocido: <<"+yytext()+">>, switchh");
+                                return new Symbol(sym.switchh, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {casee}       {  System.out.println("Reconocido: <<"+yytext()+">>, casee");
+                                return new Symbol(sym.casee, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {defaultt}       {  System.out.println("Reconocido: <<"+yytext()+">>, defaultt");
+                                return new Symbol(sym.defaultt, yyline, yycolumn, yytext()); } 
+
 
 
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
