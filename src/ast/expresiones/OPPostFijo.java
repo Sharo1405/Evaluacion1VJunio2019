@@ -21,7 +21,7 @@ import ast.instrucciones.Instruccion;
  *
  * @author sharolin
  */
-public class OPPostFijo implements Instruccion {
+public class OPPostFijo implements Expresion {
 
     //el pre fijo ++a; 
     //si es 5 y el ++ retorna 6 y a es 6
@@ -41,8 +41,9 @@ public class OPPostFijo implements Instruccion {
         this.col = col;
     }
 
+    
     @Override
-    public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
+    public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
         try {
             TipoContenedor tipo = (TipoContenedor) id.getType(lista, impresion);
             Entero en2 = new Entero(1, tipo, line, col);
@@ -82,6 +83,16 @@ public class OPPostFijo implements Instruccion {
         }
         return null;
     }
+
+    @Override
+    public Object getType(Entorno lista, ListaErrorPrinter impresion) {
+        try {
+            return id.getType(lista, impresion);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+    
 
     /*@Override
     public Object getType(Entorno lista, ListaErrorPrinter impresion) {

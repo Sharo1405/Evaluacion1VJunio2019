@@ -67,6 +67,7 @@ continuee   = "continue"
 iff         = "if"
 elsee       = "else"
 doo         = "do"
+forr        = "for"
 
 imprimir    = "imprimir"
 
@@ -212,6 +213,9 @@ enter   = [\ \n]
 
 <YYINITIAL> {doo}       {  System.out.println("Reconocido: <<"+yytext()+">>, doo");
                                 return new Symbol(sym.doo, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {forr}       {  System.out.println("Reconocido: <<"+yytext()+">>, forr");
+                                return new Symbol(sym.forr, yyline, yycolumn, yytext()); } 
 
 
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");

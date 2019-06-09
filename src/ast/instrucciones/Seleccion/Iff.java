@@ -58,6 +58,9 @@ public class Iff implements Instruccion {
                                 return "shar";
                             }
                         } else if (nodo instanceof Expresion) {
+                            //estos son los pre y pos fijos
+                            Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+
                             //AQUI EL RETORNO
                         }
                     }

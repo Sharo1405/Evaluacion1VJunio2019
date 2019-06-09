@@ -13,27 +13,28 @@ import ast.expresiones.Expresion;
 import ast.expresiones.operacion.TipoContenedor;
 import ast.instrucciones.Bloque;
 import ast.instrucciones.Instruccion;
-import ast.instrucciones.Instruccion;
 import ast.instrucciones.ciclos.RetCont.Breakk;
 import ast.instrucciones.ciclos.RetCont.Continuee;
 import ast.instrucciones.ciclos.RetCont.Returnn;
-import com.sun.org.apache.bcel.internal.generic.ReturnInstruction;
-import java.util.LinkedList;
 
 /**
  *
  * @author sharolin
  */
-public class WhileCiclo implements Instruccion {
+public class Forr implements Instruccion {
 
+    private Instruccion declaAsig;
     private Expresion condicion;
-    private Instruccion listaParaEjecutar;
+    private Expresion aumento; //ver que onda proque el a++ no esta en el E sino en PREPOSTFIJO
+    private Instruccion sentencias;
     private int linea;
     private int col;
 
-    public WhileCiclo(Expresion condicion, Instruccion listaParaEjecutar, int linea, int col) {
+    public Forr(Instruccion declaAsig, Expresion condicion, Expresion aumento, Instruccion sentencias, int linea, int col) {
+        this.declaAsig = declaAsig;
         this.condicion = condicion;
-        this.listaParaEjecutar = listaParaEjecutar;
+        this.aumento = aumento;
+        this.sentencias = sentencias;
         this.linea = linea;
         this.col = col;
     }
@@ -41,14 +42,25 @@ public class WhileCiclo implements Instruccion {
     @Override
     public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
         try {
-            TipoContenedor tipo = (TipoContenedor) condicion.getType(lista, impresion);
-            if (tipo.getTipoPrimitivo() == Simbolo.Tipo.BOOLEAN) {
-                while ((Boolean) condicion.getValue(lista, impresion)) {
+            //se debe crear un nuevo entorno porque sino se declararia mal el init del for
+            //amenos que sea asignacion pero pues
+
+            Entorno actual = new Entorno(lista);
+            declaAsig.ejecutar(actual, impresion);
+
+            TipoContenedor t = (TipoContenedor) condicion.getType(actual, impresion);
+            if (t.getTipoPrimitivo() == Simbolo.Tipo.BOOLEAN) {
+
+                //hace la validacion del for
+                while ((Boolean) condicion.getValue(actual, impresion)) {
                     boolean reiniciar = false;
-                    for (NodoAST nodo : ((Bloque) listaParaEjecutar).listaIns) {
+                    Entorno actualactual = new Entorno(actual);
+
+                    //ejecuta sentencias
+                    for (NodoAST nodo : ((Bloque) sentencias).listaIns) {
 
                         if (nodo instanceof Instruccion) {
-                            Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
+                            Object retorno = ((Instruccion) nodo).ejecutar(actualactual, impresion);
                             if (retorno instanceof Breakk) {
                                 return null;
                             } else if (retorno instanceof Continuee || String.valueOf(retorno).equals("shar")) {
@@ -59,21 +71,25 @@ public class WhileCiclo implements Instruccion {
                             }
                         } else if (nodo instanceof Expresion) {
                             //estos son los pre y pos fijos
-                            Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+                            Object retorno = ((Expresion) nodo).getValue(actualactual, impresion);
 
                             //AQUI EL RETORNO
                         }
+
+                        if (reiniciar == true) {
+                            continue;
+                        }
                     }
-                    if (reiniciar == true) {
-                        continue;
-                    }
+
+                    Object valor = aumento.getValue(actualactual, impresion);
+
                 }
+
             } else {
-                impresion.errores.add(new ast.Error("Condicion del While no valida", linea, col, "Semantico"));
+                impresion.errores.add(new ast.Error("Condicion del FOR no es valida", linea, col, "Semantico"));
             }
 
         } catch (Exception e) {
-            System.out.println("Error en la clase WhileCiclo ejecutar");
         }
         return null;
     }
@@ -81,6 +97,20 @@ public class WhileCiclo implements Instruccion {
     @Override
     public int getLine() {
         return linea;
+    }
+
+    /**
+     * @return the declaAsig
+     */
+    public Instruccion getDeclaAsig() {
+        return declaAsig;
+    }
+
+    /**
+     * @param declaAsig the declaAsig to set
+     */
+    public void setDeclaAsig(Instruccion declaAsig) {
+        this.declaAsig = declaAsig;
     }
 
     /**
@@ -98,17 +128,17 @@ public class WhileCiclo implements Instruccion {
     }
 
     /**
-     * @return the listaParaEjecutar
+     * @return the aumento
      */
-    public Instruccion getListaParaEjecutar() {
-        return listaParaEjecutar;
+    public Expresion getAumento() {
+        return aumento;
     }
 
     /**
-     * @param listaParaEjecutar the listaParaEjecutar to set
+     * @param aumento the aumento to set
      */
-    public void setListaParaEjecutar(Instruccion listaParaEjecutar) {
-        this.listaParaEjecutar = listaParaEjecutar;
+    public void setAumento(Expresion aumento) {
+        this.aumento = aumento;
     }
 
     /**
@@ -137,6 +167,20 @@ public class WhileCiclo implements Instruccion {
      */
     public void setCol(int col) {
         this.col = col;
+    }
+
+    /**
+     * @return the sentencias
+     */
+    public Instruccion getSentencias() {
+        return sentencias;
+    }
+
+    /**
+     * @param sentencias the sentencias to set
+     */
+    public void setSentencias(Instruccion sentencias) {
+        this.sentencias = sentencias;
     }
 
 }

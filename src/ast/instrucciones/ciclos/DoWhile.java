@@ -52,6 +52,9 @@ public class DoWhile implements Instruccion {
                             //AQUI VA EL RETORNO 
                         }
                     } else if (nodo instanceof Expresion) {
+                        //estos son los pre y pos fijos
+                        Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+                        
                         //AQUI EL RETORNO
                     }
                 }

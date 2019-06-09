@@ -62,8 +62,8 @@ terminal String imprimir, apar, cpar;
 terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
-terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos; //ternario
-terminal String iff, elsee, doo;
+terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos, masmaspost, menosmenospost; //ternario
+terminal String iff, elsee, doo, forr;
 terminal String MENOSUNARIO, MASUNARIO;
 
 terminal String print;
@@ -74,23 +74,29 @@ nonterminal LinkedList<NodoAST> B;
 nonterminal Expresion E;
 nonterminal Instruccion D;
 nonterminal TipoContenedor T;
-nonterminal Instruccion J;
+nonterminal NodoAST J;
 nonterminal Instruccion CICLOS;
 nonterminal Instruccion COND;
 nonterminal Instruccion IF_STATEMENT;
 nonterminal LinkedList<IfLista> IF_LIST;
+nonterminal Instruccion FOR_INIT;
+nonterminal Instruccion IMPRESIONES;
+nonterminal Expresion PREPOSTFIJOS;
 
 
+
+//precedence left id;
 precedence left interrogacion;
 precedence left oor;
 precedence left aand;
-precedence right diferenteunario;
+precedence right diferenteunario; //not
 precedence left igualigual, diferente;
 precedence left mayorq, menorq, menorigualq, mayorigualq;
 precedence left mas, menos;
 precedence left por, dividir;
 precedence left potencia;
 precedence right masmas, menosmenos;
+precedence left masmaspost, menosmenospost;
 precedence right MENOSUNARIO, MASUNARIO;
 
 
@@ -125,6 +131,12 @@ J::= D:d {:
         RESULT = d;
     :}
     |COND:d{:
+        RESULT = d;
+    :}
+    |IMPRESIONES:d {:
+        RESULT = d;
+    :}
+    |PREPOSTFIJOS:d {:
         RESULT = d;
     :};
 
@@ -161,37 +173,48 @@ CICLOS::= whilee apar E:e1 cpar S:s1 {:
     :}
     |doo:d S:s1 whilee apar E:e1 cpar puntoycoma{:
         RESULT = new DoWhile(s1, e1, dleft, dright);
+    :}
+    |forr:f apar FOR_INIT:inicio E:cond puntoycoma E:aumeto cpar S:s1{:
+        RESULT = new Forr(inicio, cond, aumeto, s1, fleft, fright);
     :}; 
 
 
+FOR_INIT::= D:d {:
+            RESULT = d;
+        :};
 
-D::= T:t id:id igual E:e puntoycoma {:
+
+D::= T:t id:id igual E:e puntoycoma {:  //declaracion asignacion
         RESULT = new Declaracion(t,id, e, idleft, idright);
     :}
-    |T:t id:id puntoycoma {:
+    |T:t id:id puntoycoma {:    //declaracion
         RESULT = new Declaracion(t, id, idleft, idright);
     :}
-    |id:id igual E:e puntoycoma{:
+    |id:id igual E:e puntoycoma{: //asignacion
         RESULT = new Asignacion(id, e, idleft, idright);
-    :}
-    |print apar E:e1 cpar puntoycoma{:
-        RESULT = new Printer(e1, e1left, e1right);
-    :}
-    |imprimir apar cpar puntoycoma {:
-        RESULT = new ImprimirTS("hola");
-    :}
-    |id:id masmas puntoycoma{:
-        RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
-    :}
-    |id:id menosmenos puntoycoma{:
-        RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
-    :}
-    |masmas id:id puntoycoma{:
-        RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
-    :}
-    |menosmenos id:id puntoycoma{:
-        RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
     :};
+
+
+PREPOSTFIJOS::= id:id masmas puntoycoma{:
+                RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
+            :}%prec masmaspost
+            |id:id menosmenos puntoycoma{:
+                RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
+            :}%prec menosmenospost
+            |masmas id:id puntoycoma{:
+                RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
+            :}%prec masmas
+            |menosmenos id:id puntoycoma{:
+                RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
+            :}%prec menosmenos;
+
+
+IMPRESIONES::= print apar E:e1 cpar puntoycoma{:
+                RESULT = new Printer(e1, e1left, e1right);
+            :}
+            |imprimir apar cpar puntoycoma {:
+                RESULT = new ImprimirTS("hola");
+            :};
 
 
 T::= intt{:
@@ -291,7 +314,21 @@ E::= menos:mas E:e1 {:
     |E:cond interrogacion E:vdd dospuntos E:fake {:
         RESULT = new OpTernario(cond, vdd, fake,condleft, condright);
     :}
+    |id:id masmas {:
+        RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
+    :}%prec masmaspost
 
+    |id:id menosmenos {:
+        RESULT = new OPPostFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
+    :}%prec menosmenospost
+
+    |masmas id:id {:
+        RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MAS, idleft, idright);
+    :}%prec masmas
+
+    |menosmenos id:id {:
+         RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
+    :}%prec menosmenos
 
     |apar E:e cpar{:
         RESULT = e;
