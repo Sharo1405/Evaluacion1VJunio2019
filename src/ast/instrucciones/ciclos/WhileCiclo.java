@@ -44,9 +44,23 @@ public class WhileCiclo implements Instruccion {
             TipoContenedor tipo = (TipoContenedor) condicion.getType(lista, impresion);
             if (tipo.getTipoPrimitivo() == Simbolo.Tipo.BOOLEAN) {
                 while ((Boolean) condicion.getValue(lista, impresion)) {
-                    boolean reiniciar = false;
-                    for (NodoAST nodo : ((Bloque) listaParaEjecutar).listaIns) {
-
+                    
+                    Object retorno = listaParaEjecutar.ejecutar(lista, impresion);
+                    
+                    if (retorno instanceof Breakk) {
+                        return null;
+                    } else if (retorno instanceof Continuee){                        
+                        continue;
+                    } else if (retorno instanceof Returnn) {
+                        //AQUI VA EL RETURN 
+                    }else if (retorno instanceof Boolean){
+                        if(retorno.equals(true)){
+                            continue;
+                        }
+                    }
+                    
+                    
+                    /*for (NodoAST nodo : ((Bloque) listaParaEjecutar).listaIns) {
                         if (nodo instanceof Instruccion) {
                             Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
                             if (retorno instanceof Breakk) {
@@ -63,10 +77,7 @@ public class WhileCiclo implements Instruccion {
 
                             //AQUI EL RETORNO
                         }
-                    }
-                    if (reiniciar == true) {
-                        continue;
-                    }
+                    }*/
                 }
             } else {
                 impresion.errores.add(new ast.Error("Condicion del While no valida", linea, col, "Semantico"));

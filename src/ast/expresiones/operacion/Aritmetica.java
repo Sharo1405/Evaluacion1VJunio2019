@@ -240,6 +240,11 @@ public class Aritmetica extends Operacion implements Expresion {
                 return null;
             } else {
 
+                if(exp1 == null){
+                    impresion.errores.add(new ast.Error("No se puede efectuar operacion se encontro Valor nulo", line, col, "Semantico"));
+                    return null;
+                }
+                
                 TipoContenedor tipo1 = (TipoContenedor) exp1.getType(lista, impresion);
 
                 switch (op) {

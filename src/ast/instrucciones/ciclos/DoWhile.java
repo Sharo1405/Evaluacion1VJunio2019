@@ -40,27 +40,19 @@ public class DoWhile implements Instruccion {
         try {
             do {
                 boolean reiniciar = false;
-                for (NodoAST nodo : ((Bloque) sentenciasEjecutar).listaIns) {
-                    if (nodo instanceof Instruccion) {
-                        Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
-                        if (retorno instanceof Breakk) {
-                            return null;
-                        } else if (retorno instanceof Continuee || String.valueOf(retorno).equals("shar")) {
-                            reiniciar = true;
-                            break;
-                        } else if (retorno instanceof Returnn) {
-                            //AQUI VA EL RETORNO 
+                Object retorno = sentenciasEjecutar.ejecutar(lista, impresion);
+                    
+                    if (retorno instanceof Breakk) {
+                        return null;
+                    } else if (retorno instanceof Continuee){                        
+                        continue;
+                    } else if (retorno instanceof Returnn) {
+                        //AQUI VA EL RETURN 
+                    }else if (retorno instanceof Boolean){
+                        if(retorno.equals(true)){
+                            continue;
                         }
-                    } else if (nodo instanceof Expresion) {
-                        //estos son los pre y pos fijos
-                        Object retorno = ((Expresion) nodo).getValue(lista, impresion);
-                        
-                        //AQUI EL RETORNO
                     }
-                }
-                if (reiniciar == true) {
-                    continue;
-                }
 
                 //-----------------------------------------------------------------------------------------------
                 TipoContenedor tipo = (TipoContenedor) condicion.getType(lista, impresion);

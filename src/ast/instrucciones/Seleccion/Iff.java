@@ -55,7 +55,7 @@ public class Iff implements Instruccion {
                             } else if (retorno instanceof Breakk) {
                                 return new Breakk(((Instruccion) nodo).getLine(), -1);
                             } else if (retorno instanceof Continuee) {
-                                return "shar";
+                                return true;
                             }
                         } else if (nodo instanceof Expresion) {
                             //estos son los pre y pos fijos
@@ -67,18 +67,17 @@ public class Iff implements Instruccion {
                 }
 
                 if (entro == false && ejecutarELSE != null) {
-                    for (NodoAST nodo : ((Bloque) ejecutarELSE).listaIns) {
-                        if (nodo instanceof Instruccion) {
-                            Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
-                            if (retorno instanceof Returnn) {
-                                return null;
-                            } else if (retorno instanceof Breakk) {
-                                return new Breakk(((Instruccion) nodo).getLine(), -1);
-                            } else if (retorno instanceof Continuee) {
-                                return "shar";
-                            }
-                        } else if (nodo instanceof Expresion) {
-                            //AQUI EL RETORNO
+                    Object retorno = ejecutarELSE.ejecutar(lista, impresion);
+                    
+                    if (retorno instanceof Breakk) {
+                        return retorno;
+                    } else if (retorno instanceof Continuee){                        
+                        return true;
+                    } else if (retorno instanceof Returnn) {
+                        //AQUI VA EL RETURN 
+                    }else if (retorno instanceof Boolean){
+                        if(retorno.equals(true)){
+                            return true;
                         }
                     }
                 }

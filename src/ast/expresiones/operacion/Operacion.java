@@ -64,27 +64,30 @@ public class Operacion {
 
         try {
 
-            TipoContenedor izq = (TipoContenedor) izquierda.getType(lista, impresion);
-            if (derecha != null) {
-                TipoContenedor der = (TipoContenedor) derecha.getType(lista, impresion);
-                TipoContenedor aux = new TipoContenedor();
+            if (izquierda != null) {
 
-                if (aux.isString(izq) || aux.isString(der)) {
-                    return new TipoContenedor(Simbolo.Tipo.STRING);
+                TipoContenedor izq = (TipoContenedor) izquierda.getType(lista, impresion);
+                if (derecha != null) {
+                    TipoContenedor der = (TipoContenedor) derecha.getType(lista, impresion);
+                    TipoContenedor aux = new TipoContenedor();
 
-                } else if (aux.isBool(izq) || aux.isBool(der)) {
-                    System.out.println("Error de tipo para aritmeticas");
-                    impresion.errores.add(new ast.Error("Error de tipo para aritmeticas, BOOLEAN", line, col, "Semantico"));
-                    return null;
+                    if (aux.isString(izq) || aux.isString(der)) {
+                        return new TipoContenedor(Simbolo.Tipo.STRING);
 
-                } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
-                    return new TipoContenedor(Simbolo.Tipo.DOUBLE);
+                    } else if (aux.isBool(izq) || aux.isBool(der)) {
+                        System.out.println("Error de tipo para aritmeticas");
+                        impresion.errores.add(new ast.Error("Error de tipo para aritmeticas, BOOLEAN", line, col, "Semantico"));
+                        return null;
 
-                } else if (aux.isEntero(izq) || aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)) {
-                    return new TipoContenedor(Simbolo.Tipo.INT);
+                    } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
+                        return new TipoContenedor(Simbolo.Tipo.DOUBLE);
+
+                    } else if (aux.isEntero(izq) || aux.isEntero(der) || aux.isChar(izq) || aux.isChar(der)) {
+                        return new TipoContenedor(Simbolo.Tipo.INT);
+                    }
+                } else {
+                    return izq;
                 }
-            }else{
-                return izq;
             }
 
         } catch (Exception e) {

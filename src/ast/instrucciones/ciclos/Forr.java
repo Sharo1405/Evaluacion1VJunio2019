@@ -57,26 +57,19 @@ public class Forr implements Instruccion {
                     Entorno actualactual = new Entorno(actual);
 
                     //ejecuta sentencias
-                    for (NodoAST nodo : ((Bloque) sentencias).listaIns) {
-
-                        if (nodo instanceof Instruccion) {
-                            Object retorno = ((Instruccion) nodo).ejecutar(actualactual, impresion);
-                            if (retorno instanceof Breakk) {
-                                return null;
-                            } else if (retorno instanceof Continuee || String.valueOf(retorno).equals("shar")) {
-                                reiniciar = true;
-                                break;
-                            } else if (retorno instanceof Returnn) {
-                                //AQUI VA EL RETURN 
-                            }
-                        } else if (nodo instanceof Expresion) {
-                            //estos son los pre y pos fijos
-                            Object retorno = ((Expresion) nodo).getValue(actualactual, impresion);
-
-                            //AQUI EL RETORNO
-                        }
-
-                        if (reiniciar == true) {
+                    Object retorno = sentencias.ejecutar(actualactual, impresion);
+                    
+                    if (retorno instanceof Breakk) {
+                        return null;
+                    } else if (retorno instanceof Continuee){                        
+                        continue;
+                    } else if (retorno instanceof Returnn) {
+                        //AQUI VA EL RETURN 
+                    }
+                    
+                    if (retorno instanceof Boolean){
+                        if(retorno.equals(true)){
+                            Object valor = aumento.getValue(actualactual, impresion);
                             continue;
                         }
                     }

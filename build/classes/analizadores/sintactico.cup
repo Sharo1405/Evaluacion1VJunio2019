@@ -4,29 +4,12 @@ package analizadores;
 import ast.ArbolAST;
 import ast.NodoAST;
 import ast.entorno.Simbolo;
-import ast.expresiones.Expresion;
-import ast.expresiones.Identificador;
-import ast.expresiones.OPPostFijo;
-import ast.expresiones.OPPreFijo;
-import ast.expresiones.operacion.Aritmetica;
-import ast.expresiones.operacion.Logica;
-import ast.expresiones.operacion.OpTernario;
-import ast.expresiones.operacion.TipoContenedor;
-import ast.expresiones.operacion.Relacional;
-import ast.expresiones.operacion.Operacion;
-import ast.expresiones.primitivos.Booleano;
-import ast.expresiones.primitivos.Cadena;
-import ast.expresiones.primitivos.Caracter;
-import ast.expresiones.primitivos.Decimal;
-import ast.expresiones.primitivos.Entero;
-import ast.instrucciones.Bloque;
-import ast.instrucciones.Declaracion;
-import ast.instrucciones.Asignacion;
-import ast.instrucciones.Instruccion;
-import ast.instrucciones.ImprimirTS;
+import ast.expresiones.*;
+import ast.expresiones.operacion.*;
+import ast.expresiones.primitivos.*;
+import ast.instrucciones.*;
 import ast.instrucciones.Printer;
-import ast.instrucciones.Seleccion.IfLista;
-import ast.instrucciones.Seleccion.Iff;
+import ast.instrucciones.Seleccion.*;
 import ast.instrucciones.ciclos.*;
 import ast.instrucciones.ciclos.RetCont.*;
 import java.util.LinkedList;
@@ -82,8 +65,11 @@ nonterminal LinkedList<IfLista> IF_LIST;
 nonterminal Instruccion FOR_INIT;
 nonterminal Instruccion IMPRESIONES;
 nonterminal Expresion PREPOSTFIJOS;
-nonterminal Instruccion SWITCH_STATEMENT;
-nonterminal SWITCH_BLOCK, SWITCH_BLOCK_STATEMENT_GROUPS, SWITCH_LABELS, SWITCH_LABEL, SWITCH_BLOCK_STATEMENT_GROUP;
+nonterminal Instruccion SWITCH_BLOCK;
+nonterminal LinkedList<NodoAST> SWITCH_BLOCK_STATEMENT_GROUPS;
+nonterminal LinkedList<NodoAST> SWITCH_LABELS;
+nonterminal NodoAST SWITCH_LABEL;
+nonterminal Instruccion SWITCH_BLOCK_STATEMENT_GROUP;
 
 
 
@@ -119,7 +105,7 @@ B::= B:l J:i {:
         RESULT.add(i);
     :}
     |J:i {:
-       RESULT = new LinkedList<>();
+        RESULT = new LinkedList<>();
         RESULT.add(i);
     :};
 
@@ -145,55 +131,54 @@ J::= D:d {:
 COND::= IF_STATEMENT:d {:
         RESULT = d;
       :}
-      |SWITCH_STATEMENT:d {:
+      |SWITCH_BLOCK:d {:
         RESULT = d;
       :};
 
 
-
-
-SWITCH_STATEMENT::=  switchh apar E cpar SWITCH_BLOCK {:
-                    
-                :};
-
-SWITCH_BLOCK::= allave SWITCH_BLOCK_STATEMENT_GROUPS SWITCH_LABELS cllave {:
-        
+SWITCH_BLOCK::= switchh apar E:e cpar allave SWITCH_BLOCK_STATEMENT_GROUPS:g SWITCH_LABELS:s cllave {:
+                    RESULT = new SwitchBlock(e, eleft, eright, g, s);
                 :}
-                |allave SWITCH_BLOCK_STATEMENT_GROUPS cllave {:
-        
+                |switchh apar E:e cpar allave SWITCH_BLOCK_STATEMENT_GROUPS:grupo cllave {:
+                    RESULT = new SwitchBlock(e, eleft, eright, grupo, null);
                 :}
-                |allave SWITCH_LABELS cllave {:
-        
+                |switchh apar E:e cpar allave SWITCH_LABELS:swi cllave {:
+                    RESULT = new SwitchBlock(e, eleft, eright, null, swi);
                 :}
-                |allave cllave {:
+                |switchh apar E:e cpar allave cllave {:
                     //no se hace nada
                 :};
 
 
-SWITCH_BLOCK_STATEMENT_GROUPS::= SWITCH_BLOCK_STATEMENT_GROUP {:
-                
+SWITCH_BLOCK_STATEMENT_GROUPS::= SWITCH_BLOCK_STATEMENT_GROUP:i {:
+                    RESULT = new LinkedList<>();
+                    RESULT.add(i);
                 :}
-                |SWITCH_BLOCK_STATEMENT_GROUPS SWITCH_BLOCK_STATEMENT_GROUP{:
-
+                |SWITCH_BLOCK_STATEMENT_GROUPS:f SWITCH_BLOCK_STATEMENT_GROUP:dnodo{:
+                    RESULT = f;
+                    RESULT.add(dnodo);
                 :};
 
 
-SWITCH_BLOCK_STATEMENT_GROUP::= SWITCH_LABELS S {: //cambiar la S por una B y toca instanciar una clase Bloque para mandar a guardar
-                
+SWITCH_BLOCK_STATEMENT_GROUP::= SWITCH_LABELS:listaCase B:listaSentencias {: //cambiar la S por una B y toca instanciar una clase Bloque para mandar a guardar
+                    Bloque blo = new Bloque(listaSentencias);
+                    RESULT = new SwitchBlockStatement_Group(listaCase, blo);
                 :};
 
-SWITCH_LABELS::= SWITCH_LABEL {:
-
+SWITCH_LABELS::= SWITCH_LABEL:i {:
+                    RESULT = new LinkedList<>();
+                    RESULT.add(i);
                 :}
-                |SWITCH_LABELS SWITCH_LABEL{:
-                
+                |SWITCH_LABELS:f SWITCH_LABEL:dnodo{:
+                    RESULT = f;
+                    RESULT.add(dnodo);
                 :};
 
-SWITCH_LABEL::= casee E dospuntos {:
-        
+SWITCH_LABEL::= casee E:e dospuntos {:
+                    RESULT = new Casee(e, eleft, eright);
                 :}
-                |defaultt dospuntos{:
-                
+                |defaultt:d dospuntos{:
+                    RESULT = new Defaultt(dleft, dright);
                 :};
 
 

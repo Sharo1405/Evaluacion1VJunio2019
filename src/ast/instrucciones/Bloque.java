@@ -8,6 +8,10 @@ package ast.instrucciones;
 import ast.ListaErrorPrinter;
 import ast.NodoAST;
 import ast.entorno.Entorno;
+import ast.expresiones.Expresion;
+import ast.instrucciones.ciclos.RetCont.Breakk;
+import ast.instrucciones.ciclos.RetCont.Continuee;
+import ast.instrucciones.ciclos.RetCont.Returnn;
 import java.util.LinkedList;
 
 /**
@@ -29,11 +33,29 @@ public class Bloque implements Instruccion {
         try {
 
             Entorno tablaActual = new Entorno(lista);
-            for (NodoAST listaIn : listaIns) {
-                if (listaIn instanceof Instruccion) {
-                    Instruccion lisIn2 = (Instruccion) listaIn;
-                    lisIn2.ejecutar(tablaActual, impresion);
+            for (NodoAST nodo : listaIns) {
+
+                if (nodo instanceof Instruccion) {
+                    Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
+                    if (retorno instanceof Breakk) {
+                        return retorno;
+                    } else if (retorno instanceof Continuee){                        
+                        return true;
+                    } else if (retorno instanceof Returnn) {
+                        //AQUI VA EL RETURN 
+                    }else if (retorno instanceof Boolean){
+                        if(retorno.equals(true)){
+                            return true;
+                        }
+                    }
+                        
+                } else if (nodo instanceof Expresion) {
+                    //estos son los pre y pos fijos
+                    Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+
+                    //AQUI EL RETORNO
                 }
+
             }
 
         } catch (Exception e) {
