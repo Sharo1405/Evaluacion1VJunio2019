@@ -8,7 +8,9 @@ package ast.instrucciones.Seleccion;
 import ast.ListaErrorPrinter;
 import ast.NodoAST;
 import ast.entorno.Entorno;
+import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import ast.expresiones.operacion.TipoContenedor;
 import ast.instrucciones.Bloque;
 
 import ast.instrucciones.Instruccion;
@@ -60,20 +62,21 @@ public class Iff implements Instruccion {
                         }
                     }
                 }
-            }
-            if (entro == false && ejecutarELSE != null) {
-                for (NodoAST nodo : ((Bloque) ejecutarELSE).listaIns) {
-                    if (nodo instanceof Instruccion) {
-                        Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
-                        if (retorno instanceof Returnn) {
-                            return null;
-                        } else if (retorno instanceof Breakk) {
-                            return new Breakk(((Instruccion) nodo).getLine(), -1);
-                        } else if (retorno instanceof Continuee) {
-                            return "shar";
+
+                if (entro == false && ejecutarELSE != null) {
+                    for (NodoAST nodo : ((Bloque) ejecutarELSE).listaIns) {
+                        if (nodo instanceof Instruccion) {
+                            Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
+                            if (retorno instanceof Returnn) {
+                                return null;
+                            } else if (retorno instanceof Breakk) {
+                                return new Breakk(((Instruccion) nodo).getLine(), -1);
+                            } else if (retorno instanceof Continuee) {
+                                return "shar";
+                            }
+                        } else if (nodo instanceof Expresion) {
+                            //AQUI EL RETORNO
                         }
-                    } else if (nodo instanceof Expresion) {
-                        //AQUI EL RETORNO
                     }
                 }
             }

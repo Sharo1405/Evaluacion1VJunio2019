@@ -65,14 +65,14 @@ public class Lexico implements java_cup.runtime.Scanner {
     "\1\17\1\20\1\21\1\1\3\22\1\1\10\22\1\23"+
     "\2\1\1\24\1\25\1\26\1\27\1\30\1\31\1\32"+
     "\1\33\1\34\1\35\1\36\1\0\1\37\1\0\3\22"+
-    "\1\0\10\22\1\37\2\22\2\0\1\40\1\0\1\41"+
-    "\1\42\1\0\3\22\1\0\3\22\1\0\2\22\1\0"+
-    "\1\22\1\0\1\22\1\42\2\22\1\43\1\0\1\44"+
-    "\1\45\1\22\1\0\3\22\2\46\1\0\1\22\1\0"+
-    "\1\22\1\0\3\22\2\0\1\22\1\0\1\22\2\47"+
-    "\1\22\2\50\2\51\2\52\2\22\2\0\1\22\1\53"+
-    "\1\54\2\22\1\53\2\0\1\22\1\55\1\22\1\56"+
-    "\2\57\1\56";
+    "\1\0\1\40\7\22\1\37\2\22\2\0\1\41\1\0"+
+    "\1\42\1\43\1\0\3\22\1\0\3\22\1\0\2\22"+
+    "\1\0\1\22\1\0\1\22\1\43\2\22\1\44\1\0"+
+    "\1\45\1\46\1\22\1\0\3\22\2\47\1\0\1\22"+
+    "\1\0\1\22\1\0\3\22\2\0\1\22\1\0\1\22"+
+    "\2\50\1\22\2\51\2\52\2\53\2\22\2\0\1\22"+
+    "\1\54\1\55\2\22\1\54\2\0\1\22\1\56\1\22"+
+    "\1\57\2\60\1\57";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[142];
@@ -716,234 +716,239 @@ public class Lexico implements java_cup.runtime.Scanner {
         System.err.println(errorLex);
         System.out.println(errorLex);
             }
-          case 48: break;
+          case 49: break;
           case 2: 
             { System.out.println("Reconocido: <<"+yytext()+">>, mas");
                                 return new Symbol(sym.mas, yyline, yycolumn, yytext());
             }
-          case 49: break;
+          case 50: break;
           case 3: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menos");
                                 return new Symbol(sym.menos, yyline, yycolumn, yytext());
             }
-          case 50: break;
+          case 51: break;
           case 4: 
             { System.out.println("Reconocido: <<"+yytext()+">>, por");
                                 return new Symbol(sym.por, yyline, yycolumn, yytext());
             }
-          case 51: break;
+          case 52: break;
           case 5: 
             { System.out.println("Reconocido: <<"+yytext()+">>, dividir");
                                 return new Symbol(sym.dividir, yyline, yycolumn, yytext());
             }
-          case 52: break;
+          case 53: break;
           case 6: 
             { System.out.println("Reconocido: <<"+yytext()+">>, potencia");
                                 return new Symbol(sym.potencia, yyline, yycolumn, yytext());
             }
-          case 53: break;
+          case 54: break;
           case 7: 
             { System.out.println("Reconocido: <<"+yytext()+">>, mayorq");
                                 return new Symbol(sym.mayorq, yyline, yycolumn, yytext());
             }
-          case 54: break;
+          case 55: break;
           case 8: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menorq");
                                 return new Symbol(sym.menorq, yyline, yycolumn, yytext());
             }
-          case 55: break;
+          case 56: break;
           case 9: 
             { System.out.println("Reconocido: <<"+yytext()+">>, igual");
                                 return new Symbol(sym.igual, yyline, yycolumn, yytext());
             }
-          case 56: break;
+          case 57: break;
           case 10: 
             { System.out.println("Reconocido: <<"+yytext()+">>, diferenteunario");
                                 return new Symbol(sym.diferenteunario, yyline, yycolumn, yytext());
             }
-          case 57: break;
+          case 58: break;
           case 11: 
             { System.out.println("Reconocido: <<"+yytext()+">>, interrogacion");
                                 return new Symbol(sym.interrogacion, yyline, yycolumn, yytext());
             }
-          case 58: break;
+          case 59: break;
           case 12: 
             { System.out.println("Reconocido: <<"+yytext()+">>, apar");
                                 return new Symbol(sym.apar, yyline, yycolumn, yytext());
             }
-          case 59: break;
+          case 60: break;
           case 13: 
             { System.out.println("Reconocido: <<"+yytext()+">>, cpar");
                                 return new Symbol(sym.cpar, yyline, yycolumn, yytext());
             }
-          case 60: break;
+          case 61: break;
           case 14: 
             { System.out.println("Reconocido: <<"+yytext()+">>, puntoycoma");
                                 return new Symbol(sym.puntoycoma, yyline, yycolumn, yytext());
             }
-          case 61: break;
+          case 62: break;
           case 15: 
             { System.out.println("Reconocido: <<"+yytext()+">>, dospuntos");
                                 return new Symbol(sym.dospuntos, yyline, yycolumn, yytext());
             }
-          case 62: break;
+          case 63: break;
           case 16: 
             { System.out.println("Reconocido: <<"+yytext()+">>, allave");
                                 return new Symbol(sym.allave, yyline, yycolumn, yytext());
             }
-          case 63: break;
+          case 64: break;
           case 17: 
             { System.out.println("Reconocido: <<"+yytext()+">>, cllave");
                                 return new Symbol(sym.cllave, yyline, yycolumn, yytext());
             }
-          case 64: break;
+          case 65: break;
           case 18: 
             { System.out.println("Reconocido: <<"+yytext()+">>, id");
                                 return new Symbol(sym.id, yyline, yycolumn, yytext());
             }
-          case 65: break;
+          case 66: break;
           case 19: 
             { System.out.println("Reconocido: <<"+yytext()+">>, entero");
                                 return new Symbol(sym.entero, yyline, yycolumn, yytext());
             }
-          case 66: break;
+          case 67: break;
           case 20: 
             { 
             }
-          case 67: break;
+          case 68: break;
           case 21: 
             { yybegin(YYINITIAL);
             }
-          case 68: break;
+          case 69: break;
           case 22: 
             { System.out.println("Reconocido: <<"+yytext()+">>, masmas");
                                 return new Symbol(sym.masmas, yyline, yycolumn, yytext());
             }
-          case 69: break;
+          case 70: break;
           case 23: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menosmenos");
                                 return new Symbol(sym.menosmenos, yyline, yycolumn, yytext());
             }
-          case 70: break;
+          case 71: break;
           case 24: 
             { yybegin(comentario1);
             }
-          case 71: break;
+          case 72: break;
           case 25: 
             { System.out.println("Reconocido: <<"+yytext()+">>, mayorigualq");
                                 return new Symbol(sym.mayorigualq, yyline, yycolumn, yytext());
             }
-          case 72: break;
+          case 73: break;
           case 26: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menorigualq");
                                 return new Symbol(sym.menorigualq, yyline, yycolumn, yytext());
             }
-          case 73: break;
+          case 74: break;
           case 27: 
             { System.out.println("Reconocido: <<"+yytext()+">>, igualigual");
                                 return new Symbol(sym.igualigual, yyline, yycolumn, yytext());
             }
-          case 74: break;
+          case 75: break;
           case 28: 
             { System.out.println("Reconocido: <<"+yytext()+">>, diferente");
                                 return new Symbol(sym.diferente, yyline, yycolumn, yytext());
             }
-          case 75: break;
+          case 76: break;
           case 29: 
             { System.out.println("Reconocido: <<"+yytext()+">>, oor");
                                 return new Symbol(sym.oor, yyline, yycolumn, yytext());
             }
-          case 76: break;
+          case 77: break;
           case 30: 
             { System.out.println("Reconocido: <<"+yytext()+">>, aand");
                                 return new Symbol(sym.aand, yyline, yycolumn, yytext());
             }
-          case 77: break;
+          case 78: break;
           case 31: 
             { System.out.println("Reconocido: <<"+yytext()+">>, iff");
                                 return new Symbol(sym.iff, yyline, yycolumn, yytext());
             }
-          case 78: break;
+          case 79: break;
           case 32: 
+            { System.out.println("Reconocido: <<"+yytext()+">>, doo");
+                                return new Symbol(sym.doo, yyline, yycolumn, yytext());
+            }
+          case 80: break;
+          case 33: 
             { System.out.println("Reconocido: <<"+yytext()+">>, char");
                                 return new Symbol(sym.charER, yyline, yycolumn, yytext());
             }
-          case 79: break;
-          case 33: 
+          case 81: break;
+          case 34: 
             { System.out.println("Reconocido: <<"+yytext()+">>, cadena");
                                 return new Symbol(sym.cadena, yyline, yycolumn, yytext());
             }
-          case 80: break;
-          case 34: 
+          case 82: break;
+          case 35: 
             { System.out.println("Reconocido: <<"+yytext()+">>, intt");
                                 return new Symbol(sym.intt, yyline, yycolumn, yytext());
             }
-          case 81: break;
-          case 35: 
+          case 83: break;
+          case 36: 
             { System.out.println("Reconocido: <<"+yytext()+">>, decimal");
                                 return new Symbol(sym.decimal, yyline, yycolumn, yytext());
             }
-          case 82: break;
-          case 36: 
+          case 84: break;
+          case 37: 
             { System.out.println("Reconocido: <<"+yytext()+">>, truee");
                                 return new Symbol(sym.truee, yyline, yycolumn, yytext());
             }
-          case 83: break;
-          case 37: 
+          case 85: break;
+          case 38: 
             { System.out.println("Reconocido: <<"+yytext()+">>, charr");
                                 return new Symbol(sym.charr, yyline, yycolumn, yytext());
             }
-          case 84: break;
-          case 38: 
+          case 86: break;
+          case 39: 
             { System.out.println("Reconocido: <<"+yytext()+">>, elsee");
                                 return new Symbol(sym.elsee, yyline, yycolumn, yytext());
             }
-          case 85: break;
-          case 39: 
+          case 87: break;
+          case 40: 
             { System.out.println("Reconocido: <<"+yytext()+">>, breakk");
                                 return new Symbol(sym.breakk, yyline, yycolumn, yytext());
             }
-          case 86: break;
-          case 40: 
+          case 88: break;
+          case 41: 
             { System.out.println("Reconocido: <<"+yytext()+">>, falsee");
                                 return new Symbol(sym.falsee, yyline, yycolumn, yytext());
             }
-          case 87: break;
-          case 41: 
+          case 89: break;
+          case 42: 
             { System.out.println("Reconocido: <<"+yytext()+">>, whilee");
                                 return new Symbol(sym.whilee, yyline, yycolumn, yytext());
             }
-          case 88: break;
-          case 42: 
+          case 90: break;
+          case 43: 
             { System.out.println("Reconocido: <<"+yytext()+">>, print");
                                 return new Symbol(sym.print, yyline, yycolumn, yytext());
             }
-          case 89: break;
-          case 43: 
+          case 91: break;
+          case 44: 
             { System.out.println("Reconocido: <<"+yytext()+">>, stringg");
                                 return new Symbol(sym.stringg, yyline, yycolumn, yytext());
             }
-          case 90: break;
-          case 44: 
+          case 92: break;
+          case 45: 
             { System.out.println("Reconocido: <<"+yytext()+">>, doublee");
                                 return new Symbol(sym.doublee, yyline, yycolumn, yytext());
             }
-          case 91: break;
-          case 45: 
+          case 93: break;
+          case 46: 
             { System.out.println("Reconocido: <<"+yytext()+">>, booleann");
                                 return new Symbol(sym.booleann, yyline, yycolumn, yytext());
             }
-          case 92: break;
-          case 46: 
+          case 94: break;
+          case 47: 
             { System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
                                 return new Symbol(sym.imprimir, yyline, yycolumn, yytext());
             }
-          case 93: break;
-          case 47: 
+          case 95: break;
+          case 48: 
             { System.out.println("Reconocido: <<"+yytext()+">>, continuee");
                                 return new Symbol(sym.continuee, yyline, yycolumn, yytext());
             }
-          case 94: break;
+          case 96: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

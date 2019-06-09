@@ -27,7 +27,7 @@ import ast.instrucciones.ImprimirTS;
 import ast.instrucciones.Printer;
 import ast.instrucciones.Seleccion.IfLista;
 import ast.instrucciones.Seleccion.Iff;
-import ast.instrucciones.ciclos.WhileCiclo;
+import ast.instrucciones.ciclos.*;
 import ast.instrucciones.ciclos.RetCont.*;
 import java.util.LinkedList;
 import java_cup.runtime.*;
@@ -63,7 +63,7 @@ terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
 terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos; //ternario
-terminal String iff, elsee;
+terminal String iff, elsee, doo;
 terminal String MENOSUNARIO, MASUNARIO;
 
 terminal String print;
@@ -158,6 +158,9 @@ CICLOS::= whilee apar E:e1 cpar S:s1 {:
     :}
     |continuee:e puntoycoma {:
         RESULT = new Continuee(eleft, eright);
+    :}
+    |doo:d S:s1 whilee apar E:e1 cpar puntoycoma{:
+        RESULT = new DoWhile(s1, e1, dleft, dright);
     :}; 
 
 
