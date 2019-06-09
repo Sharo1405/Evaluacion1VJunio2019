@@ -16,6 +16,8 @@ import ast.instrucciones.Instruccion;
 import ast.instrucciones.Instruccion;
 import ast.instrucciones.ciclos.RetCont.Breakk;
 import ast.instrucciones.ciclos.RetCont.Continuee;
+import ast.instrucciones.ciclos.RetCont.Returnn;
+import com.sun.org.apache.bcel.internal.generic.ReturnInstruction;
 import java.util.LinkedList;
 
 /**
@@ -49,10 +51,14 @@ public class WhileCiclo implements Instruccion{
                             Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
                             if(retorno instanceof Breakk){
                                 return null;
-                            }else if(retorno instanceof Continuee){
+                            }else if(retorno instanceof Continuee || String.valueOf(retorno).equals("shar")){
                                 reiniciar = true;
                                 break;
+                            }else if(retorno instanceof Returnn){
+                                //AQUI VA EL RETURN 
                             }
+                        }else if(nodo instanceof Expresion){
+                            //AQUI EL RETORNO
                         }
                     }
                     if(reiniciar == true){

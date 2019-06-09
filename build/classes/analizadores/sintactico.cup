@@ -25,6 +25,8 @@ import ast.instrucciones.Asignacion;
 import ast.instrucciones.Instruccion;
 import ast.instrucciones.ImprimirTS;
 import ast.instrucciones.Printer;
+import ast.instrucciones.Seleccion.IfLista;
+import ast.instrucciones.Seleccion.Iff;
 import ast.instrucciones.ciclos.WhileCiclo;
 import ast.instrucciones.ciclos.RetCont.*;
 import java.util.LinkedList;
@@ -61,6 +63,7 @@ terminal String mas, por, menos, dividir, potencia; //aritmeticas
 terminal String oor, aand, diferenteunario; //logica
 terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
 terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos; //ternario
+terminal String iff, elsee;
 terminal String MENOSUNARIO, MASUNARIO;
 
 terminal String print;
@@ -72,6 +75,10 @@ nonterminal Expresion E;
 nonterminal Instruccion D;
 nonterminal TipoContenedor T;
 nonterminal Instruccion J;
+nonterminal Instruccion CICLOS;
+nonterminal Instruccion COND;
+nonterminal Instruccion IF_STATEMENT;
+nonterminal LinkedList<IfLista> IF_LIST;
 
 
 precedence left interrogacion;
@@ -113,7 +120,47 @@ J::= D:d {:
     :}
     |S:d {:
         RESULT = d;
+    :}
+    |CICLOS:d {:
+        RESULT = d;
+    :}
+    |COND:d{:
+        RESULT = d;
     :};
+
+COND::= IF_STATEMENT:d {:
+        RESULT = d;
+      :};
+
+
+IF_STATEMENT::= IF_LIST:i elsee S:s1{:
+            RESULT = new Iff(s1, i, ileft, iright);
+        :}
+        |IF_LIST:i {:
+            RESULT = new Iff(null, i, ileft, iright);
+        :};
+
+IF_LIST::= iff apar E:e1 cpar S:s1 {:
+            RESULT = new LinkedList<IfLista>();
+            RESULT.add(new IfLista(e1, s1, e1left, e1right));
+        :}
+        |IF_LIST:l elsee iff apar E:e1 cpar S:s1{:
+            RESULT = l;
+            RESULT.add(new IfLista(e1, s1, e1left, e1right));
+        :};
+
+
+CICLOS::= whilee apar E:e1 cpar S:s1 {:
+        RESULT = new WhileCiclo(e1, s1, e1left, e1right);
+    :}
+    |breakk:e puntoycoma{:
+        RESULT = new Breakk(eleft, eright);
+    :}
+    |continuee:e puntoycoma {:
+        RESULT = new Continuee(eleft, eright);
+    :}; 
+
+
 
 D::= T:t id:id igual E:e puntoycoma {:
         RESULT = new Declaracion(t,id, e, idleft, idright);
@@ -141,15 +188,6 @@ D::= T:t id:id igual E:e puntoycoma {:
     :}
     |menosmenos id:id puntoycoma{:
         RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
-    :}
-    |whilee apar E:e1 cpar S:s1 {:
-        RESULT = new WhileCiclo(e1, s1, e1left, e1right);
-    :}
-    |breakk:e puntoycoma{:
-        RESULT = new Breakk(eleft, eright);
-    :}
-    |continuee:e puntoycoma {:
-        RESULT = new Continuee(eleft, eright);
     :};
 
 

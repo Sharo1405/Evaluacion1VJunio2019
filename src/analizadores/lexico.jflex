@@ -64,6 +64,8 @@ whilee      = "while"
 print       = "print"
 breakk      = "break"
 continuee   = "continue"
+iff         = "if"
+elsee       = "else"
 
 imprimir    = "imprimir"
 
@@ -201,6 +203,11 @@ enter   = [\ \n]
 <YYINITIAL> {continuee}       {  System.out.println("Reconocido: <<"+yytext()+">>, continuee");
                                 return new Symbol(sym.continuee, yyline, yycolumn, yytext()); } 
 
+<YYINITIAL> {iff}       {  System.out.println("Reconocido: <<"+yytext()+">>, iff");
+                                return new Symbol(sym.iff, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {elsee}       {  System.out.println("Reconocido: <<"+yytext()+">>, elsee");
+                                return new Symbol(sym.elsee, yyline, yycolumn, yytext()); } 
 
 
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
