@@ -48,6 +48,7 @@ terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
 terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos, masmaspost, menosmenospost; //ternario
 terminal String iff, elsee, doo, forr, switchh, casee, defaultt;
 terminal String MENOSUNARIO, MASUNARIO;
+terminal String write_file, read_file, coma;
 
 terminal String print, printLinea;
 
@@ -70,6 +71,7 @@ nonterminal LinkedList<NodoAST> SWITCH_BLOCK_STATEMENT_GROUPS;
 nonterminal LinkedList<NodoAST> SWITCH_LABELS;
 nonterminal NodoAST SWITCH_LABEL;
 nonterminal Instruccion SWITCH_BLOCK_STATEMENT_GROUP;
+nonterminal Expresion ARCHIVOS;
 
 
 
@@ -126,7 +128,24 @@ J::= D:d {:
     :}
     |PREPOSTFIJOS:d {:
         RESULT = d;
+    :}
+    |ARCHIVOS:d{:
+        RESULT = d;
     :};
+
+
+
+ARCHIVOS::=  read_file apar E:ruta cpar puntoycoma {:
+                RESULT = new LeerArchivo(ruta, rutaleft, rutaright);
+            :}
+            |write_file:a apar E:ruta coma E:contenido cpar puntoycoma{:
+                RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
+            :};
+            
+            
+
+
+
 
 COND::= IF_STATEMENT:d {:
         RESULT = d;
@@ -370,6 +389,13 @@ E::= menos:mas E:e1 {:
     |menosmenos id:id {:
          RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
     :}%prec menosmenos
+
+    |read_file apar E:ruta  cpar {:
+        RESULT = new LeerArchivo(ruta, rutaleft, rutaright);
+    :}
+    |write_file:a apar E:ruta coma E:contenido cpar {:
+        RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
+    :}
 
     |apar E:e cpar{:
         RESULT = e;

@@ -36,22 +36,22 @@ public class Lexico implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final char [] ZZ_CMAP = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0, 47, 48, 49, 47, 47,  0,  0, 
+     0,  0,  0,  0,  0,  0,  0,  0,  0, 49, 50, 51, 49, 49,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-    47,  9, 46,  0,  0,  0, 11, 45, 13, 14,  3,  1,  0,  2, 44,  4, 
-    43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 16, 15,  7,  8,  6, 12, 
-     0, 24, 31, 22, 28, 33, 34, 27, 23, 40, 39, 42, 32, 38, 20, 29, 
-    36, 39, 25, 41, 21, 30, 39, 35, 39, 39, 39,  0,  0,  0,  5, 39, 
-     0, 24, 31, 22, 28, 33, 34, 27, 23, 40, 39, 42, 32, 38, 20, 29, 
-    36, 39, 25, 41, 21, 30, 39, 35, 39, 39, 39, 17, 10, 18,  0,  0, 
-     0,  0,  0,  0,  0, 49,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+    49,  9, 48,  0,  0,  0, 11, 47, 14, 15,  3,  1, 13,  2, 46,  4, 
+    45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 17, 16,  7,  8,  6, 12, 
+     0, 25, 32, 23, 29, 34, 35, 28, 24, 42, 41, 44, 33, 40, 21, 30, 
+    37, 41, 26, 43, 22, 31, 41, 36, 41, 41, 41,  0,  0,  0,  5, 39, 
+     0, 25, 32, 23, 29, 34, 35, 28, 24, 42, 41, 44, 33, 40, 21, 30, 
+    37, 41, 26, 43, 22, 31, 41, 36, 41, 41, 41, 18, 10, 19,  0,  0, 
+     0,  0,  0,  0,  0, 51,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     0, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+     0, 41,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+     0, 41,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
   };
 
   /** 
@@ -62,21 +62,24 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final String ZZ_ACTION_PACKED_0 =
     "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
     "\1\10\1\11\1\12\2\1\1\13\1\14\1\15\1\16"+
-    "\1\17\1\20\1\21\1\1\3\22\1\1\10\22\1\23"+
-    "\2\1\1\24\1\25\1\26\1\27\1\30\1\31\1\32"+
-    "\1\33\1\34\1\35\1\36\1\0\1\37\1\0\4\22"+
-    "\2\0\1\40\11\22\1\37\3\22\2\0\1\41\1\0"+
-    "\1\42\1\43\1\0\2\22\1\0\2\22\2\0\4\22"+
-    "\1\0\2\22\1\44\1\0\1\22\1\0\1\22\1\43"+
-    "\3\22\1\45\1\0\1\46\1\47\2\50\1\22\2\0"+
-    "\4\22\2\51\1\0\1\22\1\0\1\22\1\0\4\22"+
-    "\2\0\1\22\2\0\2\22\2\52\1\22\2\53\2\54"+
-    "\2\55\3\22\2\0\1\22\1\56\1\57\1\60\2\22"+
-    "\1\0\2\22\1\56\1\57\2\0\1\22\1\61\1\62"+
-    "\2\63\1\22\1\64\2\65\1\64";
+    "\1\17\1\20\1\21\1\22\1\1\4\23\1\1\10\23"+
+    "\1\24\2\1\1\25\1\26\1\27\1\30\1\31\1\32"+
+    "\1\33\1\34\1\35\1\36\1\37\1\0\1\40\1\0"+
+    "\5\23\2\0\1\41\12\23\1\40\3\23\2\0\1\42"+
+    "\1\0\1\43\1\44\1\0\2\23\1\0\3\23\2\0"+
+    "\4\23\1\0\2\23\1\45\1\0\1\23\1\0\1\23"+
+    "\1\0\1\23\1\44\3\23\1\46\1\0\1\47\1\50"+
+    "\2\51\2\23\2\0\4\23\2\52\1\0\1\23\1\0"+
+    "\1\23\1\0\1\23\1\0\4\23\2\0\2\23\2\0"+
+    "\2\23\2\53\1\23\2\54\2\55\1\0\1\23\2\56"+
+    "\3\23\2\0\2\23\1\57\1\60\1\61\2\23\1\0"+
+    "\1\23\1\0\2\23\1\57\1\60\2\0\1\23\1\0"+
+    "\1\23\1\62\1\63\1\0\1\23\2\64\1\23\1\65"+
+    "\2\66\1\0\1\23\1\0\1\23\1\65\2\67\1\0"+
+    "\1\23\2\70";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[169];
+    int [] result = new int[199];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -101,31 +104,34 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\62\0\144\0\226\0\310\0\144\0\372\0\144"+
-    "\0\u012c\0\u015e\0\u0190\0\u01c2\0\u01f4\0\u0226\0\144\0\144"+
-    "\0\144\0\144\0\144\0\144\0\144\0\u0258\0\u028a\0\u02bc"+
-    "\0\u02ee\0\u0320\0\u0352\0\u0384\0\u03b6\0\u03e8\0\u041a\0\u044c"+
-    "\0\u047e\0\u04b0\0\u04e2\0\u0514\0\u0546\0\144\0\144\0\144"+
-    "\0\144\0\144\0\144\0\144\0\144\0\144\0\144\0\144"+
-    "\0\u0578\0\144\0\u05aa\0\u05dc\0\u060e\0\u0640\0\u0672\0\u06a4"+
-    "\0\u06d6\0\u0708\0\u073a\0\u076c\0\u079e\0\u07d0\0\u0802\0\u0834"+
-    "\0\u0866\0\u0898\0\u08ca\0\u028a\0\u08fc\0\u092e\0\u0960\0\u0992"+
-    "\0\u0514\0\144\0\u0546\0\144\0\144\0\u09c4\0\u09f6\0\u0a28"+
-    "\0\u0a5a\0\u0a8c\0\u0abe\0\u0af0\0\u0b22\0\u0b54\0\u0b86\0\u0bb8"+
-    "\0\u0bea\0\u0c1c\0\u0c4e\0\u0c80\0\u028a\0\u0cb2\0\u0ce4\0\u0d16"+
-    "\0\u0d48\0\u028a\0\u0d7a\0\u0dac\0\u0dde\0\u0992\0\u0e10\0\u028a"+
-    "\0\u028a\0\144\0\u028a\0\u0e42\0\u0e74\0\u0ea6\0\u0ed8\0\u0f0a"+
-    "\0\u0f3c\0\u0f6e\0\144\0\u028a\0\u0fa0\0\u0fd2\0\u1004\0\u1036"+
-    "\0\u1068\0\u109a\0\u10cc\0\u10fe\0\u1130\0\u1162\0\u1194\0\u11c6"+
-    "\0\u11f8\0\u122a\0\u125c\0\u128e\0\144\0\u028a\0\u12c0\0\144"+
-    "\0\u028a\0\144\0\u028a\0\u12f2\0\u1324\0\u1356\0\u1388\0\u13ba"+
-    "\0\u13ec\0\u141e\0\u1450\0\144\0\144\0\u028a\0\u1482\0\u14b4"+
-    "\0\u14e6\0\u1518\0\u154a\0\u028a\0\u028a\0\u157c\0\u15ae\0\u15e0"+
-    "\0\u028a\0\u028a\0\144\0\u028a\0\u1612\0\144\0\144\0\u028a"+
-    "\0\u028a";
+    "\0\0\0\64\0\150\0\234\0\320\0\150\0\u0104\0\150"+
+    "\0\u0138\0\u016c\0\u01a0\0\u01d4\0\u0208\0\u023c\0\150\0\150"+
+    "\0\150\0\150\0\150\0\150\0\150\0\150\0\u0270\0\u02a4"+
+    "\0\u02d8\0\u030c\0\u0340\0\u0374\0\u03a8\0\u03dc\0\u0410\0\u0444"+
+    "\0\u0478\0\u04ac\0\u04e0\0\u0514\0\u0548\0\u057c\0\u05b0\0\150"+
+    "\0\150\0\150\0\150\0\150\0\150\0\150\0\150\0\150"+
+    "\0\150\0\150\0\u05e4\0\150\0\u0618\0\u064c\0\u0680\0\u06b4"+
+    "\0\u06e8\0\u071c\0\u0750\0\u0784\0\u07b8\0\u07ec\0\u0820\0\u0854"+
+    "\0\u0888\0\u08bc\0\u08f0\0\u0924\0\u0958\0\u098c\0\u09c0\0\u02a4"+
+    "\0\u09f4\0\u0a28\0\u0a5c\0\u0a90\0\u057c\0\150\0\u05b0\0\150"+
+    "\0\150\0\u0ac4\0\u0af8\0\u0b2c\0\u0b60\0\u0b94\0\u0bc8\0\u0bfc"+
+    "\0\u0c30\0\u0c64\0\u0c98\0\u0ccc\0\u0d00\0\u0d34\0\u0d68\0\u0d9c"+
+    "\0\u0dd0\0\u02a4\0\u0e04\0\u0e38\0\u0e6c\0\u0ea0\0\u0ed4\0\u0f08"+
+    "\0\u02a4\0\u0f3c\0\u0f70\0\u0fa4\0\u0a90\0\u0fd8\0\u02a4\0\u02a4"+
+    "\0\150\0\u02a4\0\u100c\0\u1040\0\u1074\0\u10a8\0\u10dc\0\u1110"+
+    "\0\u1144\0\u1178\0\150\0\u02a4\0\u11ac\0\u11e0\0\u1214\0\u1248"+
+    "\0\u127c\0\u12b0\0\u12e4\0\u1318\0\u134c\0\u1380\0\u13b4\0\u13e8"+
+    "\0\u141c\0\u1450\0\u1484\0\u14b8\0\u14ec\0\u1520\0\u1554\0\150"+
+    "\0\u02a4\0\u1588\0\150\0\u02a4\0\150\0\u02a4\0\u15bc\0\u15f0"+
+    "\0\u1624\0\u1658\0\u168c\0\u16c0\0\u16f4\0\u1728\0\u175c\0\u1790"+
+    "\0\u17c4\0\150\0\150\0\u02a4\0\u17f8\0\u182c\0\u1860\0\u1894"+
+    "\0\u18c8\0\u18fc\0\u1930\0\u02a4\0\u02a4\0\u1964\0\u1998\0\u19cc"+
+    "\0\u1a00\0\u1a34\0\u02a4\0\u02a4\0\u1a68\0\u1a9c\0\150\0\u02a4"+
+    "\0\u1ad0\0\150\0\150\0\u02a4\0\u1b04\0\u1b38\0\u1b6c\0\u1ba0"+
+    "\0\u02a4\0\150\0\u02a4\0\u1bd4\0\u1c08\0\150\0\u02a4";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[169];
+    int [] result = new int[199];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -150,96 +156,115 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12"+
     "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
-    "\1\23\1\24\1\25\1\26\1\27\1\30\1\31\3\27"+
-    "\1\32\1\27\1\33\2\27\1\34\1\27\1\35\1\36"+
-    "\1\37\1\40\1\3\2\27\1\41\1\42\1\27\1\43"+
-    "\1\3\1\44\1\45\2\46\1\0\60\46\1\47\1\46"+
-    "\63\0\1\50\62\0\1\51\50\0\1\43\12\0\1\52"+
-    "\65\0\1\53\61\0\1\54\61\0\1\55\61\0\1\56"+
-    "\63\0\1\57\62\0\1\60\72\0\1\61\15\0\1\62"+
-    "\3\0\1\63\37\0\6\27\1\0\12\27\1\0\6\27"+
-    "\32\0\5\27\1\64\1\0\12\27\1\0\6\27\32\0"+
-    "\3\27\1\65\1\66\1\27\1\0\2\27\1\67\7\27"+
-    "\1\0\6\27\33\0\1\70\15\0\1\71\42\0\6\27"+
-    "\1\0\2\27\1\72\3\27\1\73\3\27\1\0\6\27"+
-    "\32\0\5\27\1\74\1\0\2\27\1\75\7\27\1\0"+
-    "\6\27\32\0\6\27\1\0\5\27\1\76\4\27\1\0"+
-    "\6\27\32\0\4\27\1\77\1\27\1\0\2\27\1\100"+
-    "\7\27\1\0\6\27\32\0\3\27\1\101\2\27\1\0"+
-    "\12\27\1\0\6\27\32\0\5\27\1\102\1\0\12\27"+
-    "\1\0\6\27\32\0\1\103\5\27\1\0\7\27\1\104"+
-    "\2\27\1\0\1\105\5\27\32\0\1\27\1\106\4\27"+
-    "\1\0\10\27\1\107\1\27\1\0\6\27\61\0\1\43"+
-    "\1\110\5\0\55\111\1\112\4\111\56\113\1\114\3\113"+
-    "\25\0\1\115\100\0\1\116\41\0\6\27\1\0\3\27"+
-    "\1\117\6\27\1\0\6\27\32\0\4\27\1\120\1\27"+
-    "\1\0\12\27\1\0\6\27\32\0\6\27\1\121\12\27"+
-    "\1\0\3\27\1\122\2\27\32\0\1\123\5\27\1\0"+
-    "\12\27\1\0\6\27\37\0\1\124\53\0\1\125\24\0"+
-    "\1\125\35\0\6\27\1\0\3\27\1\126\6\27\1\0"+
-    "\6\27\32\0\6\27\1\0\7\27\1\127\2\27\1\0"+
-    "\6\27\32\0\6\27\1\0\6\27\1\130\3\27\1\0"+
-    "\6\27\32\0\6\27\1\0\2\27\1\131\7\27\1\0"+
-    "\6\27\32\0\6\27\1\132\12\27\1\0\3\27\1\133"+
-    "\2\27\32\0\6\27\1\0\5\27\1\134\4\27\1\0"+
-    "\6\27\32\0\5\27\1\135\1\0\12\27\1\0\6\27"+
-    "\31\0\1\136\6\27\1\0\12\27\1\0\2\27\1\137"+
-    "\3\27\31\0\1\140\6\27\1\0\12\27\1\0\2\27"+
-    "\1\141\3\27\32\0\1\27\1\142\4\27\1\0\12\27"+
-    "\1\0\6\27\32\0\6\27\1\0\11\27\1\143\1\0"+
-    "\6\27\32\0\5\27\1\144\1\0\12\27\1\0\6\27"+
-    "\31\0\1\125\6\27\1\0\12\27\1\0\2\27\1\145"+
-    "\3\27\61\0\1\146\37\0\1\147\54\0\6\27\1\0"+
-    "\6\27\1\150\3\27\1\0\6\27\32\0\5\27\1\151"+
-    "\1\0\12\27\1\0\6\27\47\0\1\152\44\0\6\27"+
-    "\1\0\6\27\1\153\3\27\1\0\6\27\32\0\1\27"+
-    "\1\154\4\27\1\0\12\27\1\0\6\27\31\0\1\155"+
-    "\24\0\1\155\36\0\1\156\60\0\6\27\1\0\4\27"+
-    "\1\157\5\27\1\0\6\27\32\0\4\27\1\160\1\27"+
-    "\1\0\12\27\1\0\6\27\32\0\4\27\1\161\1\27"+
-    "\1\0\12\27\1\0\6\27\32\0\6\27\1\0\5\27"+
-    "\1\162\4\27\1\0\6\27\47\0\1\163\44\0\6\27"+
-    "\1\0\6\27\1\164\3\27\1\0\6\27\32\0\6\27"+
-    "\1\165\12\27\1\0\3\27\1\166\2\27\46\0\1\167"+
-    "\45\0\6\27\1\0\5\27\1\170\4\27\1\0\6\27"+
-    "\32\0\1\171\61\0\1\172\5\27\1\0\12\27\1\0"+
-    "\6\27\32\0\5\27\1\173\1\0\12\27\1\0\6\27"+
-    "\31\0\1\155\6\27\1\0\12\27\1\0\2\27\1\174"+
-    "\3\27\32\0\1\27\1\175\4\27\1\0\12\27\1\0"+
-    "\6\27\31\0\1\176\24\0\1\176\34\0\1\177\6\27"+
-    "\1\0\12\27\1\0\2\27\1\200\3\27\32\0\1\201"+
-    "\63\0\1\202\57\0\6\27\1\0\5\27\1\203\4\27"+
-    "\1\0\6\27\32\0\6\27\1\0\3\27\1\204\6\27"+
-    "\1\0\6\27\32\0\6\27\1\0\12\27\1\205\4\27"+
-    "\1\206\1\27\32\0\6\27\1\0\6\27\1\207\3\27"+
-    "\1\0\6\27\47\0\1\210\44\0\6\27\1\0\6\27"+
-    "\1\211\3\27\1\0\6\27\47\0\1\212\44\0\6\27"+
-    "\1\0\6\27\1\213\3\27\1\0\6\27\33\0\1\214"+
-    "\60\0\1\27\1\215\4\27\1\0\12\27\1\0\6\27"+
-    "\31\0\1\176\6\27\1\0\12\27\1\0\2\27\1\216"+
-    "\3\27\32\0\1\217\5\27\1\0\12\27\1\0\6\27"+
-    "\32\0\2\27\1\220\3\27\1\0\12\27\1\0\6\27"+
-    "\54\0\1\221\37\0\1\222\61\0\1\223\5\27\1\0"+
-    "\12\27\1\0\6\27\41\0\1\224\55\0\1\225\56\0"+
-    "\6\27\1\0\6\27\1\226\3\27\1\0\6\27\32\0"+
-    "\6\27\1\0\5\27\1\227\4\27\1\0\6\27\32\0"+
-    "\4\27\1\230\1\27\1\0\12\27\1\0\6\27\46\0"+
-    "\1\231\45\0\6\27\1\0\5\27\1\232\4\27\1\0"+
-    "\6\27\32\0\6\27\1\0\12\27\1\0\1\233\5\27"+
-    "\32\0\6\27\1\0\1\234\11\27\1\0\6\27\32\0"+
-    "\3\27\1\235\2\27\1\0\12\27\1\0\6\27\31\0"+
-    "\1\236\24\0\1\236\47\0\1\237\47\0\6\27\1\0"+
-    "\3\27\1\240\6\27\1\0\6\27\32\0\1\27\1\241"+
-    "\4\27\1\0\12\27\1\0\6\27\32\0\1\242\5\27"+
-    "\1\0\12\27\1\0\6\27\32\0\1\243\61\0\1\244"+
-    "\5\27\1\0\12\27\1\0\6\27\31\0\1\236\6\27"+
-    "\1\0\12\27\1\0\2\27\1\245\3\27\37\0\1\246"+
-    "\71\0\1\247\44\0\6\27\1\0\6\27\1\250\3\27"+
-    "\1\0\6\27\32\0\5\27\1\251\1\0\12\27\1\0"+
-    "\6\27\6\0";
+    "\1\23\1\24\1\25\1\26\1\27\1\30\1\31\1\32"+
+    "\2\30\1\33\1\34\1\30\1\35\2\30\1\36\1\30"+
+    "\1\37\1\40\1\41\1\42\1\3\3\30\1\43\1\44"+
+    "\1\30\1\45\1\3\1\46\1\47\2\50\1\0\62\50"+
+    "\1\51\1\50\65\0\1\52\64\0\1\53\52\0\1\45"+
+    "\12\0\1\54\67\0\1\55\63\0\1\56\63\0\1\57"+
+    "\63\0\1\60\65\0\1\61\64\0\1\62\75\0\1\63"+
+    "\15\0\1\64\4\0\1\65\40\0\6\30\1\0\12\30"+
+    "\1\0\7\30\33\0\5\30\1\66\1\0\12\30\1\0"+
+    "\7\30\33\0\3\30\1\67\1\70\1\30\1\0\2\30"+
+    "\1\71\7\30\1\0\7\30\33\0\6\30\1\0\6\30"+
+    "\1\72\3\30\1\0\7\30\34\0\1\73\15\0\1\74"+
+    "\44\0\6\30\1\0\2\30\1\75\3\30\1\76\3\30"+
+    "\1\0\7\30\33\0\5\30\1\77\1\0\2\30\1\100"+
+    "\7\30\1\0\7\30\33\0\6\30\1\0\5\30\1\101"+
+    "\4\30\1\0\7\30\33\0\4\30\1\102\1\30\1\0"+
+    "\2\30\1\103\7\30\1\0\7\30\33\0\3\30\1\104"+
+    "\1\30\1\105\1\0\12\30\1\0\7\30\33\0\5\30"+
+    "\1\106\1\0\12\30\1\0\7\30\33\0\1\107\5\30"+
+    "\1\0\7\30\1\110\2\30\1\0\1\30\1\111\5\30"+
+    "\33\0\1\30\1\112\4\30\1\0\10\30\1\113\1\30"+
+    "\1\0\7\30\63\0\1\45\1\114\5\0\57\115\1\116"+
+    "\4\115\60\117\1\120\3\117\26\0\1\121\102\0\1\122"+
+    "\43\0\6\30\1\0\3\30\1\123\6\30\1\0\7\30"+
+    "\33\0\4\30\1\124\1\30\1\0\12\30\1\0\7\30"+
+    "\33\0\6\30\1\125\12\30\1\0\4\30\1\126\2\30"+
+    "\33\0\1\127\5\30\1\0\12\30\1\0\7\30\33\0"+
+    "\4\30\1\130\1\30\1\0\12\30\1\0\7\30\40\0"+
+    "\1\131\55\0\1\132\25\0\1\132\36\0\6\30\1\0"+
+    "\3\30\1\133\6\30\1\0\7\30\33\0\6\30\1\0"+
+    "\7\30\1\134\2\30\1\0\7\30\33\0\6\30\1\0"+
+    "\6\30\1\135\3\30\1\0\7\30\33\0\6\30\1\0"+
+    "\2\30\1\136\7\30\1\0\7\30\33\0\6\30\1\137"+
+    "\12\30\1\0\4\30\1\140\2\30\33\0\6\30\1\0"+
+    "\5\30\1\141\4\30\1\0\7\30\33\0\5\30\1\142"+
+    "\1\0\12\30\1\0\7\30\32\0\1\143\6\30\1\0"+
+    "\12\30\1\0\3\30\1\144\3\30\32\0\1\145\6\30"+
+    "\1\0\12\30\1\0\3\30\1\146\3\30\32\0\1\147"+
+    "\6\30\1\0\12\30\1\0\3\30\1\150\3\30\33\0"+
+    "\1\30\1\151\4\30\1\0\12\30\1\0\7\30\33\0"+
+    "\6\30\1\0\11\30\1\152\1\0\7\30\33\0\5\30"+
+    "\1\153\1\0\12\30\1\0\7\30\32\0\1\132\6\30"+
+    "\1\0\12\30\1\0\3\30\1\154\3\30\63\0\1\155"+
+    "\40\0\1\156\56\0\6\30\1\0\6\30\1\157\3\30"+
+    "\1\0\7\30\33\0\5\30\1\160\1\0\12\30\1\0"+
+    "\7\30\50\0\1\161\46\0\6\30\1\0\6\30\1\162"+
+    "\3\30\1\0\7\30\33\0\1\30\1\163\4\30\1\0"+
+    "\12\30\1\0\7\30\33\0\6\30\1\0\1\30\1\164"+
+    "\10\30\1\0\7\30\32\0\1\165\25\0\1\165\37\0"+
+    "\1\166\62\0\6\30\1\0\4\30\1\167\5\30\1\0"+
+    "\7\30\33\0\4\30\1\170\1\30\1\0\12\30\1\0"+
+    "\7\30\33\0\4\30\1\171\1\30\1\0\12\30\1\0"+
+    "\7\30\33\0\6\30\1\0\5\30\1\172\4\30\1\0"+
+    "\7\30\50\0\1\173\46\0\6\30\1\0\6\30\1\174"+
+    "\3\30\1\0\7\30\33\0\6\30\1\175\12\30\1\0"+
+    "\4\30\1\176\2\30\47\0\1\177\47\0\6\30\1\0"+
+    "\5\30\1\200\4\30\1\0\7\30\34\0\1\201\62\0"+
+    "\1\30\1\202\4\30\1\0\12\30\1\0\7\30\33\0"+
+    "\1\203\63\0\1\204\5\30\1\0\12\30\1\0\7\30"+
+    "\33\0\5\30\1\205\1\0\12\30\1\0\7\30\32\0"+
+    "\1\165\6\30\1\0\12\30\1\0\3\30\1\206\3\30"+
+    "\33\0\1\30\1\207\4\30\1\0\12\30\1\0\7\30"+
+    "\32\0\1\210\25\0\1\210\35\0\1\211\6\30\1\0"+
+    "\12\30\1\0\3\30\1\212\3\30\33\0\6\30\1\0"+
+    "\12\30\1\0\1\213\6\30\33\0\1\214\65\0\1\215"+
+    "\61\0\6\30\1\0\5\30\1\216\4\30\1\0\7\30"+
+    "\33\0\6\30\1\0\3\30\1\217\6\30\1\0\7\30"+
+    "\33\0\6\30\1\0\12\30\1\220\5\30\1\221\1\30"+
+    "\33\0\6\30\1\0\6\30\1\222\3\30\1\0\7\30"+
+    "\50\0\1\223\46\0\6\30\1\0\6\30\1\224\3\30"+
+    "\1\0\7\30\50\0\1\225\46\0\6\30\1\0\6\30"+
+    "\1\226\3\30\1\0\7\30\50\0\1\227\46\0\6\30"+
+    "\1\0\6\30\1\230\3\30\1\0\7\30\34\0\1\231"+
+    "\62\0\1\30\1\232\4\30\1\0\12\30\1\0\7\30"+
+    "\32\0\1\210\6\30\1\0\12\30\1\0\3\30\1\233"+
+    "\3\30\33\0\1\234\5\30\1\0\12\30\1\0\7\30"+
+    "\33\0\2\30\1\235\3\30\1\0\12\30\1\0\7\30"+
+    "\56\0\1\236\40\0\1\237\63\0\1\240\5\30\1\0"+
+    "\12\30\1\0\7\30\33\0\6\30\1\0\7\30\1\241"+
+    "\2\30\1\0\7\30\42\0\1\242\57\0\1\243\60\0"+
+    "\6\30\1\0\6\30\1\244\3\30\1\0\7\30\33\0"+
+    "\6\30\1\0\5\30\1\245\4\30\1\0\7\30\33\0"+
+    "\4\30\1\246\1\30\1\0\12\30\1\0\7\30\55\0"+
+    "\1\247\41\0\6\30\1\0\12\30\1\0\1\250\6\30"+
+    "\47\0\1\251\47\0\6\30\1\0\5\30\1\252\4\30"+
+    "\1\0\7\30\33\0\6\30\1\0\12\30\1\0\1\30"+
+    "\1\253\5\30\33\0\6\30\1\0\1\254\11\30\1\0"+
+    "\7\30\33\0\3\30\1\255\2\30\1\0\12\30\1\0"+
+    "\7\30\32\0\1\256\25\0\1\256\50\0\1\257\51\0"+
+    "\6\30\1\0\3\30\1\260\6\30\1\0\7\30\32\0"+
+    "\1\261\6\30\1\0\12\30\1\0\3\30\1\262\3\30"+
+    "\33\0\1\30\1\263\4\30\1\0\12\30\1\0\7\30"+
+    "\33\0\1\264\5\30\1\0\12\30\1\0\7\30\51\0"+
+    "\1\265\45\0\6\30\1\0\7\30\1\266\2\30\1\0"+
+    "\7\30\33\0\1\267\63\0\1\270\5\30\1\0\12\30"+
+    "\1\0\7\30\32\0\1\256\6\30\1\0\12\30\1\0"+
+    "\3\30\1\271\3\30\40\0\1\272\73\0\1\273\46\0"+
+    "\6\30\1\0\6\30\1\274\3\30\1\0\7\30\47\0"+
+    "\1\275\47\0\6\30\1\0\5\30\1\276\4\30\1\0"+
+    "\7\30\32\0\1\277\25\0\1\277\35\0\1\277\6\30"+
+    "\1\0\12\30\1\0\3\30\1\300\3\30\33\0\5\30"+
+    "\1\301\1\0\12\30\1\0\7\30\50\0\1\302\46\0"+
+    "\6\30\1\0\6\30\1\303\3\30\1\0\7\30\47\0"+
+    "\1\304\47\0\6\30\1\0\5\30\1\305\4\30\1\0"+
+    "\7\30\50\0\1\306\46\0\6\30\1\0\6\30\1\307"+
+    "\3\30\1\0\7\30\6\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[5700];
+    int [] result = new int[7228];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -277,18 +302,21 @@ public class Lexico implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\2\1\1\11\1\1\1\11\6\1\7\11"+
-    "\20\1\13\11\1\0\1\11\1\0\4\1\2\0\16\1"+
-    "\2\0\1\11\1\0\2\11\1\0\2\1\1\0\2\1"+
-    "\2\0\4\1\1\0\3\1\1\0\1\1\1\0\6\1"+
-    "\1\0\2\1\1\11\2\1\2\0\4\1\1\11\1\1"+
-    "\1\0\1\1\1\0\1\1\1\0\4\1\2\0\1\1"+
-    "\2\0\2\1\1\11\2\1\1\11\1\1\1\11\6\1"+
-    "\2\0\1\1\2\11\3\1\1\0\4\1\2\0\3\1"+
-    "\1\11\2\1\2\11\2\1";
+    "\2\0\1\11\2\1\1\11\1\1\1\11\6\1\10\11"+
+    "\21\1\13\11\1\0\1\11\1\0\5\1\2\0\17\1"+
+    "\2\0\1\11\1\0\2\11\1\0\2\1\1\0\3\1"+
+    "\2\0\4\1\1\0\3\1\1\0\1\1\1\0\1\1"+
+    "\1\0\6\1\1\0\2\1\1\11\3\1\2\0\4\1"+
+    "\1\11\1\1\1\0\1\1\1\0\1\1\1\0\1\1"+
+    "\1\0\4\1\2\0\2\1\2\0\2\1\1\11\2\1"+
+    "\1\11\1\1\1\11\1\1\1\0\6\1\2\0\2\1"+
+    "\2\11\3\1\1\0\1\1\1\0\4\1\2\0\1\1"+
+    "\1\0\3\1\1\0\1\1\1\11\2\1\2\11\1\1"+
+    "\1\0\1\1\1\0\2\1\1\11\1\1\1\0\1\1"+
+    "\1\11\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[169];
+    int [] result = new int[199];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -739,264 +767,279 @@ public class Lexico implements java_cup.runtime.Scanner {
         System.err.println(errorLex);
         System.out.println(errorLex);
             }
-          case 54: break;
+          case 57: break;
           case 2: 
             { System.out.println("Reconocido: <<"+yytext()+">>, mas");
                                 return new Symbol(sym.mas, yyline, yycolumn, yytext());
             }
-          case 55: break;
+          case 58: break;
           case 3: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menos");
                                 return new Symbol(sym.menos, yyline, yycolumn, yytext());
             }
-          case 56: break;
+          case 59: break;
           case 4: 
             { System.out.println("Reconocido: <<"+yytext()+">>, por");
                                 return new Symbol(sym.por, yyline, yycolumn, yytext());
             }
-          case 57: break;
+          case 60: break;
           case 5: 
             { System.out.println("Reconocido: <<"+yytext()+">>, dividir");
                                 return new Symbol(sym.dividir, yyline, yycolumn, yytext());
             }
-          case 58: break;
+          case 61: break;
           case 6: 
             { System.out.println("Reconocido: <<"+yytext()+">>, potencia");
                                 return new Symbol(sym.potencia, yyline, yycolumn, yytext());
             }
-          case 59: break;
+          case 62: break;
           case 7: 
             { System.out.println("Reconocido: <<"+yytext()+">>, mayorq");
                                 return new Symbol(sym.mayorq, yyline, yycolumn, yytext());
             }
-          case 60: break;
+          case 63: break;
           case 8: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menorq");
                                 return new Symbol(sym.menorq, yyline, yycolumn, yytext());
             }
-          case 61: break;
+          case 64: break;
           case 9: 
             { System.out.println("Reconocido: <<"+yytext()+">>, igual");
                                 return new Symbol(sym.igual, yyline, yycolumn, yytext());
             }
-          case 62: break;
+          case 65: break;
           case 10: 
             { System.out.println("Reconocido: <<"+yytext()+">>, diferenteunario");
                                 return new Symbol(sym.diferenteunario, yyline, yycolumn, yytext());
             }
-          case 63: break;
+          case 66: break;
           case 11: 
             { System.out.println("Reconocido: <<"+yytext()+">>, interrogacion");
                                 return new Symbol(sym.interrogacion, yyline, yycolumn, yytext());
             }
-          case 64: break;
+          case 67: break;
           case 12: 
+            { System.out.println("Reconocido: <<"+yytext()+">>, coma");
+                                return new Symbol(sym.coma, yyline, yycolumn, yytext());
+            }
+          case 68: break;
+          case 13: 
             { System.out.println("Reconocido: <<"+yytext()+">>, apar");
                                 return new Symbol(sym.apar, yyline, yycolumn, yytext());
             }
-          case 65: break;
-          case 13: 
+          case 69: break;
+          case 14: 
             { System.out.println("Reconocido: <<"+yytext()+">>, cpar");
                                 return new Symbol(sym.cpar, yyline, yycolumn, yytext());
             }
-          case 66: break;
-          case 14: 
+          case 70: break;
+          case 15: 
             { System.out.println("Reconocido: <<"+yytext()+">>, puntoycoma");
                                 return new Symbol(sym.puntoycoma, yyline, yycolumn, yytext());
             }
-          case 67: break;
-          case 15: 
+          case 71: break;
+          case 16: 
             { System.out.println("Reconocido: <<"+yytext()+">>, dospuntos");
                                 return new Symbol(sym.dospuntos, yyline, yycolumn, yytext());
             }
-          case 68: break;
-          case 16: 
+          case 72: break;
+          case 17: 
             { System.out.println("Reconocido: <<"+yytext()+">>, allave");
                                 return new Symbol(sym.allave, yyline, yycolumn, yytext());
             }
-          case 69: break;
-          case 17: 
+          case 73: break;
+          case 18: 
             { System.out.println("Reconocido: <<"+yytext()+">>, cllave");
                                 return new Symbol(sym.cllave, yyline, yycolumn, yytext());
             }
-          case 70: break;
-          case 18: 
+          case 74: break;
+          case 19: 
             { System.out.println("Reconocido: <<"+yytext()+">>, id");
                                 return new Symbol(sym.id, yyline, yycolumn, yytext());
             }
-          case 71: break;
-          case 19: 
+          case 75: break;
+          case 20: 
             { System.out.println("Reconocido: <<"+yytext()+">>, entero");
                                 return new Symbol(sym.entero, yyline, yycolumn, yytext());
             }
-          case 72: break;
-          case 20: 
+          case 76: break;
+          case 21: 
             { 
             }
-          case 73: break;
-          case 21: 
+          case 77: break;
+          case 22: 
             { yybegin(YYINITIAL);
             }
-          case 74: break;
-          case 22: 
+          case 78: break;
+          case 23: 
             { System.out.println("Reconocido: <<"+yytext()+">>, masmas");
                                 return new Symbol(sym.masmas, yyline, yycolumn, yytext());
             }
-          case 75: break;
-          case 23: 
+          case 79: break;
+          case 24: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menosmenos");
                                 return new Symbol(sym.menosmenos, yyline, yycolumn, yytext());
             }
-          case 76: break;
-          case 24: 
+          case 80: break;
+          case 25: 
             { yybegin(comentario1);
             }
-          case 77: break;
-          case 25: 
+          case 81: break;
+          case 26: 
             { System.out.println("Reconocido: <<"+yytext()+">>, mayorigualq");
                                 return new Symbol(sym.mayorigualq, yyline, yycolumn, yytext());
             }
-          case 78: break;
-          case 26: 
+          case 82: break;
+          case 27: 
             { System.out.println("Reconocido: <<"+yytext()+">>, menorigualq");
                                 return new Symbol(sym.menorigualq, yyline, yycolumn, yytext());
             }
-          case 79: break;
-          case 27: 
+          case 83: break;
+          case 28: 
             { System.out.println("Reconocido: <<"+yytext()+">>, igualigual");
                                 return new Symbol(sym.igualigual, yyline, yycolumn, yytext());
             }
-          case 80: break;
-          case 28: 
+          case 84: break;
+          case 29: 
             { System.out.println("Reconocido: <<"+yytext()+">>, diferente");
                                 return new Symbol(sym.diferente, yyline, yycolumn, yytext());
             }
-          case 81: break;
-          case 29: 
+          case 85: break;
+          case 30: 
             { System.out.println("Reconocido: <<"+yytext()+">>, oor");
                                 return new Symbol(sym.oor, yyline, yycolumn, yytext());
             }
-          case 82: break;
-          case 30: 
+          case 86: break;
+          case 31: 
             { System.out.println("Reconocido: <<"+yytext()+">>, aand");
                                 return new Symbol(sym.aand, yyline, yycolumn, yytext());
             }
-          case 83: break;
-          case 31: 
+          case 87: break;
+          case 32: 
             { System.out.println("Reconocido: <<"+yytext()+">>, iff");
                                 return new Symbol(sym.iff, yyline, yycolumn, yytext());
             }
-          case 84: break;
-          case 32: 
+          case 88: break;
+          case 33: 
             { System.out.println("Reconocido: <<"+yytext()+">>, doo");
                                 return new Symbol(sym.doo, yyline, yycolumn, yytext());
             }
-          case 85: break;
-          case 33: 
+          case 89: break;
+          case 34: 
             { System.out.println("Reconocido: <<"+yytext()+">>, char");
                                 return new Symbol(sym.charER, yyline, yycolumn, yytext());
             }
-          case 86: break;
-          case 34: 
+          case 90: break;
+          case 35: 
             { System.out.println("Reconocido: <<"+yytext()+">>, cadena");
                                 return new Symbol(sym.cadena, yyline, yycolumn, yytext());
             }
-          case 87: break;
-          case 35: 
+          case 91: break;
+          case 36: 
             { System.out.println("Reconocido: <<"+yytext()+">>, intt");
                                 return new Symbol(sym.intt, yyline, yycolumn, yytext());
             }
-          case 88: break;
-          case 36: 
+          case 92: break;
+          case 37: 
             { System.out.println("Reconocido: <<"+yytext()+">>, forr");
                                 return new Symbol(sym.forr, yyline, yycolumn, yytext());
             }
-          case 89: break;
-          case 37: 
+          case 93: break;
+          case 38: 
             { System.out.println("Reconocido: <<"+yytext()+">>, decimal");
                                 return new Symbol(sym.decimal, yyline, yycolumn, yytext());
             }
-          case 90: break;
-          case 38: 
+          case 94: break;
+          case 39: 
             { System.out.println("Reconocido: <<"+yytext()+">>, truee");
                                 return new Symbol(sym.truee, yyline, yycolumn, yytext());
             }
-          case 91: break;
-          case 39: 
+          case 95: break;
+          case 40: 
             { System.out.println("Reconocido: <<"+yytext()+">>, charr");
                                 return new Symbol(sym.charr, yyline, yycolumn, yytext());
             }
-          case 92: break;
-          case 40: 
+          case 96: break;
+          case 41: 
             { System.out.println("Reconocido: <<"+yytext()+">>, casee");
                                 return new Symbol(sym.casee, yyline, yycolumn, yytext());
             }
-          case 93: break;
-          case 41: 
+          case 97: break;
+          case 42: 
             { System.out.println("Reconocido: <<"+yytext()+">>, elsee");
                                 return new Symbol(sym.elsee, yyline, yycolumn, yytext());
             }
-          case 94: break;
-          case 42: 
+          case 98: break;
+          case 43: 
             { System.out.println("Reconocido: <<"+yytext()+">>, breakk");
                                 return new Symbol(sym.breakk, yyline, yycolumn, yytext());
             }
-          case 95: break;
-          case 43: 
+          case 99: break;
+          case 44: 
             { System.out.println("Reconocido: <<"+yytext()+">>, falsee");
                                 return new Symbol(sym.falsee, yyline, yycolumn, yytext());
             }
-          case 96: break;
-          case 44: 
+          case 100: break;
+          case 45: 
             { System.out.println("Reconocido: <<"+yytext()+">>, whilee");
                                 return new Symbol(sym.whilee, yyline, yycolumn, yytext());
             }
-          case 97: break;
-          case 45: 
+          case 101: break;
+          case 46: 
             { System.out.println("Reconocido: <<"+yytext()+">>, print");
                                 return new Symbol(sym.print, yyline, yycolumn, yytext());
             }
-          case 98: break;
-          case 46: 
+          case 102: break;
+          case 47: 
             { System.out.println("Reconocido: <<"+yytext()+">>, stringg");
                                 return new Symbol(sym.stringg, yyline, yycolumn, yytext());
             }
-          case 99: break;
-          case 47: 
+          case 103: break;
+          case 48: 
             { System.out.println("Reconocido: <<"+yytext()+">>, switchh");
                                 return new Symbol(sym.switchh, yyline, yycolumn, yytext());
             }
-          case 100: break;
-          case 48: 
+          case 104: break;
+          case 49: 
             { System.out.println("Reconocido: <<"+yytext()+">>, doublee");
                                 return new Symbol(sym.doublee, yyline, yycolumn, yytext());
             }
-          case 101: break;
-          case 49: 
+          case 105: break;
+          case 50: 
             { System.out.println("Reconocido: <<"+yytext()+">>, defaultt");
                                 return new Symbol(sym.defaultt, yyline, yycolumn, yytext());
             }
-          case 102: break;
-          case 50: 
+          case 106: break;
+          case 51: 
             { System.out.println("Reconocido: <<"+yytext()+">>, booleann");
                                 return new Symbol(sym.booleann, yyline, yycolumn, yytext());
             }
-          case 103: break;
-          case 51: 
+          case 107: break;
+          case 52: 
             { System.out.println("Reconocido: <<"+yytext()+">>, printLinea");
                                 return new Symbol(sym.printLinea, yyline, yycolumn, yytext());
             }
-          case 104: break;
-          case 52: 
+          case 108: break;
+          case 53: 
             { System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
                                 return new Symbol(sym.imprimir, yyline, yycolumn, yytext());
             }
-          case 105: break;
-          case 53: 
+          case 109: break;
+          case 54: 
             { System.out.println("Reconocido: <<"+yytext()+">>, continuee");
                                 return new Symbol(sym.continuee, yyline, yycolumn, yytext());
             }
-          case 106: break;
+          case 110: break;
+          case 55: 
+            { System.out.println("Reconocido: <<"+yytext()+">>, read_file");
+                                return new Symbol(sym.read_file, yyline, yycolumn, yytext());
+            }
+          case 111: break;
+          case 56: 
+            { System.out.println("Reconocido: <<"+yytext()+">>, write_file");
+                                return new Symbol(sym.write_file, yyline, yycolumn, yytext());
+            }
+          case 112: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

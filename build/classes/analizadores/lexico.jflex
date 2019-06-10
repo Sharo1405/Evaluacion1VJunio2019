@@ -46,6 +46,7 @@ interrogacion   = "?"
 
 
 //simbolos normales
+coma        = ","
 apar        = "("
 cpar        = ")"
 puntoycoma  = ";"
@@ -72,6 +73,9 @@ forr        = "for"
 switchh     = "switch"
 casee       = "case"
 defaultt    = "default"
+read_file   = "read_file"
+write_file  = "write_file"
+
 
 imprimir    = "imprimir"
 
@@ -233,6 +237,16 @@ enter   = [\ \n]
 
 <YYINITIAL> {defaultt}       {  System.out.println("Reconocido: <<"+yytext()+">>, defaultt");
                                 return new Symbol(sym.defaultt, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {read_file}       {  System.out.println("Reconocido: <<"+yytext()+">>, read_file");
+                                return new Symbol(sym.read_file, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {write_file}       {  System.out.println("Reconocido: <<"+yytext()+">>, write_file");
+                                return new Symbol(sym.write_file, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {coma}       {  System.out.println("Reconocido: <<"+yytext()+">>, coma");
+                                return new Symbol(sym.coma, yyline, yycolumn, yytext()); } 
+
 
 
 
