@@ -48,7 +48,7 @@ terminal String igualigual, mayorq, menorq, menorigualq, mayorigualq, diferente;
 terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, menosmenos, masmaspost, menosmenospost; //ternario
 terminal String iff, elsee, doo, forr, switchh, casee, defaultt;
 terminal String MENOSUNARIO, MASUNARIO;
-terminal String write_file, read_file, coma;
+terminal String write_file, read_file, coma, grafica;
 
 terminal String print, printLinea;
 
@@ -71,7 +71,7 @@ nonterminal LinkedList<NodoAST> SWITCH_BLOCK_STATEMENT_GROUPS;
 nonterminal LinkedList<NodoAST> SWITCH_LABELS;
 nonterminal NodoAST SWITCH_LABEL;
 nonterminal Instruccion SWITCH_BLOCK_STATEMENT_GROUP;
-nonterminal Expresion ARCHIVOS;
+nonterminal NodoAST ARCHIVOS;
 
 
 
@@ -140,9 +140,10 @@ ARCHIVOS::=  read_file apar E:ruta cpar puntoycoma {:
             :}
             |write_file:a apar E:ruta coma E:contenido cpar puntoycoma{:
                 RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
-            :};
-            
-            
+            :}
+            |grafica apar E:ruta coma E:contenido cpar puntoycoma{:
+                RESULT = new Graficar(ruta, contenido, rutaleft, rutaright);
+            :};          
 
 
 

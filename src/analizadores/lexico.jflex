@@ -75,6 +75,7 @@ casee       = "case"
 defaultt    = "default"
 read_file   = "read_file"
 write_file  = "write_file"
+grafica     = "graph"
 
 
 imprimir    = "imprimir"
@@ -247,7 +248,8 @@ enter   = [\ \n]
 <YYINITIAL> {coma}       {  System.out.println("Reconocido: <<"+yytext()+">>, coma");
                                 return new Symbol(sym.coma, yyline, yycolumn, yytext()); } 
 
-
+<YYINITIAL> {grafica}       {  System.out.println("Reconocido: <<"+yytext()+">>, grafica");
+                                return new Symbol(sym.grafica, yyline, yycolumn, yytext()); } 
 
 
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
