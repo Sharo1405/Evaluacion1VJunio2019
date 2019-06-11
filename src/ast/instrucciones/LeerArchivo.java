@@ -13,6 +13,7 @@ import ast.expresiones.operacion.TipoContenedor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.LinkedList;
 import jdk.jfr.events.FileReadEvent;
 
 /**
@@ -128,4 +129,5 @@ public class LeerArchivo implements Expresion {
         this.col = col;
     }
 
+ 
 }

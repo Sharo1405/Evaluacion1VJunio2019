@@ -9,6 +9,7 @@ import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import java.util.LinkedList;
 
 /**
  *

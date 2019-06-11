@@ -19,7 +19,7 @@ public class Evaluacion1VJunio2019 {
         Vista vista = new Vista();
         vista.setVisible(true);
         
-        int a = 1;
+        /*int a = 1;
         System.err.println(a++);
         a = 1;
         System.out.println(++a);
@@ -29,7 +29,11 @@ public class Evaluacion1VJunio2019 {
         
         char hh = 'a';
         hh++;
-        System.out.println(hh);
+        System.out.println(hh);*/
+        
+        //int a[][] = new int[2][3];
+        
+        
     }
     
     

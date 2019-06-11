@@ -11,6 +11,7 @@ import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.operacion.TipoContenedor;
 import ast.expresiones.primitivos.Cadena;
+import java.util.LinkedList;
 
 /**
  *
@@ -120,4 +121,5 @@ public class Graficar implements Instruccion {
         this.col = col;
     }
 
+    
 }

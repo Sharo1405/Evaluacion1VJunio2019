@@ -10,6 +10,7 @@ import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.operacion.TipoContenedor;
+import java.util.LinkedList;
 
 /**
  *
@@ -102,4 +103,5 @@ public class Booleano implements Expresion{
         this.columna = columna;
     }
     
+   
 }

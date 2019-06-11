@@ -8,6 +8,7 @@ package ast.entorno;
 //import ast.expresiones.Tipo;
 
 import ast.expresiones.operacion.TipoContenedor;
+import java.util.LinkedList;
 
 
 /**
@@ -19,18 +20,23 @@ public class Simbolo {
     private String id;
     private Object valor; 
     
+    private LinkedList<String> visivilidad;
+    
     private int fila;
     private int columna;
+    
+    private Rol rol;
+    private TipoContenedor tipo;
+    
+    private int tamanio;
     
     public enum Rol{
         VARIABLE,
         METODO,
         FUNCION,
         LLAMADAMETODO,
-        OBJETO
+        VECTOR
     }
-    
-    private Rol rol;
     
     public enum Tipo{
         INT,
@@ -40,9 +46,29 @@ public class Simbolo {
         BOOLEAN,
         ID
     }
-   
-    private TipoContenedor tipo;
 
+    public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio) {
+        this.id = id;
+        this.valor = valor;
+        this.visivilidad = visivilidad;
+        this.fila = fila;
+        this.columna = columna;
+        this.rol = rol;
+        this.tipo = tipo;
+        this.tamanio = tamanio;
+    }   
+
+    public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo) {
+        this.id = id;
+        this.valor = valor;
+        this.visivilidad = visivilidad;
+        this.fila = fila;
+        this.columna = columna;
+        this.rol = rol;
+        this.tipo = tipo;
+    }
+           
+    
     public Simbolo(String id, Object valor, Object tipo, int linea, int col) {
         this.id = id;
         this.valor = valor;
@@ -144,5 +170,40 @@ public class Simbolo {
      */
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    /**
+     * @return the visivilidad
+     */
+    public LinkedList<String> getVisivilidad() {
+        return visivilidad;
+    }
+
+    /**
+     * @param visivilidad the visivilidad to set
+     */
+    public void setVisivilidad(LinkedList<String> visivilidad) {
+        this.visivilidad = visivilidad;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(TipoContenedor tipo) {
+        this.tipo = tipo;
+    }
+
+    /**
+     * @return the tamanio
+     */
+    public int getTamanio() {
+        return tamanio;
+    }
+
+    /**
+     * @param tamanio the tamanio to set
+     */
+    public void setTamanio(int tamanio) {
+        this.tamanio = tamanio;
     }
 }

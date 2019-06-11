@@ -16,6 +16,7 @@ import ast.instrucciones.Instruccion;
 import ast.instrucciones.ciclos.RetCont.Breakk;
 import ast.instrucciones.ciclos.RetCont.Continuee;
 import ast.instrucciones.ciclos.RetCont.Returnn;
+import java.util.LinkedList;
 
 /**
  *

@@ -12,6 +12,7 @@ import ast.expresiones.Expresion;
 import ast.expresiones.operacion.TipoContenedor;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 
 /**
  *
@@ -129,4 +130,19 @@ public class EscribirArchivo implements Expresion {
         this.col = col;
     }
 
+    /*@Override
+    public void graficar(String padre, LinkedList<String> dot, int contadorNodo) {
+
+        if (!padre.equals("")) {
+            int contadorrrr = 0;
+            String pa = "sha" + String.valueOf(contadorNodo + 1);
+            dot.add("sha" + String.valueOf(contadorNodo + 1) + "[label=\"writeFile\"];");
+            while (contadorrrr <= 6) {
+                dot.add("sha" + String.valueOf(contadorNodo + 1) + "[label=\"write_file\"];");
+                dot.add("sha" + String.valueOf(contadorNodo - 1) + "--" + "sha" + String.valueOf(contadorNodo + 1));
+                contadorrrr++;
+            }
+
+        }
+    }*/
 }

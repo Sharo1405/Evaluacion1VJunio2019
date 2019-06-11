@@ -8,6 +8,7 @@ package ast.instrucciones.ciclos.RetCont;
 import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.instrucciones.Instruccion;
+import java.util.LinkedList;
 
 /**
  *
@@ -66,4 +67,5 @@ public class Continuee implements Instruccion {
         this.col = col;
     }
     
+   
 }

@@ -5,13 +5,16 @@
  */
 package ast.expresiones.operacion;
 
+import ast.ListaErrorPrinter;
+import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
+import ast.instrucciones.Instruccion;
 
 /**
  *
  * @author sharolin
  */
-public class TipoContenedor {
+public class TipoContenedor implements Instruccion{
     
     private Simbolo.Tipo tipoPrimitivo;
     private String tipoObjeto;
@@ -29,6 +32,30 @@ public class TipoContenedor {
     public TipoContenedor(String tipoObjeto) {
         this.tipoPrimitivo = null;
         this.tipoObjeto = tipoObjeto;
+    }
+    
+    
+    @Override
+    public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
+        try {
+            
+            if(tipoPrimitivo != null){
+                return tipoPrimitivo;
+            }else if(!tipoObjeto.equals("")){
+                //AQUI VAN OBJETOS
+                return tipoObjeto;
+            }
+            
+            
+        } catch (Exception e) {
+            System.out.println("Error en la clase TipoContenedor");
+        }
+        return null;
+    }
+
+    @Override
+    public int getLine() {
+        return -1;
     }
 
     
@@ -103,4 +130,5 @@ public class TipoContenedor {
     public void setTipoObjeto(String tipoObjeto) {
         this.tipoObjeto = tipoObjeto;
     }
+    
 }

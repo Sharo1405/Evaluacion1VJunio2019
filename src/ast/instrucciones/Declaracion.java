@@ -205,4 +205,5 @@ public class Declaracion implements Instruccion {
         this.columna = columna;
     }
 
+    
 }

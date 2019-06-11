@@ -7,6 +7,7 @@ import ast.entorno.Simbolo;
 import ast.expresiones.*;
 import ast.expresiones.operacion.*;
 import ast.expresiones.primitivos.*;
+import ast.instrucciones.declaraciones.*;
 import ast.instrucciones.*;
 import ast.instrucciones.Printer;
 import ast.instrucciones.Seleccion.*;
@@ -37,7 +38,7 @@ action code
 :}
 
 
-terminal String igual, allave, cllave, id, puntoycoma;
+terminal String igual, allave, cllave, id, puntoycoma, acorchete, ccorchete, neww;
 terminal String intt, charr, stringg, doublee, booleann; //TIpo dato
 terminal String cadena, truee, falsee,charER;
 terminal Object entero, decimal; //tipos primitivos
@@ -49,6 +50,7 @@ terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, men
 terminal String iff, elsee, doo, forr, switchh, casee, defaultt;
 terminal String MENOSUNARIO, MASUNARIO;
 terminal String write_file, read_file, coma, grafica;
+terminal String publico, protegido, privado, estatico, finall;
 
 terminal String print, printLinea;
 
@@ -56,7 +58,7 @@ nonterminal I;
 nonterminal Instruccion S;
 nonterminal LinkedList<NodoAST> B;
 nonterminal Expresion E;
-nonterminal Instruccion D;
+//nonterminal Instruccion D;
 nonterminal TipoContenedor T;
 nonterminal NodoAST J;
 nonterminal Instruccion CICLOS;
@@ -72,7 +74,14 @@ nonterminal LinkedList<NodoAST> SWITCH_LABELS;
 nonterminal NodoAST SWITCH_LABEL;
 nonterminal Instruccion SWITCH_BLOCK_STATEMENT_GROUP;
 nonterminal NodoAST ARCHIVOS;
+nonterminal PARACORCHETE;
 
+nonterminal LinkedList<NodoAST> VARIABLE_DECLARATOR_ID;
+nonterminal Object VARIABLE_DECLARATOR;
+nonterminal LinkedList<Object> VARIABLE_DECLARATORS;
+nonterminal String FIELD_MODIFIER;
+nonterminal LinkedList<String> FIELD_MODIFIERS;
+nonterminal Instruccion FIELD_DECLARATION;
 
 
 //precedence left id;
@@ -111,7 +120,10 @@ B::= B:l J:i {:
         RESULT.add(i);
     :};
 
-J::= D:d {:
+J::= /*D:d {:
+        RESULT = d;
+    :}*/
+    FIELD_DECLARATION:d{:
         RESULT = d;
     :}
     |S:d {:
@@ -237,12 +249,65 @@ CICLOS::= whilee apar E:e1 cpar S:s1 {:
     :}; 
 
 
-FOR_INIT::= D:d {:
+FOR_INIT::= FIELD_DECLARATION:d {:      //CAMBIARLO POR LA DECLARCION NUEVA
             RESULT = d;
         :};
 
 
-D::= T:t id:id igual E:e puntoycoma {:  //declaracion asignacion
+FIELD_MODIFIERS::= FIELD_MODIFIERS:j FIELD_MODIFIER:i{:
+                        RESULT = j;
+                        RESULT.add(i);
+                   :}
+                   |FIELD_MODIFIER:i{:
+                        RESULT = new LinkedList<String>();
+                        RESULT.add(i);
+                   :};
+
+FIELD_MODIFIER::= publico:d {: RESULT = d;:}
+                 |protegido:d {: RESULT = d; :}
+                 |privado:d {: RESULT = d; :}
+                 |estatico:d {: RESULT = d; :}
+                 |finall:d {: RESULT = d; :};
+
+
+FIELD_DECLARATION::= FIELD_MODIFIERS:vi T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
+                        RESULT = new Declaraciones(vi, tipop, lista, tipopleft, tipopright);
+                    :}
+                    |T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
+                        RESULT = new Declaraciones(tipop, lista, tipopleft, tipopright);
+                    :};
+
+VARIABLE_DECLARATORS::= VARIABLE_DECLARATORS:d coma VARIABLE_DECLARATOR:i{:
+                            RESULT = d;
+                            RESULT.add(i);
+                      :}
+                      |VARIABLE_DECLARATOR:i{:
+                            RESULT = new LinkedList<Object>();
+                            RESULT.add(i);
+                      :};
+
+VARIABLE_DECLARATOR::= VARIABLE_DECLARATOR_ID:lista igual E:e {:
+                            RESULT = new VariableDeclarator(lista, e, eleft, eright);
+                      :}
+                      |VARIABLE_DECLARATOR_ID:d{:
+                            RESULT = d;
+                      :};
+
+VARIABLE_DECLARATOR_ID::= VARIABLE_DECLARATOR_ID:i acorchete ccorchete {:
+                            RESULT = i;
+                            RESULT.add(new Corchetee());                                
+                        :}
+                        |id:id{:
+                            RESULT = new LinkedList<NodoAST>();
+                            RESULT.add(new Identificador(id, idleft, idright));
+                        :};
+
+
+
+/*D::= T id acorchete ccorchete acorchete ccorchete igual E puntoycoma{:
+        
+    :}
+    |T:t id:id igual E:e puntoycoma {:  //declaracion asignacion
         RESULT = new Declaracion(t,id, e, idleft, idright);
     :}
     |T:t id:id puntoycoma {:    //declaracion
@@ -250,7 +315,7 @@ D::= T:t id:id igual E:e puntoycoma {:  //declaracion asignacion
     :}
     |id:id igual E:e puntoycoma{: //asignacion
         RESULT = new Asignacion(id, e, idleft, idright);
-    :};
+    :};*/
 
 
 PREPOSTFIJOS::= id:id masmas puntoycoma{:
@@ -349,7 +414,8 @@ E::= menos:mas E:e1 {:
     :}
     
     |cadena:ee{:
-        RESULT = new Cadena(ee.substring(1,ee.length()-1), new TipoContenedor(Simbolo.Tipo.STRING), eeleft, eeright);
+        //ee.substring(1,ee.length()-1)
+        RESULT = new Cadena(ee, new TipoContenedor(Simbolo.Tipo.STRING), eeleft, eeright);
     :}
     |entero:ee {:
         RESULT = new Entero(ee, new TipoContenedor(Simbolo.Tipo.INT), eeleft, eeright);
@@ -397,9 +463,21 @@ E::= menos:mas E:e1 {:
     |write_file:a apar E:ruta coma E:contenido cpar {:
         RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
     :}
+    
+    |neww T PARACORCHETE {: //luego de t pone otro terminal para bajar una y meter las demas opciones del new
 
-    |apar E:e cpar{:
+    :}
+
+
+    |apar E:e cpar {:
         RESULT = e;
     :};
+
+
+PARACORCHETE::= PARACORCHETE acorchete E ccorchete
+
+              |acorchete E ccorchete {:
+              
+              :};
     
 

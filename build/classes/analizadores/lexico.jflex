@@ -5,6 +5,8 @@ import java_cup.runtime.*;
 %%
 %{
     //cod
+
+    String paraCadena = "";
 %}
 
 %public
@@ -13,9 +15,10 @@ import java_cup.runtime.*;
 %char
 %column
 %full
-%ignorecase
+//%ignorecase
 %line
 %unicode
+
 
 
 //aritmeticas
@@ -56,7 +59,7 @@ cllave      = "}"
 igual       = "="
 intt         = "int"
 charr       = "char"
-stringg     = "string"
+stringg     = "String"
 doublee     = "double"
 booleann    = "boolean"
 truee       = "true"
@@ -76,16 +79,27 @@ defaultt    = "default"
 read_file   = "read_file"
 write_file  = "write_file"
 grafica     = "graph"
+acorchete   = "["
+ccorchete   = "]"
+neww        = "new"
+publico     = "public"
+protegido   = "protected"
+privado     = "private"
+estatico    = "static"
+finall      = "final"
+
+
 
 
 imprimir    = "imprimir"
+cadena      = "cadena"  //esta es la que retorno pero no llevaria la cadena reconocida
 
 
 id          = [a-zA-ZñÑ"_"]+([a-zA-ZñÑ"_"]*|[0-9]*)*
 decimal     = ([0-9]+"."[0-9]+|"-"[0-9]+"."[0-9]+)
 entero      = ([0-9]+|"-"[0-9]+)
 charER      = ("'" ~"'")
-cadena      = ("\"" ~"\"")
+//cadena      = ("\"" ~"\"")
 
 
 
@@ -93,12 +107,50 @@ espacio   = [\ \r\t\f\t]
 enter   = [\ \n]
 
 %state comentario1
+%state comentariomultiple
+%state cadenaEscapes
+%state cadenaEscapes2
 
 %%
 <YYINITIAL> "//"                {yybegin(comentario1);}
+<comentario1>  .                   {/* omitilo weeeeeee */}
 <comentario1> [^"\n"]         {}
 <comentario1> "\n"            {yybegin(YYINITIAL);}
 
+<YYINITIAL> "/*"                       {yybegin(comentariomultiple);}
+<comentariomultiple>  .                {/* omitilo weeeeeee */}
+<comentariomultiple> "*/"              {yybegin(YYINITIAL);
+                                        System.out.println("Comentario multiple: <<"+yytext()+">> Linea: "+yyline+" ,Columna: "+yycolumn);}
+<comentariomultiple> [ \t\r\n\f]       {}
+
+
+//---------------------------------------------------------------------------------------------------
+<YYINITIAL> "\""                {System.out.println("\"");yybegin(cadenaEscapes); paraCadena ="";}
+<cadenaEscapes> "\\"            {System.out.println("\\");yybegin(cadenaEscapes2);}
+<cadenaEscapes> "\""            {System.out.println("\" finalfinalfinal"); System.out.println(paraCadena); yybegin(YYINITIAL); return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);}
+<cadenaEscapes> .               {paraCadena += yytext();}
+
+//el yytext() llevaria la cadena si es solo una er
+
+<cadenaEscapes2>{
+    "'"                         {System.out.println("'"); paraCadena += "'"; yybegin(cadenaEscapes);}
+    "\""                        {System.out.println("\""); paraCadena += "\""; yybegin(cadenaEscapes);}    
+    "?"                         {System.out.println("?"); paraCadena += "?"; yybegin(cadenaEscapes);}
+    "\\"                        {System.out.println("\\"); paraCadena += "\\" ; yybegin(cadenaEscapes);}
+    "0"                         {System.out.println("0"); paraCadena += '\0'; yybegin(cadenaEscapes);}
+    "a"                         {System.out.println("a");  yybegin(cadenaEscapes);}                                 //paraCadena += "\a";
+    "b"                         {System.out.println("b"); paraCadena += "\b"; yybegin(cadenaEscapes);}
+    "f"                         {System.out.println("f"); paraCadena += "\f"; yybegin(cadenaEscapes);}
+    "n"                         {System.out.println("n"); paraCadena += "\n"; yybegin(cadenaEscapes);}
+    "r"                         {System.out.println("r"); paraCadena += "\r"; yybegin(cadenaEscapes);}
+    "t"                         {System.out.println("t"); paraCadena += "\t"; yybegin(cadenaEscapes);}
+    "v"                         {System.out.println("v");  yybegin(cadenaEscapes);}                                 //paraCadena += "\v";
+    "nnn"                       {System.out.println("nnn"); paraCadena += "\nnn"; yybegin(cadenaEscapes);}
+    "Xnn"                       {System.out.println("Xnn");  yytext(); yybegin(cadenaEscapes);}                     //paraCadena += "\Xnn";
+    "u"                         {System.out.println("u");  yytext(); yybegin(cadenaEscapes);}                       //paraCadena += "\u" ;
+    "U"                         {System.out.println("U"); yytext(); yybegin(cadenaEscapes);}    //paraCadena += "\U" ;
+}
+//---------------------------------------------------------------------------------------------------
 
 //ARITMETICAS
 <YYINITIAL> {masmas}      {  System.out.println("Reconocido: <<"+yytext()+">>, masmas");
@@ -251,6 +303,34 @@ enter   = [\ \n]
 <YYINITIAL> {grafica}       {  System.out.println("Reconocido: <<"+yytext()+">>, grafica");
                                 return new Symbol(sym.grafica, yyline, yycolumn, yytext()); } 
 
+<YYINITIAL> {acorchete}       {  System.out.println("Reconocido: <<"+yytext()+">>, acorchete");
+                                return new Symbol(sym.acorchete, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {ccorchete}       {  System.out.println("Reconocido: <<"+yytext()+">>, ccorchete");
+                                return new Symbol(sym.ccorchete, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {neww}       {  System.out.println("Reconocido: <<"+yytext()+">>, neww");
+                                return new Symbol(sym.neww, yyline, yycolumn, yytext()); }
+
+
+
+<YYINITIAL> {publico}       {  System.out.println("Reconocido: <<"+yytext()+">>, publico");
+                                return new Symbol(sym.publico, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {protegido}       {  System.out.println("Reconocido: <<"+yytext()+">>, protegido");
+                                return new Symbol(sym.protegido, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {privado}       {  System.out.println("Reconocido: <<"+yytext()+">>, privado");
+                                return new Symbol(sym.privado, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {estatico}       {  System.out.println("Reconocido: <<"+yytext()+">>, estatico");
+                                return new Symbol(sym.estatico, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {finall}       {  System.out.println("Reconocido: <<"+yytext()+">>, finall");
+                                return new Symbol(sym.finall, yyline, yycolumn, yytext()); }
+
+
+
 
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
                                 return new Symbol(sym.imprimir, yyline, yycolumn, yytext()); } 
@@ -269,8 +349,8 @@ enter   = [\ \n]
 <YYINITIAL> {charER}        { System.out.println("Reconocido: <<"+yytext()+">>, char");
                                 return new Symbol(sym.charER, yyline, yycolumn, yytext()); } 
 
-<YYINITIAL> {cadena}        { System.out.println("Reconocido: <<"+yytext()+">>, cadena");
-                                return new Symbol(sym.cadena, yyline, yycolumn, yytext()); } 
+/*<YYINITIAL> {cadena}        { System.out.println("Reconocido: <<"+yytext()+">>, cadena");
+                                return new Symbol(sym.cadena, yyline, yycolumn, yytext()); }*/
 
 
 <YYINITIAL> {espacio}      {  } 

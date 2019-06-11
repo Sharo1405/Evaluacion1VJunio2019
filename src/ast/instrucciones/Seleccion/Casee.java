@@ -8,6 +8,7 @@ package ast.instrucciones.Seleccion;
 import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.expresiones.Expresion;
+import java.util.LinkedList;
 
 /**
  *
@@ -96,5 +97,6 @@ public class Casee implements Expresion{
     public void setCol(int col) {
         this.col = col;
     }
+    
     
 }

@@ -15,6 +15,7 @@ import ast.expresiones.primitivos.Decimal;
 import ast.expresiones.primitivos.Entero;
 import ast.instrucciones.Asignacion;
 import ast.instrucciones.Instruccion;
+import java.util.LinkedList;
 
 /**
  *
@@ -141,5 +142,5 @@ public class OPPreFijo implements Expresion {
     public void setCol(int col) {
         this.col = col;
     }
-
+    
 }

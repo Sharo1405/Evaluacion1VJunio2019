@@ -9,6 +9,7 @@ import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -98,5 +99,6 @@ public class Relacional extends Operacion implements Expresion {
     public int getLine() {
         return line;
     }
-
+    
+    
 }

@@ -8,6 +8,7 @@ package ast.expresiones.operacion;
 import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.expresiones.Expresion;
+import java.util.LinkedList;
 
 /**
  *
@@ -137,4 +138,5 @@ public class OpTernario implements Expresion {
         this.col = col;
     }
 
+   
 }

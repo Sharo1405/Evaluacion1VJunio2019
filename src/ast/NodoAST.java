@@ -5,6 +5,8 @@
  */
 package ast;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author sharolin

@@ -10,6 +10,7 @@ import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.operacion.TipoContenedor;
+import java.util.LinkedList;
 
 /**
  *
@@ -101,5 +102,6 @@ public class Decimal implements Expresion{
     public void setColumna(int columna) {
         this.columna = columna;
     }
+    
     
 }

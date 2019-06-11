@@ -14,6 +14,7 @@ import ast.expresiones.primitivos.Cadena;
 import ast.expresiones.primitivos.Caracter;
 import ast.expresiones.primitivos.Decimal;
 import ast.expresiones.primitivos.Entero;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -33,6 +34,15 @@ public class Identificador extends Entorno implements Expresion {
         this.linea = linea;
         this.columna = columna;
     }
+    
+    
+    public Identificador(String id, int linea, int columna) {
+        this.id = id;
+        this.tipo = null;
+        this.linea = linea;
+        this.columna = columna;
+    }
+    
 
     @Override
     public Object getValue(Entorno lista, ListaErrorPrinter impresion) {

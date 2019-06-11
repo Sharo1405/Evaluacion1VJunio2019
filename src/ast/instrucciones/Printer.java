@@ -121,4 +121,5 @@ public class Printer implements Instruccion {
         this.saltoLinea = saltoLinea;
     }
 
+    
 }
