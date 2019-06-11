@@ -897,7 +897,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             }
           case 110: break;
           case 24: 
-            { System.out.println("\"");yybegin(cadenaEscapes); paraCadena += yytext();
+            { System.out.println("\"");yybegin(cadenaEscapes); paraCadena ="";
             }
           case 111: break;
           case 25: 
@@ -913,7 +913,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             }
           case 114: break;
           case 28: 
-            { System.out.println("\" finalfinalfinal"); paraCadena += yytext();System.out.println(paraCadena); yybegin(YYINITIAL); return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);
+            { System.out.println("\" finalfinalfinal"); System.out.println(paraCadena); yybegin(YYINITIAL); return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);
             }
           case 115: break;
           case 29: 

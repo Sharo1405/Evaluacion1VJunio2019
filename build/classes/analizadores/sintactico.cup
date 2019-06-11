@@ -275,6 +275,9 @@ FIELD_DECLARATION::= FIELD_MODIFIERS:vi T:tipop VARIABLE_DECLARATORS:lista punto
                     :}
                     |T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
                         RESULT = new Declaraciones(tipop, lista, tipopleft, tipopright);
+                    :}
+                    |id:id igual E:e puntoycoma{: //asignacion
+                        RESULT = new Asignacion(id, e, idleft, idright);
                     :};
 
 VARIABLE_DECLARATORS::= VARIABLE_DECLARATORS:d coma VARIABLE_DECLARATOR:i{:

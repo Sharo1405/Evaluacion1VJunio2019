@@ -39,7 +39,8 @@ public class Declaraciones implements Instruccion {
     }
 
     public Declaraciones(TipoContenedor tipoo, LinkedList<Object> lista, int linea, int col) {
-        this.visibilidad.add("publico");
+        this.visibilidad = new LinkedList<>();
+        this.visibilidad.add("public");
         this.tipoo = tipoo;
         this.lista = lista;
         this.linea = linea;
@@ -125,7 +126,7 @@ public class Declaraciones implements Instruccion {
                             Object tipoE = var.getValor().getType(lista, impresion);
                             Object tipotipotipo = ((TipoContenedor) tipoE).ejecutar(lista, impresion);
                             if (tipoVariable == tipotipotipo) {
-                                
+
                                 if (dimensiones > 0) {
                                     lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones));
                                     nombreid = "";
@@ -141,14 +142,15 @@ public class Declaraciones implements Instruccion {
                             }
                         }
 
-                    } else if (object instanceof Expresion) {
+                    } else if (object instanceof LinkedList) {
                         LinkedList<NodoAST> exp1 = (LinkedList<NodoAST>) object;
                         for (NodoAST exp : exp1) {
                             if (exp instanceof Corchetee) {
 
                                 dimensiones++;
                             } else if (exp instanceof Identificador) {
-                                nombreid = ((Identificador) exp).getId();
+                                Identificador ididid = (Identificador) exp;
+                                nombreid = ididid.getId();
                             }
                         }
 
@@ -162,7 +164,6 @@ public class Declaraciones implements Instruccion {
                             nombreid = "";
                             dimensiones = 0;
                         }
-
                     }
 
                 }

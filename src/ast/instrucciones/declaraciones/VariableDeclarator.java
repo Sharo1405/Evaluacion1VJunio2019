@@ -34,12 +34,12 @@ public class VariableDeclarator implements Instruccion{
 
     @Override
     public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public int getLine() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return linea;
     }
 
     /**
