@@ -84,6 +84,7 @@ nonterminal String FIELD_MODIFIER;
 nonterminal LinkedList<String> FIELD_MODIFIERS;
 nonterminal Instruccion FIELD_DECLARATION;
 nonterminal Expresion OPCIONESNEW;
+nonterminal Expresion INITARRAY, LISTAARRAY;
 
 
 //precedence left id;
@@ -471,15 +472,34 @@ E::= menos:mas E:e1 {:
     |write_file:a apar E:ruta coma E:contenido cpar {:
         RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
     :}
-    
+
+    |INITARRAY:d{:
+        RESULT = d;
+    :}    
     |neww T:t OPCIONESNEW:e {: //luego de t pone otro terminal para bajar una y meter las demas opciones del new
             RESULT = new Newww(t, e, eleft,eright);
     :}
 
-
     |apar E:e cpar {:
         RESULT = e;
     :};
+
+INITARRAY::= allave LISTAARRAY:d cllave{:
+        RESULT = d;
+    :};    
+
+LISTAARRAY::= LISTAARRAY:l coma E:e{:
+                ArregloLista lista = (ArregloLista) l;
+                lista.addEnLista(e, eleft, eright);
+                RESULT = lista;
+            :}
+            |E:e{:
+                RESULT = new ArregloLista(e, eleft, eright);
+            :};
+
+
+
+
 
 OPCIONESNEW::= PARACORCHETE:d{: //recibiria una lista de Exp
                 RESULT = new ParaCorchete(d);
