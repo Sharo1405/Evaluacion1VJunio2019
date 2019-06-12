@@ -34,15 +34,13 @@ public class Identificador extends Entorno implements Expresion {
         this.linea = linea;
         this.columna = columna;
     }
-    
-    
+
     public Identificador(String id, int linea, int columna) {
         this.id = id;
         this.tipo = null;
         this.linea = linea;
         this.columna = columna;
     }
-    
 
     @Override
     public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
@@ -52,33 +50,36 @@ public class Identificador extends Entorno implements Expresion {
 
                 TipoContenedor ti = (TipoContenedor) encontrado.getTipo();
                 TipoContenedor aux = new TipoContenedor();
+                if (encontrado.getValor() != null) {
+                    if (aux.isString(ti)) {
+                        return String.valueOf(encontrado.getValor());
 
-                if (aux.isString(ti)) {
-                    return String.valueOf(encontrado.getValor());
+                    } else if (aux.isEntero(ti)) {
+                        return Integer.parseInt(String.valueOf(encontrado.getValor()));
 
-                } else if (aux.isEntero(ti)) {
-                    return Integer.parseInt(String.valueOf(encontrado.getValor()));
+                    } else if (aux.isDecimal(ti)) {
+                        return Double.parseDouble(String.valueOf(encontrado.getValor()));
 
-                } else if (aux.isDecimal(ti)) {
-                    return Double.parseDouble(String.valueOf(encontrado.getValor()));
-
-                } else if (aux.isChar(ti)) {
-                    //si viene negativo el char osea un numero negativo truwna
-                    Object va = encontrado.getValor();
-                    try {
-                        if (Integer.parseInt(String.valueOf(encontrado.getValor())) > 0) {
-                            return encontrado.getValor();
+                    } else if (aux.isChar(ti)) {
+                        //si viene negativo el char osea un numero negativo truwna
+                        Object va = encontrado.getValor();
+                        try {
+                            if (Integer.parseInt(String.valueOf(encontrado.getValor())) > 0) {
+                                return encontrado.getValor();
+                            }
+                        } catch (Exception e) {
+                            return (Character) encontrado.getValor();
                         }
-                    } catch (Exception e) {
-                        return (Character) encontrado.getValor();
+
+                    } else if (aux.isBool(ti)) {
+                        return (Boolean) encontrado.getValor();
+
+                    } else {
+                        return encontrado.getValor();
                     }
-
-                } else if (aux.isBool(ti)) {
-                    return (Boolean) encontrado.getValor();
-
-                } else {
-                    return encontrado.getValor();
                 }
+            }else{
+                impresion.errores.add(new ast.Error("El IDENTIFICADOR buscado no existe", linea, columna, "Semantico"));
             }
         } catch (Exception e) {
             System.out.println("Error en la clase Identificador getValue");

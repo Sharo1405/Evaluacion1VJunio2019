@@ -87,6 +87,7 @@ protegido   = "protected"
 privado     = "private"
 estatico    = "static"
 finall      = "final"
+nulo        = "null"
 
 
 
@@ -329,6 +330,8 @@ enter   = [\ \n]
 <YYINITIAL> {finall}       {  System.out.println("Reconocido: <<"+yytext()+">>, finall");
                                 return new Symbol(sym.finall, yyline, yycolumn, yytext()); }
 
+<YYINITIAL> {nulo}       {  System.out.println("Reconocido: <<"+yytext()+">>, nulo");
+                                return new Symbol(sym.nulo, yyline, yycolumn, yytext()); }
 
 
 

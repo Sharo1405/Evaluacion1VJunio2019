@@ -5,6 +5,7 @@
  */
 package ast.entorno;
 
+import ast.ListaErrorPrinter;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class Entorno {
         } catch (Exception e) {
             System.out.println("Error en la clase Entorno GetEnActual");
         }
+        
         return null;
     }
 
@@ -53,7 +55,7 @@ public class Entorno {
             }
         } catch (Exception e) {
             System.out.println("Error en la clase Entorno get");
-        }
+        }       
         return null;
     }
 

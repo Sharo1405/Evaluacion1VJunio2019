@@ -11,6 +11,7 @@ import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.Identificador;
+import ast.expresiones.Newww;
 import ast.expresiones.operacion.TipoContenedor;
 import ast.instrucciones.Instruccion;
 import java.util.LinkedList;
@@ -122,23 +123,34 @@ public class Declaraciones implements Instruccion {
                                 }
                             }
 
-                            Object valorE = var.getValor().getValue(lista, impresion);
-                            Object tipoE = var.getValor().getType(lista, impresion);
-                            Object tipotipotipo = ((TipoContenedor) tipoE).ejecutar(lista, impresion);
-                            if (tipoVariable == tipotipotipo) {
+                            if (dimensiones == 0) { //variables normales de calquier tipo PRIMITIVAS OBJETOS
+                                Object valorE = var.getValor().getValue(lista, impresion);
+                                Object tipoE = var.getValor().getType(lista, impresion);
+                                Object tipotipotipo = ((TipoContenedor) tipoE).ejecutar(lista, impresion);
 
-                                if (dimensiones > 0) {
-                                    lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones));
-                                    nombreid = "";
-                                    dimensiones = 0;
-                                } else if (dimensiones <= 0) {
-                                    lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
-                                    nombreid = "";
-                                    dimensiones = 0;
+                                if (tipoVariable == tipotipotipo) {
+
+                                    if (dimensiones <= 0) {
+                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
+                                        nombreid = "";
+                                        dimensiones = 0;
+                                    }
+
+                                } else {
+                                    impresion.errores.add(new ast.Error("Tipos diferente para la variable no se puede guardar", linea, col, "Semantico"));
                                 }
-
                             } else {
-                                impresion.errores.add(new ast.Error("Tipos diferente para la variable no se puede guardar", linea, col, "Semantico"));
+                                Object valorE = var.getValor().getValue(lista, impresion);
+                                Object tipot = var.getValor().getType(lista, impresion);
+
+                                if (tipoVariable == tipot) {
+                                    Newww instancia = (Newww) valorE;
+                                    if (dimensiones == instancia.dimensiones) {
+                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, instancia.arbolArreglo, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones,instancia.listaTamaniosIndice));
+                                    } else {
+                                        impresion.errores.add(new ast.Error("Las dimensiones de la variable con la instancia NO COINCIDEN", linea, col, "Semantico"));
+                                    }
+                                }
                             }
                         }
 
@@ -154,15 +166,21 @@ public class Declaraciones implements Instruccion {
                             }
                         }
 
-                        //si se sale es una variable de n dimensiones
-                        if (dimensiones > 0) {
+                        Object valorPre = valorPredeterminado(tipoo.ejecutar(lista, impresion));
+                        if (dimensiones > 0) { //vector
                             lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones));
                             nombreid = "";
                             dimensiones = 0;
                         } else if (dimensiones <= 0) {
-                            lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
-                            nombreid = "";
-                            dimensiones = 0;
+                            if (!tipoo.getTipoObjeto().equals("")) {
+                                lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
+                                nombreid = "";
+                                dimensiones = 0;
+                            } else {
+                                lista.setSimbolo(nombreid, new Simbolo(nombreid, valorPre, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
+                                nombreid = "";
+                                dimensiones = 0;
+                            }
                         }
                     }
 
@@ -175,6 +193,36 @@ public class Declaraciones implements Instruccion {
         } catch (Exception e) {
             System.out.println("Error en la clase Declaraciones, ejecutar instrucciones.declaraciones");
         }
+        return null;
+    }
+
+    public Object valorPredeterminado(Object tipo) {
+
+        if (tipo instanceof Simbolo.Tipo) {
+
+            Simbolo.Tipo p = (Simbolo.Tipo) tipo;
+
+            switch (p) {
+                case INT:
+                    return 0;
+
+                case STRING:
+                    return null;
+
+                case DOUBLE:
+                    return 0.0;
+
+                case CHAR:
+                    return '\0';
+
+                case BOOLEAN:
+                    return false;
+            }
+
+        } else if (tipo instanceof String) {
+            return null;
+        }
+
         return null;
     }
 

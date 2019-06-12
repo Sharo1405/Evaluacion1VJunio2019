@@ -28,7 +28,8 @@ public class Simbolo {
     private Rol rol;
     private TipoContenedor tipo;
     
-    private int tamanio;
+    private int tamanio; //dimensiones;
+    private LinkedList<Integer> listaValoresDimensiones;
     
     public enum Rol{
         VARIABLE,
@@ -47,6 +48,18 @@ public class Simbolo {
         ID
     }
 
+    public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio, LinkedList<Integer> listaValoresDimensiones) {
+        this.id = id;
+        this.valor = valor;
+        this.visivilidad = visivilidad;
+        this.fila = fila;
+        this.columna = columna;
+        this.rol = rol;
+        this.tipo = tipo;
+        this.tamanio = tamanio;
+        this.listaValoresDimensiones = listaValoresDimensiones; //[3][2]... -----> 3,2,....
+    }
+    
     public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio) {
         this.id = id;
         this.valor = valor;
@@ -205,5 +218,19 @@ public class Simbolo {
      */
     public void setTamanio(int tamanio) {
         this.tamanio = tamanio;
+    }
+
+    /**
+     * @return the listaValoresDimensiones
+     */
+    public LinkedList<Integer> getListaValoresDimensiones() {
+        return listaValoresDimensiones;
+    }
+
+    /**
+     * @param listaValoresDimensiones the listaValoresDimensiones to set
+     */
+    public void setListaValoresDimensiones(LinkedList<Integer> listaValoresDimensiones) {
+        this.listaValoresDimensiones = listaValoresDimensiones;
     }
 }

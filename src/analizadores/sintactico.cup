@@ -5,6 +5,7 @@ import ast.ArbolAST;
 import ast.NodoAST;
 import ast.entorno.Simbolo;
 import ast.expresiones.*;
+import ast.expresiones.arreglos.*;
 import ast.expresiones.operacion.*;
 import ast.expresiones.primitivos.*;
 import ast.instrucciones.declaraciones.*;
@@ -74,7 +75,7 @@ nonterminal LinkedList<NodoAST> SWITCH_LABELS;
 nonterminal NodoAST SWITCH_LABEL;
 nonterminal Instruccion SWITCH_BLOCK_STATEMENT_GROUP;
 nonterminal NodoAST ARCHIVOS;
-nonterminal PARACORCHETE;
+nonterminal LinkedList<NodoAST> PARACORCHETE;
 
 nonterminal LinkedList<NodoAST> VARIABLE_DECLARATOR_ID;
 nonterminal Object VARIABLE_DECLARATOR;
@@ -82,6 +83,7 @@ nonterminal LinkedList<Object> VARIABLE_DECLARATORS;
 nonterminal String FIELD_MODIFIER;
 nonterminal LinkedList<String> FIELD_MODIFIERS;
 nonterminal Instruccion FIELD_DECLARATION;
+nonterminal Expresion OPCIONESNEW;
 
 
 //precedence left id;
@@ -249,7 +251,7 @@ CICLOS::= whilee apar E:e1 cpar S:s1 {:
     :}; 
 
 
-FOR_INIT::= FIELD_DECLARATION:d {:      //CAMBIARLO POR LA DECLARCION NUEVA
+FOR_INIT::= FIELD_DECLARATION:d {:      
             RESULT = d;
         :};
 
@@ -467,8 +469,8 @@ E::= menos:mas E:e1 {:
         RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
     :}
     
-    |neww T PARACORCHETE {: //luego de t pone otro terminal para bajar una y meter las demas opciones del new
-
+    |neww T:t OPCIONESNEW:e {: //luego de t pone otro terminal para bajar una y meter las demas opciones del new
+            RESULT = new Newww(t, e, eleft,eright);
     :}
 
 
@@ -476,11 +478,17 @@ E::= menos:mas E:e1 {:
         RESULT = e;
     :};
 
+OPCIONESNEW::= PARACORCHETE:d{: //recibiria una lista de Exp
+                RESULT = new ParaCorchete(d);
+              :};
 
-PARACORCHETE::= PARACORCHETE acorchete E ccorchete
-
-              |acorchete E ccorchete {:
-              
+PARACORCHETE::= PARACORCHETE:lista acorchete E:e ccorchete{:
+                    RESULT = lista;
+                    RESULT.add(new ArreglosNew(e, eleft, eright));
+              :}
+              |acorchete E:e ccorchete {:
+                    RESULT = new LinkedList<NodoAST>();
+                    RESULT.add(new ArreglosNew(e, eleft, eright));
               :};
     
 

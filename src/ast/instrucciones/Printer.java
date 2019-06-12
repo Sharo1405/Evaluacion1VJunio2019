@@ -41,7 +41,7 @@ public class Printer implements Instruccion {
 
             if (expImpre != null) {
                 Object imprimir = expImpre.getValue(lista, impresion);
-                if (imprimir != null) {
+                //if (imprimir != null) {
                     if (saltoLinea == false) {
                         impresion.impresiones.add(String.valueOf(imprimir));
                         System.out.println(String.valueOf(imprimir));
@@ -49,9 +49,9 @@ public class Printer implements Instruccion {
                         impresion.impresiones.add(String.valueOf(imprimir));
                         System.out.println(String.valueOf(imprimir)+ "\n");
                     }
-                } else {
+                /*} else {
                     impresion.errores.add(new ast.Error("Expresion/valor no existe para imprimirlo", linea, col, "Semantico"));
-                }
+                }*/
             }
 
         } catch (Exception e) {
