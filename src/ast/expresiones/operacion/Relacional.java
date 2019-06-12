@@ -9,6 +9,7 @@ import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import ast.expresiones.Identificador;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -29,6 +30,18 @@ public class Relacional extends Operacion implements Expresion {
 
             Object op1 = exp1.getValue(lista, impre);
             Object op2 = exp2.getValue(lista, impre);
+
+            if (exp1 instanceof Identificador) {
+                Object existe = exp1.getValue(lista, impre);
+                if (existe == null) {
+                    return null;
+                }
+            } else if (exp2 instanceof Identificador) {
+                Object existe = exp2.getValue(lista, impre);
+                if (existe == null) {
+                    return null;
+                }
+            }
 
             if (op1 != null && op2 != null) {
 
@@ -99,6 +112,5 @@ public class Relacional extends Operacion implements Expresion {
     public int getLine() {
         return line;
     }
-    
-    
+
 }

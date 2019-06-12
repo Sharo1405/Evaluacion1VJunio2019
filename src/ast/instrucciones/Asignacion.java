@@ -39,7 +39,14 @@ public class Asignacion implements Instruccion {
                 TipoContenedor tipo = (TipoContenedor) valor.getType(lista, impresion);
                 TipoContenedor tipoVar = (TipoContenedor) variable.getTipo();
 
-                if (tipoVar.getTipoPrimitivo() == Simbolo.Tipo.INT && tipo.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
+                if (tipo.getTipoPrimitivo() == Simbolo.Tipo.NULO) {
+
+                    if (tipoVar.getTipoPrimitivo() == Simbolo.Tipo.CHAR || tipoVar.getTipoPrimitivo() == Simbolo.Tipo.INT
+                            || tipoVar.getTipoPrimitivo() == Simbolo.Tipo.DOUBLE) {
+                        impresion.errores.add(new ast.Error("No se puede asignar, El tipo de la variable no admite NULL", linea, columna, "Semantico"));
+                        return null;
+                    }
+                } else if (tipoVar.getTipoPrimitivo() == Simbolo.Tipo.INT && tipo.getTipoPrimitivo() == Simbolo.Tipo.CHAR) {
 
                     if (Integer.parseInt(String.valueOf(valor.getValue(lista, impresion))) > 0) {
                         char nuevo = (Character) valor.getValue(lista, impresion);
@@ -91,7 +98,7 @@ public class Asignacion implements Instruccion {
         } catch (Exception e) {
             System.out.println("Error en clase Asignacion ejecutar");
         }
-        
+
         impresion.errores.add(new ast.Error("Variable no existe para asignar valor", linea, columna, "Semantico"));
         return null;
     }
@@ -101,5 +108,4 @@ public class Asignacion implements Instruccion {
         return linea;
     }
 
-    
 }

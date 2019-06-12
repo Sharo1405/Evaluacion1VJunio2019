@@ -9,6 +9,7 @@ import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import ast.expresiones.Identificador;
 import java.util.LinkedList;
 
 /**
@@ -31,6 +32,19 @@ public class Aritmetica extends Operacion implements Expresion {
         //Object op2 = exp2.getValue(lista);
         try {
             if (exp1 != null && exp2 != null) {
+                
+                if(exp1 instanceof Identificador){
+                    Object existe = exp1.getValue(lista, impresion);
+                    if(existe == null){
+                        return null;
+                    }
+                }else if(exp2 instanceof Identificador){
+                    Object existe = exp2.getValue(lista, impresion);
+                    if(existe == null){
+                        return null;
+                    }
+                }
+                
                 tipo = tipoResultante(exp1, exp2, lista, impresion);
 
                 TipoContenedor tipo1 = (TipoContenedor) exp1.getType(lista, impresion);

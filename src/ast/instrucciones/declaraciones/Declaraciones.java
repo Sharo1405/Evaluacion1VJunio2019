@@ -128,6 +128,20 @@ public class Declaraciones implements Instruccion {
                                 Object tipoE = var.getValor().getType(lista, impresion);
                                 Object tipotipotipo = ((TipoContenedor) tipoE).ejecutar(lista, impresion);
 
+                                if (tipotipotipo == Simbolo.Tipo.NULO) {
+
+                                    if (tipoVariable == Simbolo.Tipo.CHAR || tipoVariable == Simbolo.Tipo.INT || tipoVariable == Simbolo.Tipo.DOUBLE) {
+                                        impresion.errores.add(new ast.Error("No se puede declarar, El tipo de la variable no admite NULL", linea, col, "Semantico"));
+                                        return null;
+                                    } else {
+                                        if (dimensiones <= 0) {
+                                            lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
+                                            nombreid = "";
+                                            dimensiones = 0;
+                                        }
+                                    }
+
+                                }
                                 if (tipoVariable == tipotipotipo) {
 
                                     if (dimensiones <= 0) {
@@ -146,7 +160,7 @@ public class Declaraciones implements Instruccion {
                                 if (tipoVariable == tipot) {
                                     Newww instancia = (Newww) valorE;
                                     if (dimensiones == instancia.dimensiones) {
-                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, instancia.arbolArreglo, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones,instancia.listaTamaniosIndice));
+                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, instancia.arbolArreglo, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones, instancia.listaTamaniosIndice));
                                     } else {
                                         impresion.errores.add(new ast.Error("Las dimensiones de la variable con la instancia NO COINCIDEN", linea, col, "Semantico"));
                                     }
@@ -172,11 +186,11 @@ public class Declaraciones implements Instruccion {
                             nombreid = "";
                             dimensiones = 0;
                         } else if (dimensiones <= 0) {
-                            if (!tipoo.getTipoObjeto().equals("")) {
+                            if (!tipoo.getTipoObjeto().equals("")) {//OBJETOS
                                 lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
                                 nombreid = "";
                                 dimensiones = 0;
-                            } else {
+                            } else {//TIPOS PRIMITIVOS
                                 lista.setSimbolo(nombreid, new Simbolo(nombreid, valorPre, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
                                 nombreid = "";
                                 dimensiones = 0;

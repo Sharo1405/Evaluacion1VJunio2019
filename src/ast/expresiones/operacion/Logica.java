@@ -9,6 +9,7 @@ import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
+import ast.expresiones.Identificador;
 import java.util.LinkedList;
 
 /**
@@ -30,6 +31,19 @@ public class Logica extends Operacion implements Expresion {
         try {
 
             if (exp1 != null && exp2 != null) {
+
+                if (exp1 instanceof Identificador) {
+                    Object existe = exp1.getValue(lista, impresion);
+                    if (existe == null) {
+                        return null;
+                    }
+                } else if (exp2 instanceof Identificador) {
+                    Object existe = exp2.getValue(lista, impresion);
+                    if (existe == null) {
+                        return null;
+                    }
+                }
+
                 Object op1 = exp1.getValue(lista, impresion);
                 Object op2 = exp2.getValue(lista, impresion);
 

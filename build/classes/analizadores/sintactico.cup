@@ -41,7 +41,7 @@ action code
 
 terminal String igual, allave, cllave, id, puntoycoma, acorchete, ccorchete, neww;
 terminal String intt, charr, stringg, doublee, booleann; //TIpo dato
-terminal String cadena, truee, falsee,charER;
+terminal String cadena, truee, falsee,charER , nulo;
 terminal Object entero, decimal; //tipos primitivos
 terminal String imprimir, apar, cpar; 
 terminal String mas, por, menos, dividir, potencia; //aritmeticas
@@ -438,6 +438,9 @@ E::= menos:mas E:e1 {:
     :}
     |falsee:ee{:
         RESULT = new Booleano(ee,new TipoContenedor(Simbolo.Tipo.BOOLEAN), eeleft, eeright);
+    :}
+    |nulo:ee{:
+        RESULT = new Nulo(ee,new TipoContenedor(Simbolo.Tipo.NULO), eeleft, eeright);
     :}
     |id:id{:
         RESULT = new Identificador(id, new TipoContenedor(Simbolo.Tipo.ID), idleft, idright);

@@ -45,6 +45,7 @@ public class Simbolo {
         STRING,
         DOUBLE,
         BOOLEAN,
+        NULO,
         ID
     }
 
