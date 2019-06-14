@@ -16,14 +16,14 @@ import java.util.LinkedList;
  *
  * @author sharolin
  */
-public class Newww implements Expresion{
-    
+public class Newww implements Expresion {
+
     private TipoContenedor tipoInstancia;
     private Expresion valorCualquierapermitido;
     private Object valorvalorvaloravalor;
     private int linea;
     private int columna;
-    
+
     //arbol para los arreglos
     public NodoNNario arbolArreglo;
     public LinkedList<Integer> listaTamaniosIndice;
@@ -35,21 +35,25 @@ public class Newww implements Expresion{
         this.linea = linea;
         this.columna = columna;
     }
-    
-    
 
     @Override
     public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
-        try {            
+        try {
             valorvalorvaloravalor = valorCualquierapermitido.getValue(lista, impresion);
-            if(valorvalorvaloravalor instanceof ParaCorchete){
+            if (valorvalorvaloravalor instanceof ParaCorchete) {
                 ParaCorchete pa = (ParaCorchete) valorvalorvaloravalor;
-                arbolArreglo = pa.arbolArreglo;
+                //arbolArreglo = pa.arbolArreglo;
                 listaTamaniosIndice = pa.listaIndex;
                 dimensiones = pa.dimensiones;
+
+                arbolArreglo = pa.HacerArbol(listaTamaniosIndice.size() - 1, 1, arbolArreglo, tipoInstancia);
+                               
+                return arbolArreglo;
+
             }
-            return this;
-            
+
+            return null;
+
         } catch (Exception e) {
             System.out.println("Error en la clase Newww, getValue");
         }
@@ -58,7 +62,7 @@ public class Newww implements Expresion{
 
     @Override
     public Object getType(Entorno lista, ListaErrorPrinter impresion) {
-        return tipoInstancia.ejecutar(lista, impresion);
+        return tipoInstancia;
     }
 
     @Override
@@ -135,5 +139,5 @@ public class Newww implements Expresion{
     public void setValorvalorvaloravalor(Object valorvalorvaloravalor) {
         this.valorvalorvaloravalor = valorvalorvaloravalor;
     }
-    
+
 }

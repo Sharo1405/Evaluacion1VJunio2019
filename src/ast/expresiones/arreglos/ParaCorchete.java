@@ -30,30 +30,32 @@ public class ParaCorchete implements Expresion {
         this.listadeExpresiones = listadeExpresiones;
     }
 
-    /*public NodoNNario HacerArbol(int nivel, int numeroEnPosNivel, LinkedList<NodoNNario> actual) {
+    public NodoNNario HacerArbol(int nivel, int dim, NodoNNario actual, TipoContenedor tipo) {
 
         try {
 
             if (nivel == 0) {
-                LinkedList<NodoNNario> listanodos = new LinkedList<>();
+                NodoNNario arregloFinal = new NodoNNario(tipo, dim);
                 for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    listanodos.add(new NodoNNario(actual));
+                    arregloFinal.hijos.add(actual);
                 }
                 nivel--;
                 if (nivel < 0) {
-                    arbolArreglo.hijos = listanodos;
+                    arbolArreglo = arregloFinal;
+                    return arbolArreglo;
                 }
-            } else if (nivel == (listaIndex.size() - 1)) {
-                LinkedList<NodoNNario> listanodos = new LinkedList<>();
-
+            } else if (nivel == (listaIndex.size() - 1)) {                
+                Object objetoHoja = -1;
+                NodoNNario nodo = new NodoNNario(tipo, dim);
+                
                 for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    listanodos.add(new NodoNNario(null));
+                    nodo.hijos.add(objetoHoja);
                 }
                 nivel--;
                 if (nivel < 0) {
-                    arbolArreglo.hijos = listanodos;                    
+                    arbolArreglo = nodo;                    
                 } else {
-                    HacerArbol(nivel, listaIndex.get(nivel), listanodos);
+                    HacerArbol(nivel, dim + 1, nodo, tipo);
                 }
             } else {
                 LinkedList<NodoNNario> listanodos = new LinkedList<>();
@@ -61,15 +63,14 @@ public class ParaCorchete implements Expresion {
                     listanodos.add(actual);
                 }
                 nivel--;
-                HacerArbol(nivel, listaIndex.get(nivel), listanodos);
+                HacerArbol(nivel, dim + 1, actual, tipo);
             }
 
         } catch (Exception e) {
             System.out.println("Error en la clase ParaCorchete, HacerArbol");
         }
-
-        return null;
-    }*/
+        return arbolArreglo;
+    }
 
     @Override
     public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
