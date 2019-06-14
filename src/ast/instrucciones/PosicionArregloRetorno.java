@@ -42,7 +42,7 @@ public class PosicionArregloRetorno implements Expresion {
             Identificador idBuscar = new Identificador(id, linea, col);
             Simbolo arregloEncontrado = idBuscar.get(id, lista);
             if (arregloEncontrado != null) {
-
+                listaIndex = new LinkedList<>();
                 for (NodoAST listadeExpresione : indiceArreglo) {
                     Expresion exp = (Expresion) listadeExpresione;
                     TipoContenedor tu = (TipoContenedor) exp.getType(lista, impresion);

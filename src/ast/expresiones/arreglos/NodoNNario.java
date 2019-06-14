@@ -32,6 +32,9 @@ public class NodoNNario {
 
     Object retorno = new Object();
 
+    private int indiceanterior = 0;
+    NodoNNario nodoAnterior;
+    
     public NodoNNario() {
     }
 
@@ -56,7 +59,7 @@ public class NodoNNario {
 
                     try {
                         int aux = indicesPorDimension.get(i + 1);
-                        indicesPorDimension.remove(i);
+                        indicesPorDimension.remove(i);                          
                         obtenerPorIndice(no, indicesPorDimension, lista, impresion);
                     } catch (Exception e) {
                         return nodo;
@@ -92,15 +95,28 @@ public class NodoNNario {
                     try {
                         if (listaIndices.size() == 1) {
                             if (arbol.tipo.ejecutar(lista, impresion) == ((NodoNNario) valor).tipo.ejecutar(lista, impresion)) {
-                                ((NodoNNario) nodo).hijos.add(indice, valor);
+                                ((NodoNNario) arbol).hijos.add(indice, valor);
                             }
                         } else {
-                            listaIndices.remove(i);
-                            setearPorIndice(arbol, listaIndices, valor, lista, impresion);
+                            listaIndices.remove(i);                            
+                            if(nodo instanceof NodoNNario){
+                                NodoNNario n = (NodoNNario) nodo;
+                                indiceanterior = indice;
+                                nodoAnterior = no;
+                                setearPorIndice(n, listaIndices, valor, lista, impresion);
+                            }else{
+                                setearPorIndice(arbol, listaIndices, valor, lista, impresion);
+                            }
+                            
                         }
                     } catch (Exception e) {
 
                     }
+                }else {
+                    
+                  nodoAnterior.hijos.remove(indice);
+                  nodoAnterior.hijos.add(indice, valor);
+                  listaIndices.remove(i);
                 }
                 //listaIndices.remove(i);
                 if (listaIndices.size() == 0) {

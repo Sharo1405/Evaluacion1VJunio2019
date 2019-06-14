@@ -46,7 +46,8 @@ public class Newww implements Expresion {
                 listaTamaniosIndice = pa.listaIndex;
                 dimensiones = pa.dimensiones;
 
-                arbolArreglo = pa.HacerArbol(listaTamaniosIndice.size() - 1, 1, arbolArreglo, tipoInstancia);
+                arbolArreglo = new NodoNNario(tipoInstancia, listaTamaniosIndice.size());
+                pa.HacerArbol(listaTamaniosIndice.size() - 1, 1, listaTamaniosIndice ,arbolArreglo, tipoInstancia);
                                
                 return arbolArreglo;
 

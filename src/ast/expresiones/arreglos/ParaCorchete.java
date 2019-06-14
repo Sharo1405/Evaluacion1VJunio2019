@@ -11,6 +11,7 @@ import ast.entorno.Entorno;
 import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.operacion.TipoContenedor;
+import ast.expresiones.primitivos.Entero;
 import java.util.LinkedList;
 
 /**
@@ -23,49 +24,30 @@ public class ParaCorchete implements Expresion {
     public LinkedList<Integer> listaIndex = new LinkedList<>();
     public int dimensiones = 0;
     public NodoNNario arbolArreglo = new NodoNNario();
-    
-    
 
     public ParaCorchete(LinkedList<NodoAST> listadeExpresiones) {
         this.listadeExpresiones = listadeExpresiones;
     }
 
-    public NodoNNario HacerArbol(int nivel, int dim, NodoNNario actual, TipoContenedor tipo) {
+    public NodoNNario HacerArbol(int nivel, int dim, LinkedList<Integer> listaIndices, NodoNNario actual, TipoContenedor tipo) {
 
         try {
 
-            if (nivel == 0) {
-                NodoNNario arregloFinal = new NodoNNario(tipo, dim);
-                for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    arregloFinal.hijos.add(actual);
+            if (dim == listaIndices.size()) {
+                for (int i = 0; i < listaIndices.get(dim - 1); i++) {
+
+                    //verificar tipos
+                    actual.hijos.add(new Entero(0, tipo, -1, -1));
+
                 }
-                nivel--;
-                if (nivel < 0) {
-                    arbolArreglo = arregloFinal;
-                    return arbolArreglo;
-                }
-            } else if (nivel == (listaIndex.size() - 1)) {                
-                Object objetoHoja = -1;
-                NodoNNario nodo = new NodoNNario(tipo, dim);
-                
-                for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    nodo.hijos.add(objetoHoja);
-                }
-                nivel--;
-                if (nivel < 0) {
-                    arbolArreglo = nodo;                    
-                } else {
-                    HacerArbol(nivel, dim + 1, nodo, tipo);
-                }
-            } else {
-                LinkedList<NodoNNario> listanodos = new LinkedList<>();
-                for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    listanodos.add(actual);
-                }
-                nivel--;
-                HacerArbol(nivel, dim + 1, actual, tipo);
+                return null;
             }
 
+            for (int i = 0; i < listaIndices.get(dim - 1); i++) {
+                NodoNNario nuevo = new NodoNNario(tipo, listaIndices.get(nivel)); //verificar que el nivel sea el # de dim de cada nivel
+                actual.hijos.add(nuevo);
+                HacerArbol(nivel-1, dim+1, listaIndices, nuevo, tipo);
+            }
         } catch (Exception e) {
             System.out.println("Error en la clase ParaCorchete, HacerArbol");
         }
@@ -90,7 +72,6 @@ public class ParaCorchete implements Expresion {
             }
 
             //HacerArbol(listaIndex.size() - 1, listaIndex.get(listaIndex.size() - 1), arbolArreglo.hijos);
-
             return this;
 
         } catch (Exception e) {

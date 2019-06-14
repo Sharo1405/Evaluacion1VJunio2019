@@ -63,6 +63,7 @@ public class AsignacionArreglo implements Instruccion {
                 listarIndices(lista, impresion);
                 NodoNNario modArbol = (NodoNNario) encontrado.getValor();
                 modArbol.setearPorIndice(modArbol, listaIndex, valorParaAsignacion.getValue(lista, impresion), lista, impresion);
+                idBuscado.setValorSimbolo(idArreglo, modArbol, lista);
                 
             } else {
                 impresion.errores.add(new ast.Error("El id: " + idArreglo + " No existe para asignar el valor", linea, col, "Semantico"));

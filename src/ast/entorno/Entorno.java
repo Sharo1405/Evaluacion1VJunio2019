@@ -69,9 +69,9 @@ public class Entorno {
         }
     }
 
-    public void setValorSimbolo(String id, Object valorNuevo) {
+    public void setValorSimbolo(String id, Object valorNuevo, Entorno lista) {
         try {
-            for (Entorno e = this; e != null; e = e.getPadreANTERIOR()) {
+            for (Entorno e = lista; e != null; e = e.getPadreANTERIOR()) {
                 Simbolo encontrado = e.tabla.get(id);
                 if (encontrado != null) {
                     encontrado.setValor(valorNuevo);

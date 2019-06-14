@@ -187,7 +187,7 @@ public class Vista extends javax.swing.JFrame {
             
             String err = "";
             for (ast.Error errore : listas.errores) {
-                err += errore.getDescripcion() + " Linea:" + String.valueOf(errore.getLinea()) + " Columna:" + String.valueOf(errore.getCol()) + " Tipo" + errore.getTipoError();
+                err += errore.getDescripcion() + " Linea:" + String.valueOf(errore.getLinea()) + " Columna:" + String.valueOf(errore.getCol()) + " Tipo" + errore.getTipoError() + "\n";
             }
             
             jTextArea4.setText(err);
