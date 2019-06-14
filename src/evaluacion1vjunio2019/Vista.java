@@ -169,6 +169,11 @@ public class Vista extends javax.swing.JFrame {
             Sintactico parser = new Sintactico(scan);
             parser.parse();   
             
+            
+            /*System.out.println("4");
+            System.out.println("2");
+            System.out.println("3");*/
+            
             Entorno en = new Entorno();
             ListaErrorPrinter listas = new ListaErrorPrinter();
             parser.arbolINSTRUCCION.ejecutar(en, listas);

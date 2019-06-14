@@ -316,6 +316,9 @@ LOCAL_FIELD_DECLARATION::= finall:vi T:tipop VARIABLE_DECLARATORS:lista puntoyco
                     :}
                     |id:id igual E:e puntoycoma{: //asignacion
                         RESULT = new Asignacion(id, e, idleft, idright);
+                    :}
+                    |id:id PARACORCHETE:listaE igual E:e puntoycoma{:
+                        RESULT = new AsignacionArreglo( id, listaE, e, idleft, idright);
                     :};
 
 
@@ -425,6 +428,12 @@ CICLOS::= whilee apar E:e1 cpar S:s1 {:
         RESULT = new Forr(inicio, cond, aumeto, s1, fleft, fright);
     :}; 
 
+/*OTRO::= LOCAL_FIELD_DECLARATION{:
+        
+       :}
+       |E:e{:
+            RESULT = e;
+       :};*/
 
 FOR_INIT::= FIELD_DECLARATION:d {:      
             RESULT = d;
@@ -448,21 +457,6 @@ FIELD_MODIFIER::= publico:d {: RESULT = d;:}
                  |abstracto:d {: RESULT = d; :};
 
 
-
-
-
-
-/*D::= T id acorchete ccorchete acorchete ccorchete igual E puntoycoma{:
-    :}
-    |T:t id:id igual E:e puntoycoma {:  //declaracion asignacion
-        RESULT = new Declaracion(t,id, e, idleft, idright);
-    :}
-    |T:t id:id puntoycoma {:    //declaracion
-        RESULT = new Declaracion(t, id, idleft, idright);
-    :}
-    |id:id igual E:e puntoycoma{: //asignacion
-        RESULT = new Asignacion(id, e, idleft, idright);
-    :};*/
 
 
 PREPOSTFIJOS::= id:id masmas puntoycoma{:
@@ -607,6 +601,10 @@ E::= menos:mas E:e1 {:
     |menosmenos id:id {:
          RESULT = new OPPreFijo(new Identificador(id, null, idleft, idleft), Operacion.Operador.MENOS, idleft, idright);
     :}%prec menosmenos
+    
+    |id:id PARACORCHETE:indiceArreglo {: //lo de un arreglo
+        RESULT = new PosicionArregloRetorno(id, indiceArreglo, idleft, idright);
+    :}
 
     |read_file apar E:ruta  cpar {:
         RESULT = new LeerArchivo(ruta, rutaleft, rutaright);

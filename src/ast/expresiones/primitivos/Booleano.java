@@ -23,8 +23,11 @@ public class Booleano implements Expresion{
     private TipoContenedor tipo;
     private int linea;
     private int columna;
-    
 
+
+    public Booleano() {
+    }
+    
     public Booleano(Object valor, TipoContenedor tipo, int linea, int columna) {
         this.valor = valor;
         this.tipo = tipo;
