@@ -55,6 +55,7 @@ public class Forr implements Instruccion {
                 //hace la validacion del for
                 while ((Boolean) condicion.getValue(actual, impresion)) {
                     boolean reiniciar = false;
+                //SE LE DEBE COPIAR EL CONTENIDO DEL ENTORNO ACTUAL AL NUEVO PARA QUE LA VARIABLE DECLARADA DEL FOR(esta) NO SE OCULTE
                     Entorno actualactual = new Entorno(actual);
 
                     //ejecuta sentencias

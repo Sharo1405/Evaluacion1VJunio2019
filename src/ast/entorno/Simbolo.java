@@ -20,7 +20,14 @@ public class Simbolo {
     private String id;
     private Object valor; 
     
-    private LinkedList<String> visivilidad;
+    //private LinkedList<String> visibilidad;
+    private Boolean publico = false;
+    private Boolean privado = false;
+    private Boolean protegido = false;
+    
+    private Boolean estatico = false;
+    private Boolean finall = false;
+    
     
     private int fila;
     private int columna;
@@ -49,10 +56,15 @@ public class Simbolo {
         ID
     }
 
-    public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio, LinkedList<Integer> listaValoresDimensiones) {
+    public Simbolo(String id, Object valor, Boolean publico, Boolean privado, Boolean protegido, Boolean estatico, Boolean finall, 
+            int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio, LinkedList<Integer> listaValoresDimensiones) {
         this.id = id;
         this.valor = valor;
-        this.visivilidad = visivilidad;
+        this.publico = publico;
+        this.privado = privado;
+        this.protegido = protegido;
+        this.estatico = estatico;
+        this.finall = finall;
         this.fila = fila;
         this.columna = columna;
         this.rol = rol;
@@ -61,25 +73,20 @@ public class Simbolo {
         this.listaValoresDimensiones = listaValoresDimensiones; //[3][2]... -----> 3,2,....
     }
     
-    public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio) {
+    public Simbolo(String id, Object valor, Boolean publico, Boolean privado, Boolean protegido, Boolean estatico, Boolean finall, 
+            int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio) {
         this.id = id;
         this.valor = valor;
-        this.visivilidad = visivilidad;
+        this.publico = publico;
+        this.privado = privado;
+        this.protegido = protegido;
+        this.estatico = estatico;
+        this.finall = finall;
         this.fila = fila;
         this.columna = columna;
         this.rol = rol;
         this.tipo = tipo;
         this.tamanio = tamanio;
-    }   
-
-    public Simbolo(String id, Object valor, LinkedList<String> visivilidad, int fila, int columna, Rol rol, TipoContenedor tipo) {
-        this.id = id;
-        this.valor = valor;
-        this.visivilidad = visivilidad;
-        this.fila = fila;
-        this.columna = columna;
-        this.rol = rol;
-        this.tipo = tipo;
     }
            
     
@@ -186,19 +193,7 @@ public class Simbolo {
         this.rol = rol;
     }
 
-    /**
-     * @return the visivilidad
-     */
-    public LinkedList<String> getVisivilidad() {
-        return visivilidad;
-    }
-
-    /**
-     * @param visivilidad the visivilidad to set
-     */
-    public void setVisivilidad(LinkedList<String> visivilidad) {
-        this.visivilidad = visivilidad;
-    }
+    
 
     /**
      * @param tipo the tipo to set
@@ -233,5 +228,75 @@ public class Simbolo {
      */
     public void setListaValoresDimensiones(LinkedList<Integer> listaValoresDimensiones) {
         this.listaValoresDimensiones = listaValoresDimensiones;
+    }
+
+    /**
+     * @return the publico
+     */
+    public Boolean getPublico() {
+        return publico;
+    }
+
+    /**
+     * @param publico the publico to set
+     */
+    public void setPublico(Boolean publico) {
+        this.publico = publico;
+    }
+
+    /**
+     * @return the privado
+     */
+    public Boolean getPrivado() {
+        return privado;
+    }
+
+    /**
+     * @param privado the privado to set
+     */
+    public void setPrivado(Boolean privado) {
+        this.privado = privado;
+    }
+
+    /**
+     * @return the protegido
+     */
+    public Boolean getProtegido() {
+        return protegido;
+    }
+
+    /**
+     * @param protegido the protegido to set
+     */
+    public void setProtegido(Boolean protegido) {
+        this.protegido = protegido;
+    }
+
+    /**
+     * @return the estatico
+     */
+    public Boolean getEstatico() {
+        return estatico;
+    }
+
+    /**
+     * @param estatico the estatico to set
+     */
+    public void setEstatico(Boolean estatico) {
+        this.estatico = estatico;
+    }
+
+    /**
+     * @return the finall
+     */
+    public Boolean getFinall() {
+        return finall;
+    }
+
+    /**
+     * @param finall the finall to set
+     */
+    public void setFinall(Boolean finall) {
+        this.finall = finall;
     }
 }

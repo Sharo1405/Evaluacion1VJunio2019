@@ -88,6 +88,15 @@ privado     = "private"
 estatico    = "static"
 finall      = "final"
 nulo        = "null"
+//------------------------------------------------------------------------
+importa     = "import"
+clase       = "class"
+extender    = "extends"
+mainn       = "main"
+voidd       = "voidd"
+abstracto   = "abstract"
+retorno     = "return"
+//------------------------------------------------------------------------
 
 
 
@@ -338,6 +347,28 @@ enter   = [\ \n]
 <YYINITIAL> {imprimir}       {  System.out.println("Reconocido: <<"+yytext()+">>, imprimir");
                                 return new Symbol(sym.imprimir, yyline, yycolumn, yytext()); } 
 
+ 
+
+<YYINITIAL> {importa}       {  System.out.println("Reconocido: <<"+yytext()+">>, importa");
+                                return new Symbol(sym.importa, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {clase}       {  System.out.println("Reconocido: <<"+yytext()+">>, clase");
+                                return new Symbol(sym.clase, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {extender}       {  System.out.println("Reconocido: <<"+yytext()+">>, extender");
+                                return new Symbol(sym.extender, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {mainn}       {  System.out.println("Reconocido: <<"+yytext()+">>, mainn");
+                                return new Symbol(sym.mainn, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {voidd}       {  System.out.println("Reconocido: <<"+yytext()+">>, voidd");
+                                return new Symbol(sym.voidd, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {abstracto}       {  System.out.println("Reconocido: <<"+yytext()+">>, abstracto");
+                                return new Symbol(sym.abstracto, yyline, yycolumn, yytext()); } 
+
+<YYINITIAL> {retorno}       {  System.out.println("Reconocido: <<"+yytext()+">>, retorno");
+                                return new Symbol(sym.retorno, yyline, yycolumn, yytext()); } 
 
 
 <YYINITIAL> {id}       {  System.out.println("Reconocido: <<"+yytext()+">>, id");

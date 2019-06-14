@@ -8,6 +8,8 @@ package ast.expresiones.arreglos;
 import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.expresiones.Expresion;
+import ast.expresiones.operacion.TipoContenedor;
+import java.awt.Dimension;
 import java.util.LinkedList;
 
 /**
@@ -16,16 +18,20 @@ import java.util.LinkedList;
  */
 public class NodoNNario {
     
-    public LinkedList<NodoNNario> hijos = new LinkedList<>();
-    public Object valor = null;
+    public TipoContenedor tipo;
+    public int dimensiones;
+    public LinkedList<Object> hijos = new LinkedList<>();
 
     public NodoNNario() {
     }
 
+    public NodoNNario(TipoContenedor tipo, int dimensiones) {
+        this.tipo = tipo;
+        this.dimensiones = dimensiones;        
+    }
     
-    public NodoNNario(LinkedList<NodoNNario> hijos, Object valor) {
+    public NodoNNario(LinkedList<Object> hijos) {
         this.hijos = hijos;
-        this.valor = valor;
     }
 
     public void obtenerPorIndice(){

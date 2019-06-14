@@ -8,6 +8,7 @@ import ast.expresiones.*;
 import ast.expresiones.arreglos.*;
 import ast.expresiones.operacion.*;
 import ast.expresiones.primitivos.*;
+import ast.importaciones.Importar;
 import ast.instrucciones.declaraciones.*;
 import ast.instrucciones.*;
 import ast.instrucciones.Printer;
@@ -21,12 +22,15 @@ import java_cup.runtime.*;
 parser code
 
 {:
-    public Instruccion arbol;
+    public Instruccion arbolINSTRUCCION;
+
+    public ArbolAST arbol;
     public void syntax_error(Symbol s){
         System.err.println(s);
     }
 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error de sintaxis no recuperado!!!,"+String.valueOf(s.value)+"!!!"+String.valueOf(s.sym));
         System.err.println("Error caracter no esperado");
         System.err.println(s);
     }
@@ -51,9 +55,11 @@ terminal String interrogacion, dospuntos, whilee, breakk, continuee, masmas, men
 terminal String iff, elsee, doo, forr, switchh, casee, defaultt;
 terminal String MENOSUNARIO, MASUNARIO;
 terminal String write_file, read_file, coma, grafica;
-terminal String publico, protegido, privado, estatico, finall;
+terminal String publico, protegido, privado, estatico, finall, abstracto;
 
 terminal String print, printLinea;
+
+terminal String importa, clase, extender, mainn, voidd, retorno;
 
 nonterminal I;
 nonterminal Instruccion S;
@@ -84,7 +90,28 @@ nonterminal String FIELD_MODIFIER;
 nonterminal LinkedList<String> FIELD_MODIFIERS;
 nonterminal Instruccion FIELD_DECLARATION;
 nonterminal Expresion OPCIONESNEW;
-nonterminal Expresion INITARRAY, LISTAARRAY;
+nonterminal LinkedList<Expresion> LISTAARRAY;
+
+
+//el inicio del archivo imports clases------------------------------------
+nonterminal ArbolAST SS;
+nonterminal LinkedList<NodoAST> LCLASE;
+nonterminal CLASE;
+nonterminal LinkedList<Importar> LIMPORT;
+nonterminal IMPORTT;
+nonterminal CONTENIDO_CLASE;
+nonterminal DENTRO_CLASE;
+nonterminal DECLARACIONES_VAR_FUN;
+nonterminal LCORCHETE;
+nonterminal FORMAL_PARAMETERS;
+nonterminal FORMAL_PAR;
+nonterminal PARA;
+nonterminal CLASE_MIEMBRO;
+nonterminal CLASE_LOCAL;
+nonterminal MOD_CLASE_SUPERIOR;
+nonterminal Instruccion LOCAL_FIELD_DECLARATION;
+nonterminal RETORNOO;
+//------------------------------------------------------------------------
 
 
 //precedence left id;
@@ -106,8 +133,129 @@ precedence right MENOSUNARIO, MASUNARIO;
 start with I;
 
 I::= S:l{:
+        this.parser.arbolINSTRUCCION = l;
+    :}
+    |SS:l{:
         this.parser.arbol = l;
     :};
+
+
+SS::= LIMPORT:limport LCLASE:lclase {:
+        RESULT = new ArbolAST(limport, lclase);
+      :}
+     |LIMPORT:limport {:
+        RESULT = new ArbolAST(limport);
+     :}
+     |LCLASE:lclase {:
+        RESULT = new ArbolAST(lclase, 0);
+     :};
+
+LIMPORT::= LIMPORT:l importa cadena:cad puntoycoma {:   //-------------------FALTA------------------
+            RESULT = l;
+            RESULT.add(new Importar(cad, cadleft, cadright));
+        :}
+        |importa cadena:cad puntoycoma {:               //-------------------FALTA------------------
+            RESULT = new LinkedList<>();
+            RESULT.add(new Importar(cad, cadleft, cadright));
+        :};
+
+LCLASE::= LCLASE CLASE{:
+            
+         :}
+         |CLASE{:
+            
+         :};
+
+CLASE::= MOD_CLASE_SUPERIOR clase id allave CONTENIDO_CLASE cllave{::}
+        |MOD_CLASE_SUPERIOR clase id  extender id allave CONTENIDO_CLASE cllave{::}
+        |clase id allave CONTENIDO_CLASE cllave{::}
+        |clase id  extender id allave CONTENIDO_CLASE cllave{::};
+
+MOD_CLASE_SUPERIOR::= publico {::} 
+                     |publico abstracto {::};
+
+CONTENIDO_CLASE::= CONTENIDO_CLASE DENTRO_CLASE{::}
+                  |DENTRO_CLASE{::};
+
+
+DENTRO_CLASE::= CLASE_MIEMBRO{::}
+               |DECLARACIONES_VAR_FUN{::};
+
+
+//protegido estatico, privado estatico, protegido abstracto, privado abstracto
+CLASE_MIEMBRO::= FIELD_MODIFIER clase id allave CONTENIDO_CLASE cllave{::}
+                |FIELD_MODIFIER clase id  extender id allave CONTENIDO_CLASE cllave{::}
+                |clase id allave CONTENIDO_CLASE cllave{::}
+                |clase id  extender id allave CONTENIDO_CLASE cllave{::};
+
+
+DECLARACIONES_VAR_FUN::= FIELD_MODIFIERS T LCORCHETE id PARA puntoycoma{::} //metodo abstracto
+                         
+                        |FIELD_MODIFIERS T mainn PARA S {::} //MAIN
+                        
+                        |FIELD_MODIFIERS T id PARA S {::}  //funcion retornando una variable con y sin parametros                        
+
+                        |FIELD_MODIFIERS T LCORCHETE id PARA S {::}    //funcion retornando un vector con y sin parametros
+                        
+                        //variables globales
+                        |FIELD_DECLARATION{::};
+
+PARA::= apar FORMAL_PARAMETERS cpar {:
+            
+        :}
+       |apar cpar {:
+            
+       :};
+
+FORMAL_PARAMETERS::= FORMAL_PARAMETERS coma FORMAL_PAR{::}
+                    |FORMAL_PAR{::};
+
+FORMAL_PAR::= finall T VARIABLE_DECLARATOR_ID {::}
+             |T VARIABLE_DECLARATOR_ID {::};
+
+
+LCORCHETE::= LCORCHETE acorchete ccorchete{:
+                
+            :}
+            |acorchete ccorchete{:
+                
+            :};
+
+FIELD_DECLARATION::= FIELD_MODIFIERS:vi T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
+                        RESULT = new Declaraciones(vi, tipop, lista, tipopleft, tipopright);
+                    :}
+                    |T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
+                        RESULT = new Declaraciones(tipop, lista, tipopleft, tipopright);
+                    :}
+                    /*|id:id igual E:e puntoycoma{: //asignacion
+                        RESULT = new Asignacion(id, e, idleft, idright);
+                    :}*/;
+
+VARIABLE_DECLARATORS::= VARIABLE_DECLARATORS:d coma VARIABLE_DECLARATOR:i{:
+                            RESULT = d;
+                            RESULT.add(i);
+                      :}
+                      |VARIABLE_DECLARATOR:i{:
+                            RESULT = new LinkedList<Object>();
+                            RESULT.add(i);
+                      :};
+
+VARIABLE_DECLARATOR::= VARIABLE_DECLARATOR_ID:lista igual E:e {:
+                            RESULT = new VariableDeclarator(lista, e, eleft, eright);
+                      :}
+                      |VARIABLE_DECLARATOR_ID:d{:
+                            RESULT = d;
+                      :};
+
+VARIABLE_DECLARATOR_ID::= VARIABLE_DECLARATOR_ID:i acorchete ccorchete {:
+                            RESULT = i;
+                            RESULT.add(new Corchetee());                                
+                        :}
+                        |id:id{:
+                            RESULT = new LinkedList<NodoAST>();
+                            RESULT.add(new Identificador(id, idleft, idright));
+                        :};
+
 
 //"S" es el bloque
 S::= allave B:l cllave {:
@@ -123,15 +271,12 @@ B::= B:l J:i {:
         RESULT.add(i);
     :};
 
-J::= /*D:d {:
+J::= LOCAL_FIELD_DECLARATION:d{: //solo pueden ser final sin mod acceso private, public, protected
+        RESULT = d;
+    :}
+    /*|S:d {:
         RESULT = d;
     :}*/
-    FIELD_DECLARATION:d{:
-        RESULT = d;
-    :}
-    |S:d {:
-        RESULT = d;
-    :}
     |CICLOS:d {:
         RESULT = d;
     :}
@@ -146,7 +291,36 @@ J::= /*D:d {:
     :}
     |ARCHIVOS:d{:
         RESULT = d;
+    :}
+    |CLASE_LOCAL{:
+        
+    :}
+    |RETORNOO{:
+        
     :};
+
+RETORNOO::= retorno E puntoycoma{:
+            
+           :}
+           |retorno puntoycoma{:
+            
+           :};
+
+LOCAL_FIELD_DECLARATION::= finall:vi T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
+                        LinkedList<String> mod = new LinkedList<>();
+                        mod.add(vi);
+                        RESULT = new Declaraciones(mod, tipop, lista, tipopleft, tipopright);
+                    :}
+                    |T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
+                        RESULT = new Declaraciones(tipop, lista, tipopleft, tipopright);
+                    :}
+                    |id:id igual E:e puntoycoma{: //asignacion
+                        RESULT = new Asignacion(id, e, idleft, idright);
+                    :};
+
+
+CLASE_LOCAL::= clase id allave CONTENIDO_CLASE cllave{::}
+              |clase id  extender id allave CONTENIDO_CLASE cllave{::};
 
 
 
@@ -270,48 +444,15 @@ FIELD_MODIFIER::= publico:d {: RESULT = d;:}
                  |protegido:d {: RESULT = d; :}
                  |privado:d {: RESULT = d; :}
                  |estatico:d {: RESULT = d; :}
-                 |finall:d {: RESULT = d; :};
+                 |finall:d {: RESULT = d; :}
+                 |abstracto:d {: RESULT = d; :};
 
 
-FIELD_DECLARATION::= FIELD_MODIFIERS:vi T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
-                        RESULT = new Declaraciones(vi, tipop, lista, tipopleft, tipopright);
-                    :}
-                    |T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
-                        RESULT = new Declaraciones(tipop, lista, tipopleft, tipopright);
-                    :}
-                    |id:id igual E:e puntoycoma{: //asignacion
-                        RESULT = new Asignacion(id, e, idleft, idright);
-                    :};
 
-VARIABLE_DECLARATORS::= VARIABLE_DECLARATORS:d coma VARIABLE_DECLARATOR:i{:
-                            RESULT = d;
-                            RESULT.add(i);
-                      :}
-                      |VARIABLE_DECLARATOR:i{:
-                            RESULT = new LinkedList<Object>();
-                            RESULT.add(i);
-                      :};
-
-VARIABLE_DECLARATOR::= VARIABLE_DECLARATOR_ID:lista igual E:e {:
-                            RESULT = new VariableDeclarator(lista, e, eleft, eright);
-                      :}
-                      |VARIABLE_DECLARATOR_ID:d{:
-                            RESULT = d;
-                      :};
-
-VARIABLE_DECLARATOR_ID::= VARIABLE_DECLARATOR_ID:i acorchete ccorchete {:
-                            RESULT = i;
-                            RESULT.add(new Corchetee());                                
-                        :}
-                        |id:id{:
-                            RESULT = new LinkedList<NodoAST>();
-                            RESULT.add(new Identificador(id, idleft, idright));
-                        :};
 
 
 
 /*D::= T id acorchete ccorchete acorchete ccorchete igual E puntoycoma{:
-        
     :}
     |T:t id:id igual E:e puntoycoma {:  //declaracion asignacion
         RESULT = new Declaracion(t,id, e, idleft, idright);
@@ -350,24 +491,25 @@ IMPRESIONES::= print apar E:e1 cpar puntoycoma{:
 
 
 T::= intt{:
-        //RESULT = Simbolo.Tipo.INT;
         RESULT = new TipoContenedor(Simbolo.Tipo.INT);
     :}
     |charr {:
-        //RESULT = Simbolo.Tipo.CHAR;
         RESULT = new TipoContenedor(Simbolo.Tipo.CHAR);
     :}
     |stringg{:
-        //RESULT = Simbolo.Tipo.STRING;
         RESULT = new TipoContenedor(Simbolo.Tipo.STRING);
     :}
     |booleann{:
-        //RESULT = Simbolo.Tipo.BOOLEAN;
         RESULT = new TipoContenedor(Simbolo.Tipo.BOOLEAN);
     :}
     |doublee{:
-        //RESULT = Simbolo.Tipo.DOUBLE;
         RESULT = new TipoContenedor(Simbolo.Tipo.DOUBLE);
+    :}
+    |id{:
+        
+    :}
+    |voidd{:
+    
     :};
 
 E::= menos:mas E:e1 {:
@@ -473,8 +615,8 @@ E::= menos:mas E:e1 {:
         RESULT = new EscribirArchivo(ruta, contenido, aleft, aright);
     :}
 
-    |INITARRAY:d{:
-        RESULT = d;
+    |allave:la LISTAARRAY:d cllave{:
+        RESULT = new ArreglosEsteSi(d, laleft, laright);
     :}    
     |neww T:t OPCIONESNEW:e {: //luego de t pone otro terminal para bajar una y meter las demas opciones del new
             RESULT = new Newww(t, e, eleft,eright);
@@ -484,17 +626,14 @@ E::= menos:mas E:e1 {:
         RESULT = e;
     :};
 
-INITARRAY::= allave LISTAARRAY:d cllave{:
-        RESULT = d;
-    :};    
 
 LISTAARRAY::= LISTAARRAY:l coma E:e{:
-                ArregloLista lista = (ArregloLista) l;
-                lista.addEnLista(e, eleft, eright);
-                RESULT = lista;
+                RESULT = l;
+                RESULT.add(e);
             :}
             |E:e{:
-                RESULT = new ArregloLista(e, eleft, eright);
+                RESULT = new LinkedList<Expresion>();
+                RESULT.add(e);
             :};
 
 

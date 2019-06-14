@@ -12,6 +12,7 @@ import ast.entorno.Simbolo;
 import ast.expresiones.Expresion;
 import ast.expresiones.Identificador;
 import ast.expresiones.Newww;
+import ast.expresiones.arreglos.NodoNNario;
 import ast.expresiones.operacion.TipoContenedor;
 import ast.instrucciones.Instruccion;
 import java.util.LinkedList;
@@ -31,6 +32,13 @@ public class Declaraciones implements Instruccion {
     private int linea;
     private int col;
 
+    private Boolean publico = false;
+    private Boolean privado = false;
+    private Boolean protegido = false;
+
+    private Boolean estatico = false;
+    private Boolean finall = false;
+
     public Declaraciones(LinkedList<String> visibilidad, TipoContenedor tipoo, LinkedList<Object> lista, int linea, int col) {
         this.visibilidad = visibilidad;
         this.tipoo = tipoo;
@@ -49,54 +57,46 @@ public class Declaraciones implements Instruccion {
     }
 
     protected Boolean revisarVisibilidad(ListaErrorPrinter impresion) {
+        int cont_publico = 0;
+        int cont_privado = 0;
+        int cont_protegido = 0;
 
-        switch (visibilidad.size()) {
-            case 3:
-                String primero = visibilidad.get(0);
-                String segundo = visibilidad.get(1);
-                String tercero = visibilidad.get(2);
+        int cont_estatico = 0;
+        int cont_finall = 0;
+        for (String string : visibilidad) {
+            switch (string) {
+                case "public":
+                    publico = true;
+                    cont_publico++;
+                    break;
 
-                if (!(primero.equals("public") || primero.equals("protected") || primero.equals("private"))) {
-                    return false;
-                }
+                case "protected":
+                    protegido = true;
+                    cont_protegido++;
+                    break;
 
-                if (!segundo.equals("static")) {
-                    return false;
-                }
+                case "private":
+                    privado = true;
+                    cont_privado++;
+                    break;
 
-                if (!tercero.equals("final")) {
-                    return false;
-                }
-                return true;
+                case "static":
+                    estatico = true;
+                    cont_estatico++;
+                    break;
 
-            case 2:
-                String primero1 = visibilidad.get(0);
-                String segundo1 = visibilidad.get(1);
-
-                if (!(primero1.equals("public") || primero1.equals("protected") || primero1.equals("private") || primero1.equals("static"))
-                        && !primero1.equals(segundo1)) {
-                    return false;
-                }
-
-                if (!segundo1.equals("static")) {
-                    return false;
-                }
-                return true;
-
-            case 1:
-                String primero2 = visibilidad.get(0);
-
-                if (!(primero2.equals("public") || primero2.equals("protected") || primero2.equals("private"))) {
-                    return false;
-                }
-                return true;
-
-            default:
-                impresion.errores.add(new ast.Error("Error visibilidad no valida para variables/objetos", linea, col, "Semantico"));
-                break;
+                case "final":
+                    finall = true;
+                    cont_finall++;
+                    break;
+            }
         }
 
-        return false;
+        if (cont_estatico <= 1 && cont_finall <= 1 && cont_privado <= 1 && cont_protegido <= 1 && cont_publico <= 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -135,7 +135,8 @@ public class Declaraciones implements Instruccion {
                                         return null;
                                     } else {
                                         if (dimensiones <= 0) {
-                                            lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
+                                            lista.setSimbolo(nombreid, new Simbolo(nombreid, null, publico, privado, protegido, estatico,
+                                                    finall, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
                                             nombreid = "";
                                             dimensiones = 0;
                                         }
@@ -145,7 +146,9 @@ public class Declaraciones implements Instruccion {
                                 if (tipoVariable == tipotipotipo) {
 
                                     if (dimensiones <= 0) {
-                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
+                                        //lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
+                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, valorE, publico, privado, protegido, estatico, finall,
+                                                linea, col, Simbolo.Rol.VARIABLE, tipoo, dimensiones));
                                         nombreid = "";
                                         dimensiones = 0;
                                     }
@@ -156,15 +159,24 @@ public class Declaraciones implements Instruccion {
                             } else {
                                 Object valorE = var.getValor().getValue(lista, impresion);
                                 Object tipot = var.getValor().getType(lista, impresion);
-
-                                if (tipoVariable == tipot) {
-                                    Newww instancia = (Newww) valorE;
-                                    if (dimensiones == instancia.dimensiones) {
-                                        lista.setSimbolo(nombreid, new Simbolo(nombreid, instancia.arbolArreglo, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones, instancia.listaTamaniosIndice));
-                                    } else {
-                                        impresion.errores.add(new ast.Error("Las dimensiones de la variable con la instancia NO COINCIDEN", linea, col, "Semantico"));
+                                int bandera = 0;                                
+                                TipoContenedor tipoRegresado = (TipoContenedor) tipot;
+                                
+                                Object t = tipoRegresado.ejecutar(lista, impresion);
+                                
+                                if (tipoVariable == t) {
+                                    
+                                    if(valorE instanceof NodoNNario){
+                                        NodoNNario n = (NodoNNario) valorE;
+                                        if(dimensiones == n.dimensiones){
+                                            lista.setSimbolo(nombreid, new Simbolo(nombreid, n, publico, privado, protegido, estatico, finall, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones));
+                                        }else{
+                                            impresion.errores.add(new ast.Error("Las dimensiones de la variable con la instancia NO COINCIDEN", linea, col, "Semantico"));
+                                        }
                                     }
+                                    
                                 }
+
                             }
                         }
 
@@ -182,16 +194,16 @@ public class Declaraciones implements Instruccion {
 
                         Object valorPre = valorPredeterminado(tipoo.ejecutar(lista, impresion));
                         if (dimensiones > 0) { //vector
-                            lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones));
+                            lista.setSimbolo(nombreid, new Simbolo(nombreid, null, publico, privado, protegido, estatico, finall, linea, col, Simbolo.Rol.VECTOR, tipoo, dimensiones));
                             nombreid = "";
                             dimensiones = 0;
                         } else if (dimensiones <= 0) {
                             if (!tipoo.getTipoObjeto().equals("")) {//OBJETOS
-                                lista.setSimbolo(nombreid, new Simbolo(nombreid, null, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
+                                lista.setSimbolo(nombreid, new Simbolo(nombreid, null, publico, privado, protegido, estatico, finall, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
                                 nombreid = "";
                                 dimensiones = 0;
                             } else {//TIPOS PRIMITIVOS
-                                lista.setSimbolo(nombreid, new Simbolo(nombreid, valorPre, visibilidad, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
+                                lista.setSimbolo(nombreid, new Simbolo(nombreid, valorPre, publico, privado, protegido, estatico, finall, linea, col, Simbolo.Rol.VARIABLE, tipoo, 0));
                                 nombreid = "";
                                 dimensiones = 0;
                             }

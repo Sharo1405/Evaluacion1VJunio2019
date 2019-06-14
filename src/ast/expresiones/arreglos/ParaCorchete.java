@@ -30,14 +30,14 @@ public class ParaCorchete implements Expresion {
         this.listadeExpresiones = listadeExpresiones;
     }
 
-    public NodoNNario HacerArbol(int nivel, int numeroEnPosNivel, LinkedList<NodoNNario> actual) {
+    /*public NodoNNario HacerArbol(int nivel, int numeroEnPosNivel, LinkedList<NodoNNario> actual) {
 
         try {
 
             if (nivel == 0) {
                 LinkedList<NodoNNario> listanodos = new LinkedList<>();
                 for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    listanodos.add(new NodoNNario(actual, null));
+                    listanodos.add(new NodoNNario(actual));
                 }
                 nivel--;
                 if (nivel < 0) {
@@ -47,7 +47,7 @@ public class ParaCorchete implements Expresion {
                 LinkedList<NodoNNario> listanodos = new LinkedList<>();
 
                 for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    listanodos.add(new NodoNNario(actual, null));
+                    listanodos.add(new NodoNNario(null));
                 }
                 nivel--;
                 if (nivel < 0) {
@@ -58,7 +58,7 @@ public class ParaCorchete implements Expresion {
             } else {
                 LinkedList<NodoNNario> listanodos = new LinkedList<>();
                 for (int i = listaIndex.get(nivel); i > 0; i--) {
-                    listanodos.add(new NodoNNario(actual, null));
+                    listanodos.add(actual);
                 }
                 nivel--;
                 HacerArbol(nivel, listaIndex.get(nivel), listanodos);
@@ -69,7 +69,7 @@ public class ParaCorchete implements Expresion {
         }
 
         return null;
-    }
+    }*/
 
     @Override
     public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
@@ -88,7 +88,7 @@ public class ParaCorchete implements Expresion {
                 }
             }
 
-            HacerArbol(listaIndex.size() - 1, listaIndex.get(listaIndex.size() - 1), arbolArreglo.hijos);
+            //HacerArbol(listaIndex.size() - 1, listaIndex.get(listaIndex.size() - 1), arbolArreglo.hijos);
 
             return this;
 

@@ -171,7 +171,7 @@ public class Vista extends javax.swing.JFrame {
             
             Entorno en = new Entorno();
             ListaErrorPrinter listas = new ListaErrorPrinter();
-            parser.arbol.ejecutar(en, listas);
+            parser.arbolINSTRUCCION.ejecutar(en, listas);
             
             String salida = "";
             for (String impresione : listas.impresiones) {

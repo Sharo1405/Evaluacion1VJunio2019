@@ -26,13 +26,21 @@ public class NodoArreglo implements Expresion {
 
     @Override
     public Object getValue(Entorno lista, ListaErrorPrinter impresion) {
-        System.out.println("holaholahoahasjdbvhasbvhbadsk -----------------------------");
+        try {
+            return valor.getValue(lista, impresion);
+        } catch (Exception e) {
+            System.out.println("Error en la clase NodoArreglo, getValue");
+        }
         return null;
     }
 
     @Override
     public Object getType(Entorno lista, ListaErrorPrinter impresion) {
-        System.out.println("holaholahoahasjdbvhasbvhbadsk -----------------------------");
+        try {
+            return valor.getType(lista, impresion);
+        } catch (Exception e) {
+            System.out.println("Error en la clase NodoArreglo, getType");
+        }
         return null;
     }
 
