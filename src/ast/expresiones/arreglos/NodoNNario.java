@@ -56,6 +56,7 @@ public class NodoNNario {
 
                     try {
                         int aux = indicesPorDimension.get(i + 1);
+                        indicesPorDimension.remove(i);
                         obtenerPorIndice(no, indicesPorDimension, lista, impresion);
                     } catch (Exception e) {
                         return nodo;
@@ -68,7 +69,7 @@ public class NodoNNario {
                 if (indicesPorDimension.size() == 0) {
                     break;
                 }
-                indicesPorDimension.remove(i);
+                
             }
 
             return retorno;
