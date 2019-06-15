@@ -99,8 +99,9 @@ nonterminal LinkedList<NodoAST> LCLASE;
 nonterminal CLASE;
 nonterminal LinkedList<Importar> LIMPORT;
 nonterminal IMPORTT;
-nonterminal CONTENIDO_CLASE;
-nonterminal DENTRO_CLASE;
+nonterminal LinkedList<NodoAST> CONTENIDO_CLASE;
+nonterminal LinkedList<NodoAST> OTRO;
+nonterminal NodoAST DENTRO_CLASE;
 nonterminal DECLARACIONES_VAR_FUN;
 nonterminal LCORCHETE;
 nonterminal FORMAL_PARAMETERS;
@@ -108,7 +109,7 @@ nonterminal FORMAL_PAR;
 nonterminal PARA;
 nonterminal CLASE_MIEMBRO;
 nonterminal CLASE_LOCAL;
-nonterminal MOD_CLASE_SUPERIOR;
+nonterminal LinkedList<String> MOD_CLASE_SUPERIOR;
 nonterminal Instruccion LOCAL_FIELD_DECLARATION;
 nonterminal RETORNOO;
 //------------------------------------------------------------------------
@@ -132,10 +133,10 @@ precedence right MENOSUNARIO, MASUNARIO;
 
 start with I;
 
-I::= S:l{:
+I::= /*S:l{:
         this.parser.arbolINSTRUCCION = l;
-    :}
-    |SS:l{:
+    :}*/
+    SS:l{:
         this.parser.arbol = l;
     :};
 
@@ -159,27 +160,73 @@ LIMPORT::= LIMPORT:l importa cadena:cad puntoycoma {:   //-------------------FAL
             RESULT.add(new Importar(cad, cadleft, cadright));
         :};
 
-LCLASE::= LCLASE CLASE{:
-            
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+LCLASE::= LCLASE:dd CLASE:d{:
+            RESULT = dd;
+            RESULT.add(d); 
          :}
-         |CLASE{:
-            
+         |CLASE:clase{:
+            RESULT = new LinkedList<>();
+            RESULT.add(clase); 
          :};
 
-CLASE::= MOD_CLASE_SUPERIOR clase id allave CONTENIDO_CLASE cllave{::}
-        |MOD_CLASE_SUPERIOR clase id  extender id allave CONTENIDO_CLASE cllave{::}
-        |clase id allave CONTENIDO_CLASE cllave{::}
-        |clase id  extender id allave CONTENIDO_CLASE cllave{::};
+CLASE::= MOD_CLASE_SUPERIOR:visivilidad clase id:idClase allave OTRO:listaIntrucciones{:
+            RESULT = new Clase( visivilidad, idClase, listaIntrucciones, idleft, idright);
+        :}
+        |MOD_CLASE_SUPERIOR:visivilidad clase id:idClase extender id:idHerencia allave OTRO:listaIntrucciones {:
+            RESULT = new Clase( visivilidad, idClase, idHerencia, listaIntrucciones, idleft, idright);
+        :}
+        |clase id allave OTRO{:
+            RESULT = new Clase( idClase, listaIntrucciones, idleft, idright);
+        :}
+        |clase id  extender id allave OTRO{:
+            RESULT = new Clase( idClase, idHerencia, listaIntrucciones, idleft, idright);
+        :};
 
-MOD_CLASE_SUPERIOR::= publico {::} 
-                     |publico abstracto {::};
+OTRO::= CONTENIDO_CLASE:lista cllave {:
+            RESULT = lista;
+        :}
+       |cllave{:
+            RESULT = new LinkedList<>();
+       :};
 
-CONTENIDO_CLASE::= CONTENIDO_CLASE DENTRO_CLASE{::}
-                  |DENTRO_CLASE{::};
+MOD_CLASE_SUPERIOR::= MOD_CLASE_SUPERIOR:dd MOD_CS:d{:
+                        RESULT = dd;
+                        RESULT.add(d);
+                      :}
+                     |MOD_CS:d{:
+                        RESULT = new LinkedList<>();
+                        RESULT.add(d);
+                     :};
+
+//publico   publico abstracto
+MOD_CS::= publico:d {:
+            RESULT = d;
+         :} 
+         |abstracto:d {:
+            RESULT = d;
+         :};
 
 
-DENTRO_CLASE::= CLASE_MIEMBRO{::}
-               |DECLARACIONES_VAR_FUN{::};
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+CONTENIDO_CLASE::= CONTENIDO_CLASE:lista DENTRO_CLASE:d {:
+                        RESULT = lista;
+                        RESULT.add(d);
+                  :}
+                  |DENTRO_CLASE:d {:
+                        RESULT = new LinkedList<>();
+                        RESULT.add(d);
+                  :};
+
+
+DENTRO_CLASE::= CLASE_MIEMBRO:claseMiembro{:
+                    RESULT = claseMiembro;
+               :}
+               |DECLARACIONES_VAR_FUN:declaraciones{:
+                    RESULT = declaraciones;
+               :};
 
 
 //protegido estatico, privado estatico, protegido abstracto, privado abstracto
@@ -189,16 +236,30 @@ CLASE_MIEMBRO::= FIELD_MODIFIER clase id allave CONTENIDO_CLASE cllave{::}
                 |clase id  extender id allave CONTENIDO_CLASE cllave{::};
 
 
-DECLARACIONES_VAR_FUN::= FIELD_MODIFIERS T LCORCHETE id PARA puntoycoma{::} //metodo abstracto
+DECLARACIONES_VAR_FUN::= FIELD_MODIFIERS T LCORCHETE id PARA puntoycoma{:
+                            
+                        :} //metodo abstracto                        
                          
-                        |FIELD_MODIFIERS T mainn PARA S {::} //MAIN
+                        |FIELD_MODIFIERS T mainn PARA S {:
                         
-                        |FIELD_MODIFIERS T id PARA S {::}  //funcion retornando una variable con y sin parametros                        
+                        :} //MAIN
+                        
+                        |FIELD_MODIFIERS T id PARA S {:
+                        
+                        :}  //funcion retornando una variable con y sin parametros
 
-                        |FIELD_MODIFIERS T LCORCHETE id PARA S {::}    //funcion retornando un vector con y sin parametros
+                        |T id PARA S {:
+                        
+                        :}  //funcion SIN VISIVILIDAD retornando una variable con y sin parametros
+
+                        |FIELD_MODIFIERS T LCORCHETE id PARA S {:
+                        
+                        :}    //funcion retornando un vector con y sin parametros
                         
                         //variables globales
-                        |FIELD_DECLARATION{::};
+                        |FIELD_DECLARATION:d{:
+                            RESULT = d;
+                        :};
 
 PARA::= apar FORMAL_PARAMETERS cpar {:
             

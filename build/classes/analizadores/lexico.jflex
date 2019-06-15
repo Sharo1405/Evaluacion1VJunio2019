@@ -20,7 +20,6 @@ import java_cup.runtime.*;
 %unicode
 
 
-
 //aritmeticas
 masmas      = "++"
 menosmenos  = "--"
@@ -137,7 +136,8 @@ enter   = [\ \n]
 //---------------------------------------------------------------------------------------------------
 <YYINITIAL> "\""                {System.out.println("\"");yybegin(cadenaEscapes); paraCadena ="";}
 <cadenaEscapes> "\\"            {System.out.println("\\");yybegin(cadenaEscapes2);}
-<cadenaEscapes> "\""            {System.out.println("\" finalfinalfinal"); System.out.println(paraCadena); yybegin(YYINITIAL); return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);}
+<cadenaEscapes> "\""            {System.out.println("\" finalfinalfinal"); System.out.println(paraCadena); yybegin(YYINITIAL); 
+                                return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);}
 <cadenaEscapes> .               {paraCadena += yytext();}
 
 //el yytext() llevaria la cadena si es solo una er

@@ -949,7 +949,8 @@ public class Lexico implements java_cup.runtime.Scanner {
             }
           case 122: break;
           case 28: 
-            { System.out.println("\" finalfinalfinal"); System.out.println(paraCadena); yybegin(YYINITIAL); return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);
+            { System.out.println("\" finalfinalfinal"); System.out.println(paraCadena); yybegin(YYINITIAL); 
+                                return new Symbol(sym.cadena, yyline, yycolumn, paraCadena);
             }
           case 123: break;
           case 29: 

@@ -6,9 +6,9 @@
 package ast;
 
 import ast.entorno.Entorno;
-import ast.importaciones.Importaciones;
+
 import ast.importaciones.Importar;
-import ast.instrucciones.Instruccion;
+
 import java.util.LinkedList;
 
 /**
