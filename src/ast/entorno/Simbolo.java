@@ -35,8 +35,10 @@ public class Simbolo {
     private Rol rol;
     private TipoContenedor tipo;
     
+    
     private int tamanio; //dimensiones;
     private LinkedList<Integer> listaValoresDimensiones;
+    private String tipoRetorno;
     
     public enum Rol{
         VARIABLE,
@@ -53,6 +55,7 @@ public class Simbolo {
         DOUBLE,
         BOOLEAN,
         NULO,
+        METODO,
         ID
     }
 
@@ -71,6 +74,25 @@ public class Simbolo {
         this.tipo = tipo;
         this.tamanio = tamanio;
         this.listaValoresDimensiones = listaValoresDimensiones; //[3][2]... -----> 3,2,....
+    }
+    
+    public Simbolo(String id, Object valor, Boolean publico, Boolean privado, Boolean protegido, Boolean estatico, Boolean finall, 
+            int fila, int columna, Rol rol, TipoContenedor tipo, int tamanio, 
+            LinkedList<Integer> listaValoresDimensiones, String tipoRetorno) {
+        this.id = id;
+        this.valor = valor;
+        this.publico = publico;
+        this.privado = privado;
+        this.protegido = protegido;
+        this.estatico = estatico;
+        this.finall = finall;
+        this.fila = fila;
+        this.columna = columna;
+        this.rol = rol;
+        this.tipo = tipo;
+        this.tamanio = tamanio;
+        this.listaValoresDimensiones = listaValoresDimensiones; //[3][2]... -----> 3,2,....
+        this.tipoRetorno = tipoRetorno;
     }
     
     public Simbolo(String id, Object valor, Boolean publico, Boolean privado, Boolean protegido, Boolean estatico, Boolean finall, 
@@ -298,5 +320,19 @@ public class Simbolo {
      */
     public void setFinall(Boolean finall) {
         this.finall = finall;
+    }
+
+    /**
+     * @return the tipoRetorno
+     */
+    public String getTipoRetorno() {
+        return tipoRetorno;
+    }
+
+    /**
+     * @param tipoRetorno the tipoRetorno to set
+     */
+    public void setTipoRetorno(String tipoRetorno) {
+        this.tipoRetorno = tipoRetorno;
     }
 }

@@ -44,6 +44,25 @@ public class Clase implements Instruccion {
         this.linea = linea;
         this.col = col;
     }
+    
+    
+    public Clase( String idClase, String idHerencia, LinkedList<NodoAST> instruccionesDentro, int linea, int col) {
+        this.visivilidad = visivilidad;
+        this.idClase = idClase;
+        this.idHerencia = idHerencia;
+        this.instruccionesDentro = instruccionesDentro;
+        this.linea = linea;
+        this.col = col;
+    }
+
+    public Clase(String idClase, LinkedList<NodoAST> instruccionesDentro, int linea, int col) {
+        this.visivilidad = visivilidad;
+        this.idClase = idClase;
+        this.idHerencia = "";
+        this.instruccionesDentro = instruccionesDentro;
+        this.linea = linea;
+        this.col = col;
+    }
 
     @Override
     public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {

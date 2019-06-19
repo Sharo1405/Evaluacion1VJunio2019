@@ -75,9 +75,9 @@ public class Operacion {
                         return new TipoContenedor(Simbolo.Tipo.STRING);
 
                     } else if (aux.isBool(izq) || aux.isBool(der)) {
-                        System.out.println("Error de tipo para aritmeticas");
-                        impresion.errores.add(new ast.Error("Error de tipo para aritmeticas, BOOLEAN", line, col, "Semantico"));
-                        return null;
+                        //System.out.println("Error de tipo para aritmeticas");
+                        //impresion.errores.add(new ast.Error("Error de tipo para aritmeticas, BOOLEAN", line, col, "Semantico"));
+                        return new TipoContenedor(Simbolo.Tipo.BOOLEAN);                        
 
                     } else if (aux.isDecimal(izq) || aux.isDecimal(der)) {
                         return new TipoContenedor(Simbolo.Tipo.DOUBLE);

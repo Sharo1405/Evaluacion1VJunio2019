@@ -95,6 +95,8 @@ mainn       = "main"
 voidd       = "voidd"
 abstracto   = "abstract"
 retorno     = "return"
+arroba      = "@"
+overridee   = "Override"
 //------------------------------------------------------------------------
 
 
@@ -368,7 +370,16 @@ enter   = [\ \n]
                                 return new Symbol(sym.abstracto, yyline, yycolumn, yytext()); } 
 
 <YYINITIAL> {retorno}       {  System.out.println("Reconocido: <<"+yytext()+">>, retorno");
-                                return new Symbol(sym.retorno, yyline, yycolumn, yytext()); } 
+                                return new Symbol(sym.retorno, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {arroba}       {  System.out.println("Reconocido: <<"+yytext()+">>, arroba");
+                                return new Symbol(sym.arroba, yyline, yycolumn, yytext()); }
+
+<YYINITIAL> {overridee}       {  System.out.println("Reconocido: <<"+yytext()+">>, overridee");
+                                return new Symbol(sym.overridee, yyline, yycolumn, yytext()); }
+
+
+ 
 
 
 <YYINITIAL> {id}       {  System.out.println("Reconocido: <<"+yytext()+">>, id");

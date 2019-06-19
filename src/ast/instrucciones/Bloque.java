@@ -7,6 +7,7 @@ package ast.instrucciones;
 
 import ast.ListaErrorPrinter;
 import ast.NodoAST;
+import ast.clase.LlamadaMetodoFuncion;
 import ast.entorno.Entorno;
 import ast.expresiones.Expresion;
 import ast.instrucciones.ciclos.RetCont.Breakk;
@@ -39,19 +40,32 @@ public class Bloque implements Instruccion {
                     Object retorno = ((Instruccion) nodo).ejecutar(lista, impresion);
                     if (retorno instanceof Breakk) {
                         return retorno;
-                    } else if (retorno instanceof Continuee){                        
+                    } else if (retorno instanceof Continuee) {
                         return true;
                     } else if (retorno instanceof Returnn) {
                         //AQUI VA EL RETURN 
-                    }else if (retorno instanceof Boolean){
-                        if(retorno.equals(true)){
+                    } else if (retorno instanceof Boolean) {
+                        if (retorno.equals(true)) {
                             return true;
                         }
                     }
-                        
+                    
+                    if(retorno != null){
+                        return retorno;
+                    }
+
                 } else if (nodo instanceof Expresion) {
                     //estos son los pre y pos fijos
-                    Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+                    Expresion ex = (Expresion) nodo;
+                    if (ex instanceof LlamadaMetodoFuncion) {
+                        Object retorno = ((Expresion) nodo).getValue(lista.getPadreANTERIOR(), impresion);
+                        return retorno;
+                    } else if (ex instanceof Returnn) {
+                        return ((Expresion) nodo).getValue(lista, impresion);
+                    } else {
+                        Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+
+                    }
 
                     //AQUI EL RETORNO
                 }
@@ -69,5 +83,4 @@ public class Bloque implements Instruccion {
         return 0;
     }
 
-    
 }

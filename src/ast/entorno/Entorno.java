@@ -58,6 +58,7 @@ public class Entorno {
         }       
         return null;
     }
+        
 
     public void setSimbolo(String id, Simbolo nuevoSimbolo) {
 

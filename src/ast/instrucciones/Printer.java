@@ -8,6 +8,7 @@ package ast.instrucciones;
 import ast.ListaErrorPrinter;
 import ast.entorno.Entorno;
 import ast.expresiones.Expresion;
+import ast.instrucciones.ciclos.RetCont.Returnn;
 import com.sun.javafx.applet.ExperimentalExtensions;
 import java.util.LinkedList;
 
@@ -42,16 +43,24 @@ public class Printer implements Instruccion {
             if (expImpre != null) {
                 Object imprimir = expImpre.getValue(lista, impresion);
                 //if (imprimir != null) {
+                if (imprimir instanceof Returnn) {
+                    Returnn h = (Returnn) imprimir;
+                    if(h.valor != null){
+                        System.out.println(String.valueOf(h.valor));
+                        impresion.impresiones.add(String.valueOf(h.valor));
+                    }
+                } else {
                     if (saltoLinea == false) {
                         impresion.impresiones.add(String.valueOf(imprimir));
                         System.out.println(String.valueOf(imprimir));
                     } else {
                         impresion.impresiones.add(String.valueOf(imprimir));
-                        System.out.println(String.valueOf(imprimir)+ "\n");
+                        System.out.println(String.valueOf(imprimir) + "\n");
                     }
-                /*} else {
-                    impresion.errores.add(new ast.Error("Expresion/valor no existe para imprimirlo", linea, col, "Semantico"));
-                }*/
+                    /*} else {
+                        impresion.errores.add(new ast.Error("Expresion/valor no existe para imprimirlo", linea, col, "Semantico"));
+                    }*/
+                }
             }
 
         } catch (Exception e) {
@@ -121,5 +130,4 @@ public class Printer implements Instruccion {
         this.saltoLinea = saltoLinea;
     }
 
-    
 }

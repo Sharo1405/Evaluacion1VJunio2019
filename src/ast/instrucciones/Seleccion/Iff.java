@@ -42,10 +42,10 @@ public class Iff implements Instruccion {
     @Override
     public Object ejecutar(Entorno lista, ListaErrorPrinter impresion) {
         try {
-
+            entro = false;
             for (IfLista ifLista : ejecutarIFS) {
 
-                if ((Boolean) ifLista.getCondicion().getValue(lista, impresion) && entro == false) {
+                if ((Boolean) ifLista.getCondicion().getValue(lista, impresion)) {
                     entro = true;
                     for (NodoAST nodo : ((Bloque) ifLista.getListaParaEjecutar()).listaIns) {
                         if (nodo instanceof Instruccion) {
@@ -59,33 +59,45 @@ public class Iff implements Instruccion {
                             }
                         } else if (nodo instanceof Expresion) {
                             //estos son los pre y pos fijos
-                            Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+                            Expresion ex = (Expresion) nodo;
 
-                            //AQUI EL RETORNO
+                            if (ex instanceof Returnn) {                                
+                                return ((Expresion) nodo).getValue(lista, impresion);
+                            } else {
+                                Object retorno = ((Expresion) nodo).getValue(lista, impresion);
+                            }
+
                         }
+                    }
+                    break;
+                }
+                //break;
+            }
+
+            if (entro == false && ejecutarELSE != null) {
+                Object retorno = ejecutarELSE.ejecutar(lista, impresion);
+
+                if (retorno instanceof Breakk) {
+                    return retorno;
+                } else if (retorno instanceof Continuee) {
+                    return true;
+                } else if (retorno instanceof Returnn) {
+                    //AQUI VA EL RETURN 
+                } else if (retorno instanceof Boolean) {
+                    if (retorno.equals(true)) {
+                        return true;
                     }
                 }
-
-                if (entro == false && ejecutarELSE != null) {
-                    Object retorno = ejecutarELSE.ejecutar(lista, impresion);
-                    
-                    if (retorno instanceof Breakk) {
-                        return retorno;
-                    } else if (retorno instanceof Continuee){                        
-                        return true;
-                    } else if (retorno instanceof Returnn) {
-                        //AQUI VA EL RETURN 
-                    }else if (retorno instanceof Boolean){
-                        if(retorno.equals(true)){
-                            return true;
-                        }
-                    }
+                
+                if(retorno != null){
+                    return retorno;
                 }
             }
+            //}
 
         } catch (Exception e) {
             System.out.println("Error en la clase Iff, ejecutar");
-            impresion.errores.add(new ast.Error("La condicion no es valida", linea, col, "Semantico"));
+            impresion.errores.add(new ast.Error("La condicion no es valida debe ser de tipo boolean el resultado", linea, col, "Semantico"));
         }
         return null;
     }
@@ -151,5 +163,4 @@ public class Iff implements Instruccion {
         this.col = col;
     }
 
-    
 }

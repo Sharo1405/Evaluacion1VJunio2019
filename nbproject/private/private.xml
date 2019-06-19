@@ -4,21 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/evaluacion1vjunio2019/Vista.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/Asignacion.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/ciclos/WhileCiclo.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/Declaracion.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/declaraciones/Declaraciones.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/sintactico.cup</file>
             <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/entorno/Simbolo.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/Identificador.java</file>
             <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/evaluacion1vjunio2019/Evaluacion1VJunio2019.java</file>
             <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/lexico.jflex</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/Sintactico.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/operacion/TipoContenedor.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/OPPostFijo.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/Bloque.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/entorno/Entorno.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/sintactico.cup</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/analizadores/Lexico.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/operacion/Relacional.java</file>
-            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/operacion/Operacion.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/clase/MetodoFuncion.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/instrucciones/declaraciones/Corchetee.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/clase/TodoMetodos.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/clase/LlamadaMetodoFuncion.java</file>
+            <file>file:/D:/sharolin/Documents/NetBeansProjects/Evaluacion1VJunio2019/src/ast/expresiones/arreglos/ParaCorchete.java</file>
         </group>
     </open-files>
 </project-private>

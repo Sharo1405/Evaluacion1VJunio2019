@@ -1,6 +1,6 @@
 package analizadores;
 
-
+import ast.clase.*;
 import ast.ArbolAST;
 import ast.NodoAST;
 import ast.entorno.Simbolo;
@@ -56,10 +56,9 @@ terminal String iff, elsee, doo, forr, switchh, casee, defaultt;
 terminal String MENOSUNARIO, MASUNARIO;
 terminal String write_file, read_file, coma, grafica;
 terminal String publico, protegido, privado, estatico, finall, abstracto;
-
 terminal String print, printLinea;
-
 terminal String importa, clase, extender, mainn, voidd, retorno;
+terminal String overridee, arroba;
 
 nonterminal I;
 nonterminal Instruccion S;
@@ -96,22 +95,28 @@ nonterminal LinkedList<Expresion> LISTAARRAY;
 //el inicio del archivo imports clases------------------------------------
 nonterminal ArbolAST SS;
 nonterminal LinkedList<NodoAST> LCLASE;
-nonterminal CLASE;
+nonterminal String MOD_CS;
+nonterminal Instruccion CLASE;
 nonterminal LinkedList<Importar> LIMPORT;
-nonterminal IMPORTT;
+//nonterminal IMPORTT;
 nonterminal LinkedList<NodoAST> CONTENIDO_CLASE;
 nonterminal LinkedList<NodoAST> OTRO;
 nonterminal NodoAST DENTRO_CLASE;
-nonterminal DECLARACIONES_VAR_FUN;
-nonterminal LCORCHETE;
-nonterminal FORMAL_PARAMETERS;
-nonterminal FORMAL_PAR;
-nonterminal PARA;
-nonterminal CLASE_MIEMBRO;
+nonterminal OVERRIDEE;
+nonterminal NodoAST DECLARACIONES_VAR_FUN;
+nonterminal LinkedList<Integer> LCORCHETE;
+nonterminal LinkedList<Parametros> FORMAL_PARAMETERS;
+nonterminal Parametros FORMAL_PAR;
+nonterminal LinkedList<Parametros> PARA;
+nonterminal Instruccion CLASE_MIEMBRO;
 nonterminal CLASE_LOCAL;
 nonterminal LinkedList<String> MOD_CLASE_SUPERIOR;
 nonterminal Instruccion LOCAL_FIELD_DECLARATION;
-nonterminal RETORNOO;
+nonterminal NodoAST RETORNOO;
+nonterminal NodoAST LLAMADA;
+nonterminal LinkedList<Expresion> PARA_LLAMADA;
+
+
 //------------------------------------------------------------------------
 
 
@@ -133,10 +138,10 @@ precedence right MENOSUNARIO, MASUNARIO;
 
 start with I;
 
-I::= /*S:l{:
+I::= S:l{:
         this.parser.arbolINSTRUCCION = l;
-    :}*/
-    SS:l{:
+    :}
+    |SS:l{:
         this.parser.arbol = l;
     :};
 
@@ -172,16 +177,16 @@ LCLASE::= LCLASE:dd CLASE:d{:
          :};
 
 CLASE::= MOD_CLASE_SUPERIOR:visivilidad clase id:idClase allave OTRO:listaIntrucciones{:
-            RESULT = new Clase( visivilidad, idClase, listaIntrucciones, idleft, idright);
+            RESULT = new Clase( visivilidad, idClase, listaIntrucciones, idClaseleft, idClaseright);
         :}
         |MOD_CLASE_SUPERIOR:visivilidad clase id:idClase extender id:idHerencia allave OTRO:listaIntrucciones {:
-            RESULT = new Clase( visivilidad, idClase, idHerencia, listaIntrucciones, idleft, idright);
+            RESULT = new Clase( visivilidad, idClase, idHerencia, listaIntrucciones, idClaseleft, idClaseright);
         :}
-        |clase id allave OTRO{:
-            RESULT = new Clase( idClase, listaIntrucciones, idleft, idright);
+        |clase id:idClase allave OTRO:listaIntrucciones{:
+            RESULT = new Clase( idClase, listaIntrucciones, idClaseleft, idClaseright);
         :}
-        |clase id  extender id allave OTRO{:
-            RESULT = new Clase( idClase, idHerencia, listaIntrucciones, idleft, idright);
+        |clase id:idClase  extender id:idHerencia allave OTRO:listaIntrucciones{:
+            RESULT = new Clase( idClase, idHerencia, listaIntrucciones, idClaseleft, idClaseright);
         :};
 
 OTRO::= CONTENIDO_CLASE:lista cllave {:
@@ -224,7 +229,7 @@ CONTENIDO_CLASE::= CONTENIDO_CLASE:lista DENTRO_CLASE:d {:
 DENTRO_CLASE::= CLASE_MIEMBRO:claseMiembro{:
                     RESULT = claseMiembro;
                :}
-               |DECLARACIONES_VAR_FUN:declaraciones{:
+               |DECLARACIONES_VAR_FUN:declaraciones{: //puede o no llevar override
                     RESULT = declaraciones;
                :};
 
@@ -236,51 +241,125 @@ CLASE_MIEMBRO::= FIELD_MODIFIER clase id allave CONTENIDO_CLASE cllave{::}
                 |clase id  extender id allave CONTENIDO_CLASE cllave{::};
 
 
-DECLARACIONES_VAR_FUN::= FIELD_MODIFIERS T LCORCHETE id PARA puntoycoma{:
-                            
-                        :} //metodo abstracto                        
+/*OVERRIDEE::= arroba overridee DECLARACIONES_VAR_FUN{:
+            
+            :}
+            |DECLARACIONES_VAR_FUN{:
+            
+            :};*/
+
+
+DECLARACIONES_VAR_FUN::= FIELD_MODIFIERS:visivilidad T:tipo LCORCHETE:listaCorchtes id:idMetodo PARA:lista puntoycoma{:
+                            RESULT = new MetodoAbstracto(visivilidad, tipo, listaCorchtes, idMetodo, lista, idMetodoleft, idMetodoright);
+                        :} //metodo/funcion abstracto devuelve arreglos
+
+                        |FIELD_MODIFIERS:visivilidad T:tipo id:idMetodo PARA:lista puntoycoma{:
+                            RESULT = new MetodoAbstracto(visivilidad, tipo, idMetodo, lista, idMetodoleft, idMetodoright);
+                        :} //metodo/funcio abstracto 
+
+                        |T:tipo LCORCHETE:listaCorchtes id:idMetodo PARA:lista puntoycoma{:
+                            RESULT = new MetodoAbstracto(tipo, listaCorchtes, idMetodo, lista, idMetodoleft, idMetodoright);
+                        :} //metodo/funcio abstracto devuelve arreglos SIN VISIVILIDAD   
+                     
+                        |T:tipo id:idMetodo PARA:lista puntoycoma{:
+                            RESULT = new MetodoAbstracto(tipo, idMetodo, lista, idMetodoleft, idMetodoright);
+                        :} //metodo/funcio abstracto 
+
+
+
                          
-                        |FIELD_MODIFIERS T mainn PARA S {:
-                        
+                        |FIELD_MODIFIERS:visivilidad T:tipo mainn:s PARA:para S:listaContenidoSentencias {:
+                            RESULT = new Mainn( visivilidad, tipo, "main", para, listaContenidoSentencias, true, sleft, sright);
                         :} //MAIN
                         
-                        |FIELD_MODIFIERS T id PARA S {:
-                        
-                        :}  //funcion retornando una variable con y sin parametros
 
-                        |T id PARA S {:
-                        
-                        :}  //funcion SIN VISIVILIDAD retornando una variable con y sin parametros
 
-                        |FIELD_MODIFIERS T LCORCHETE id PARA S {:
-                        
+
+                        |FIELD_MODIFIERS:visibilidad T:tipo id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(visibilidad, tipo, idMetodo, para, bloque, idMetodoleft, idMetodoright);
+                        :}  //funcion/metodo retornando una variable con y sin parametros
+
+                        |T:tipo id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(tipo, idMetodo, para, bloque, idMetodoleft, idMetodoright);
+                        :}  //funcion/metod SIN VISIVILIDAD retornando una variable con y sin parametros
+
+                        |FIELD_MODIFIERS:visibilidad T:tipo LCORCHETE:corchete id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(visibilidad, tipo, corchete,idMetodo, para, bloque, idMetodoleft, idMetodoright);
                         :}    //funcion retornando un vector con y sin parametros
+                                                
+                        |T:tipo LCORCHETE:corchete id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(tipo, corchete,idMetodo, para, bloque, idMetodoleft, idMetodoright);
+                        :} 
                         
+
+
+                        
+                        //overrideeeees
+                        |arroba overridee FIELD_MODIFIERS:visibilidad T:tipo id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(visibilidad, tipo, idMetodo, para, bloque, idMetodoleft, idMetodoright, true);
+                        :}  //funcion/metodo retornando una variable con y sin parametros
+
+                        |arroba overridee T:tipo id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(tipo, idMetodo, para, bloque, idMetodoleft, idMetodoright, true);
+                        :}  //funcion/metod SIN VISIVILIDAD retornando una variable con y sin parametros
+
+                        |arroba overridee FIELD_MODIFIERS:visibilidad T:tipo LCORCHETE:corchete id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(visibilidad, tipo, corchete,idMetodo, para, bloque, idMetodoleft, idMetodoright, true);
+                        :}    //funcion retornando un vector con y sin parametros
+                                                
+                        |arroba overridee T:tipo LCORCHETE:corchete id:idMetodo PARA:para S:bloque {:
+                            RESULT = new MetodoFuncion(tipo, corchete,idMetodo, para, bloque, idMetodoleft, idMetodoright, true);
+                        :}
+
+
+
+
                         //variables globales
                         |FIELD_DECLARATION:d{:
                             RESULT = d;
                         :};
 
-PARA::= apar FORMAL_PARAMETERS cpar {:
-            
+
+
+PARA::= apar FORMAL_PARAMETERS:lista cpar {:
+            RESULT = lista;
         :}
        |apar cpar {:
-            
+            RESULT = new LinkedList<>();
        :};
 
-FORMAL_PARAMETERS::= FORMAL_PARAMETERS coma FORMAL_PAR{::}
-                    |FORMAL_PAR{::};
+FORMAL_PARAMETERS::= FORMAL_PARAMETERS:lista coma FORMAL_PAR:ll{:
+                        RESULT = lista;
+                        RESULT.add(ll);
+                    :}
+                    |FORMAL_PAR:ll{:
+                        RESULT = new LinkedList<>();
+                        RESULT.add(ll);
+                    :};
 
-FORMAL_PAR::= finall T VARIABLE_DECLARATOR_ID {::}
-             |T VARIABLE_DECLARATOR_ID {::};
+FORMAL_PAR::= finall T:tipoParametro VARIABLE_DECLARATOR_ID:listaid {:
+                RESULT = new Parametros(true, tipoParametro, listaid);
+             :}
+             |T:tipoParametro VARIABLE_DECLARATOR_ID:listaid {:
+                RESULT = new Parametros(tipoParametro, listaid);
+             :};
 
 
-LCORCHETE::= LCORCHETE acorchete ccorchete{:
-                
+LCORCHETE::= LCORCHETE:l acorchete ccorchete{:
+                RESULT = new LinkedList<Integer>();
+                RESULT.add(1);
             :}
             |acorchete ccorchete{:
-                
+                RESULT = new LinkedList<Integer>();
+                RESULT.add(1);
             :};
+
+
+
+
+
+
+
 
 FIELD_DECLARATION::= FIELD_MODIFIERS:vi T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
                         RESULT = new Declaraciones(vi, tipop, lista, tipopleft, tipopright);
@@ -332,13 +411,13 @@ B::= B:l J:i {:
         RESULT.add(i);
     :};
 
-J::= LOCAL_FIELD_DECLARATION:d{: //solo pueden ser final sin mod acceso private, public, protected
-        RESULT = d;
-    :}
-    /*|S:d {:
+J::= /*LOCAL_FIELD_DECLARATION:d{: //solo pueden ser final sin mod acceso private, public, protected
         RESULT = d;
     :}*/
-    |CICLOS:d {:
+    /*|S:d {:
+        RESULT = d;
+    :}
+    |*/CICLOS:d {:
         RESULT = d;
     :}
     |COND:d{:
@@ -356,16 +435,48 @@ J::= LOCAL_FIELD_DECLARATION:d{: //solo pueden ser final sin mod acceso private,
     |CLASE_LOCAL{:
         
     :}
-    |RETORNOO{:
-        
+    |RETORNOO:d{:
+        RESULT = d;
+    :}
+    |DECLARACIONES_VAR_FUN:d{:
+        RESULT = d;
+    :}
+    |LLAMADA:d{:
+        RESULT = d;
     :};
 
-RETORNOO::= retorno E puntoycoma{:
-            
+
+LLAMADA::= id:id apar PARA_LLAMADA:lista cpar puntoycoma{:
+            RESULT = new LlamadaMetodoFuncion(id, lista, idleft, idright);
+          :}
+          |id:id apar cpar puntoycoma{:
+            RESULT = new LlamadaMetodoFuncion(id, new LinkedList<>(), idleft, idright);
+          :};
+
+
+PARA_LLAMADA::= PARA_LLAMADA:lista coma E:i{:
+                    RESULT = lista;
+                    RESULT.add(i);
+                :}
+                |E:i{:
+                    RESULT = new LinkedList<>();
+                    RESULT.add(i);
+                :};
+
+
+
+
+
+
+
+RETORNOO::= retorno E:e puntoycoma{:
+                RESULT = new Returnn(e, eleft, eright);
            :}
-           |retorno puntoycoma{:
-            
+           |retorno:e puntoycoma{:
+                RESULT = new Returnn(null, eleft, eright);
            :};
+
+
 
 LOCAL_FIELD_DECLARATION::= finall:vi T:tipop VARIABLE_DECLARATORS:lista puntoycoma{:
                         LinkedList<String> mod = new LinkedList<>();
@@ -560,11 +671,11 @@ T::= intt{:
     |doublee{:
         RESULT = new TipoContenedor(Simbolo.Tipo.DOUBLE);
     :}
-    |id{:
-        
+    |id:id{:
+        RESULT = new TipoContenedor(id);
     :}
     |voidd{:
-    
+         RESULT = new TipoContenedor(Simbolo.Tipo.METODO);
     :};
 
 E::= menos:mas E:e1 {:
@@ -642,6 +753,13 @@ E::= menos:mas E:e1 {:
     :}
     |id:id{:
         RESULT = new Identificador(id, new TipoContenedor(Simbolo.Tipo.ID), idleft, idright);
+    :}
+    
+    |id:id apar PARA_LLAMADA:lista cpar {:
+        RESULT = new LlamadaMetodoFuncion(id, lista, idleft, idright);
+    :}
+    |id:id apar cpar {:
+        RESULT = new LlamadaMetodoFuncion(id, new LinkedList<>(), idleft, idright);
     :}
     
     |E:cond interrogacion E:vdd dospuntos E:fake {:
